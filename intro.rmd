@@ -9,7 +9,6 @@ knitr::opts_chunk$set(comment = "#")
 
 ```
 
-
 # Network Diffusion of Innovations
 
 ## Diffusion networks
@@ -19,21 +18,18 @@ knitr::include_graphics("valente_1995.jpg")
 ```
 
 
-*   Tries to explain how new ideas and practices (innovations) spread within and between
+*   Explains how new ideas and practices (innovations) spread within and between
   communities.
 
 *   While a lot of factors have been shown to influence diffusion (Spatial,
     Economic, Cultural, Biological, etc.), Social Networks is a prominent one.
 
-*   More complex than __contagion__ $\implies$ a single tie is no longer enough
-    for an innovation to spread across a social system.
-
-*   We think of this in terms of adoption thresholds and social exposure.
+*   There are many components in the diffusion network model including network exposures, thresholds, infectiousness, susceptibility, hazard rates, diffusion rates (bass model), clustering (Moran's I), and so on.
 
 
 ## Thresholds
 
-*   Network thresholds (Valente, 1995), $\tau$, are defined as the required proportion or number of neighbors that leads you to adopt a particular        behavior (innovation), $a=1$. In (very) general terms\pause
+*   One of the cannonical concepts is the network threshold. Network thresholds (Valente, 1995; 1996), $\tau$, are defined as the required proportion or number of neighbors that leads you to adopt a particular behavior (innovation), $a=1$. In (very) general terms\pause
     
     $$
     a_i = \left\{\begin{array}{ll}
@@ -45,8 +41,7 @@ knitr::include_graphics("valente_1995.jpg")
     
     Where $E_i$ is i's exposure to the innovation and $\mathbf{X}$ is the adjacency matrix (the network).
 
-*   This can be generalized and extended to include covariates and other weighting schemes (that's what __netdiffuseR__ is all about).
-
+*   This can be generalized and extended to include covariates and other network weighting schemes (that's what __netdiffuseR__ is all about).
 
 # netdiffuseR
 
@@ -62,19 +57,19 @@ __netdiffuseR__ is an R package that:
     *   _Matrix_: So it's big,
     *   _statnet_ and _igraph_: So it's not from scratch
 
-*   Can handle big graphs, more than 4 billion elements adjacency matrix (PR for RcppArmadillo)
+*   Can handle big graphs, e.g., an adjacency matrix with more than 4 billion elements (PR for RcppArmadillo)
 
-*   Already on CRAN  with ~4,000 downloads since its first version, Feb 2016,
+*   Already on CRAN  with ~6,000 downloads since its first version, Feb 2016,
 
 *   A lot of features to make it easy to read network (dynamic) data, making it a nice companion of other net packages.
 
 
 ## Datasets
 
--   Among __netdiffuseR__ features, we find three classical Diffusion Network Datasets:
+- __netdiffuseR__ has the three classic Diffusion Network Datasets:
     
-    - `brfarmersDiffNet` Brazilian farmers and the innovation of Hybrid Corn Seed (1966).
     - `medInnovationsDiffNet` Doctors and the innovation of Tetracycline (1955).
+    - `brfarmersDiffNet` Brazilian farmers and the innovation of Hybrid Corn Seed (1966).
     - `kfamilyDiffNet` Korean women and Family Planning methods (1973).
     
     ```{r printing}
@@ -85,7 +80,7 @@ __netdiffuseR__ is an R package that:
 
 ## Visualization methods
 
-```{r viz, cache=TRUE}
+```{r viz, cache=TRUE, eval=FALSE}
 set.seed(12315)
 x <- rdiffnet(
   600, t = 6, rgraph.args = list(k=8, p=.3),
