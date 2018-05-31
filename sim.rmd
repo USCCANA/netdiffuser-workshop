@@ -11,13 +11,13 @@ knitr::opts_chunk$set(comment = "#")
 
 # Introduction
 
-Before start, a recapt of concepts that we will be using here
+Before we start, a review of the concepts we will be using here
 
-1. Exposure: What proportion/number of your neighbors has adopted an innovation.
-2. Threshold: What was the proportion/number of your neighbors had adopted by the time you adopted.
-3. Infectiousness: How much $i$'s adoption affects her alters
+1. Exposure: Proportion/number of neighbors that has adopted an innovation at each point in time.
+2. Threshold: The proportion/number of your neighbors who had adopted at or one time period before ego (the focal individual) adopted.
+3. Infectiousness: How much $i$'s adoption affects her alters.
 4. Susceptibility: How much $i$'s alters' adoption affects her.
-5. Structural equivalence: How similar are $i$ and $j$ in terms of position on the network.
+5. Structural equivalence: How similar are $i$ and $j$ in terms of position in the network.
 
 # Simulating diffusion networks
 
@@ -25,13 +25,13 @@ We will simulate a diffusion network with the following parameters:
 
 1.  Will have 1,000 vertices,
 2.  Will span 20 time periods,
-3.  The set of early adopters will be random,
-4.  Early adopters will be a 10\% of the network,
-5.  The graph will be small-world,
+3.  The initial adopters (seeds) will be selected random,
+4.  Seeds will be a 10\% of the network,
+5.  The graph (network) will be small-world,
 6.  Will use the WS algorithmwith $p=.2$ (probability of rewire).
 7.  Threshold levels will be uniformly distributed between [0.3, 0.7\]
 
-To generate such diffusion network we can use the `rdiffnet` function included in the package:
+To generate this diffusion network we can use the `rdiffnet` function included in the package:
 
 
 ```{r Generating the random graph}
@@ -66,9 +66,9 @@ net <- rdiffnet(
     
     1.  If required, a baseline graph is created,
     
-    2.  Set of initial adopters and threshold is established,
+    2.  Set of initial adopters and threshold distribution are established,
     
-    3.  Se set of t networks is created (if required), and
+    3.  The set of t networks is created (if required), and
     
     4.  Simulation starts at t=2, assigning adopters based on exposures and thresholds:
     
@@ -77,13 +77,13 @@ net <- rdiffnet(
             
         b.  next $i$
     
-# Disease spreading
+# Rumor spreading
 
-```{r sim-disease}
+```{r sim-rumor}
 library(netdiffuseR)
 
 set.seed(09)
-diffnet_disease <- rdiffnet(
+diffnet_rumor <- rdiffnet(
   n = 5e2,
   t = 5, 
   seed.graph = "small-world",
@@ -96,8 +96,8 @@ diffnet_disease <- rdiffnet(
   )
 ```
 
-```{r summary-disease}
-summary(diffnet_disease)
+```{r summary-rumor}
+summary(diffnet_rumor)
 ```
 
 

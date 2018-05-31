@@ -4,6 +4,8 @@ navbar:
   left:
   - text: Home
     href: index.html
+  - text: Getting Started
+    href: getstarted.html
   - text: Introduction
     href: intro.html
   - text: Simulations
