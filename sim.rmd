@@ -101,14 +101,14 @@ summary(diffnet_rumor)
 ```
 
 
-```{r plot-disease, fig.align='center', cache=TRUE}
-plot_diffnet(diffnet_disease, slices = c(1, 3, 5))
+```{r plot-rumor, fig.align='center', cache=TRUE}
+plot_diffnet(diffnet_rumor, slices = c(1, 3, 5))
 
 # We want to use igraph to compute layout
-igdf <- diffnet_to_igraph(diffnet_disease, slices=c(1,2))[[1]]
+igdf <- diffnet_to_igraph(diffnet_rumor, slices=c(1,2))[[1]]
 pos <- igraph::layout_with_drl(igdf)
 
-plot_diffnet2(diffnet_disease, vertex.size = dgr(diffnet_disease)[,1], layout=pos)
+plot_diffnet2(diffnet_rumor, vertex.size = dgr(diffnet_rumor)[,1], layout=pos)
 ```
 
 
@@ -117,8 +117,8 @@ plot_diffnet2(diffnet_disease, vertex.size = dgr(diffnet_disease)[,1], layout=po
 ```{r sim-complex}
 set.seed(09)
 diffnet_complex <- rdiffnet(
-  seed.graph = diffnet_disease$graph,
-  seed.nodes = which(diffnet_disease$toa == 1),
+  seed.graph = diffnet_rumor$graph,
+  seed.nodes = which(diffnet_rumor$toa == 1),
   rewire = FALSE,
   threshold.dist = function(i) rbeta(1, 3, 10),
   name = "Diffusion",
@@ -128,7 +128,7 @@ diffnet_complex <- rdiffnet(
 ```
 
 ```{r plot-complex-and-disease}
-plot_adopters(diffnet_disease, what = "cumadopt", include.legend = FALSE)
+plot_adopters(diffnet_rumor, what = "cumadopt", include.legend = FALSE)
 plot_adopters(diffnet_complex, bg="tomato", add=TRUE, what = "cumadopt")
 legend("topleft", legend = c("Disease", "Complex"), col = c("lightblue", "tomato"),
        bty = "n", pch=19)
@@ -140,7 +140,7 @@ legend("topleft", legend = c("Disease", "Complex"), col = c("lightblue", "tomato
 ```{r mentor-match, cache = TRUE}
 
 # Finding mentors
-mentors <- mentor_matching(diffnet_disease, 25, lead.ties.method = "random")
+mentors <- mentor_matching(diffnet_rumor, 25, lead.ties.method = "random")
 
 # Simulating diffusion with these mentors
 set.seed(09)
