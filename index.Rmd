@@ -10,6 +10,15 @@ knitr::opts_chunk$set(comment = "#")
 
 netdiffuseR at Sunbelt 2018
 
+Workshop materials can be downloaded from https://github.com/USCCANA/netdiffuser-sunbelt2018. You can download the entire repository (source code of the workshop) [here](https://github.com/USCCANA/netdiffuser-sunbelt2018/archive/master.zip).
+
+Source code per section:
+
+1.  <a href="Network Interventions INSNA updated.ppt" target="_blank">Presentation</a>
+2.  <a href="https://raw.githubusercontent.com/USCCANA/netdiffuser-sunbelt2018/master/getstarted.rmd" target="_blank">Getting started</a>
+3.  <a href="https://raw.githubusercontent.com/USCCANA/netdiffuser-sunbelt2018/master/intro.rmd" target="_blank">Introduction</a>
+4.  <a href="https://raw.githubusercontent.com/USCCANA/netdiffuser-sunbelt2018/master/sim.rmd" target="_blank">Simulations</a>
+5.  <a href="https://raw.githubusercontent.com/USCCANA/netdiffuser-sunbelt2018/master/stats.rmd" target="_blank">Statistical inference</a>
 
 From the description:
 
