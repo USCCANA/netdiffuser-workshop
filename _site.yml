@@ -1,4 +1,6 @@
 name: netdiffuseR at Sunbelt 2018
+include: ["sim-solutions.r", "intro-solutions.r", "read-solutions.r", "stats-solutions.r"]
+exclude: ["README.html", "README.md"]
 navbar:
   title: netdiffuseR at Sunbelt 2018
   left:

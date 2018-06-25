@@ -152,8 +152,10 @@ plot_diffnet(diffnet_dynsurvey)
 
 # Problems
 
-2.  Using the rda file _problem2.rda_, read in the edgelist `net_edgelist` and the adjacency
-    matrix `net_list` as a diffnet object together with the data.frame `X`.
+1.  Using the rda file [read.rda](read.rda), read in the edgelist `net_edgelist` and the adjacency
+    matrix `net_list` as a diffnet objects. In both cases you should use the data.frame `X`
+    which has the time of adoption variable.
+    ([solution script](read-solutions.r))
     
 ```{r 2-generates-data, echo=FALSE, cache=TRUE, warning=FALSE, message=FALSE, results='hide'}
 library(igraph)
@@ -172,24 +174,10 @@ X <- data.frame(
   year      = sort(rep(1:5, 20))
   )
 
-# Diffnet object
-diffnet_0 <- edgelist_to_diffnet(
-  edgelist = net_edgelist[,1:2],
-  t0       = net_edgelist[, "time"],
-  dat      = X,
-  idvar    = "idnum",
-  toavar   = "YearAdopt",
-  timevar  = "year"
-)
-
-# Igraph object
-igraph_0  <- diffnet_to_igraph(diffnet_0)
-network_0 <- diffnet_to_networkDynamic(diffnet_0)
-
 
 # Storing the data
-save(diffnet_0, igraph_0, network_0, X, net_edgelist, net, file = "problem2.rda")
+save(X, net_edgelist, net_list, file = "read.rda")
 ```
 
-1.  With the new diffnet object, apply the same analysis as before.
-    Which strategy maximizes adoption?
+<!-- 2.  With the new diffnet object, apply the same analysis as before. -->
+<!--     Which strategy maximizes adoption? -->

@@ -231,13 +231,15 @@ hist(test)
 
 # Problems
 
-Using the dataset `problems_stats1.rda`
+Using the dataset [stats.rda](stats.rda):
 
-1.  Compute a lagged version of Moran's I and compare it with the one from `summary`.
+1.  Compute Moran's I as the function `summary.diffnet` does. For this you'll need
+to use the function `toa_mat` (which calculates the cumulative adoption matrix),
+and `approx_geodesic` (which computes the geodesic matrix). (see `?summary.diffnet`
+for more details). ([solution script](stats-solutions.r))
 
-2.  Fit the following probit model $adopt = Exposure*\gamma + Measure*\beta + \varepsilon$.
+2.  Read the data as diffnet object, and fit the following logit model $adopt = Exposure*\gamma + Measure*\beta + \varepsilon$.
     What happens if you exclude the time fixed effects?
-
 
 ```{r datagen, echo=FALSE, cache=TRUE}
 set.seed(1)
@@ -275,30 +277,6 @@ ans <- sim_space(W, y, X, pers = nper, lag=TRUE)
 toa <- ncol(ans) - apply(ans, 1, sum)
 X <- cbind(X, toa=ifelse(toa == 0, NA, toa))
 
-save(X, W, file="problems_stats1.rda")
-```
-
-```{r sol, eval=FALSE, echo=FALSE}
-# out <- struct_test(
-#   new_diffnet(W, X[,"toa"]),
-#   function(g) mean(threshold(g, lags = 1L), na.rm=TRUE),
-#   R=500,
-#   rewire.args = list(algorithm="qap"),
-#   parallel="multicore",ncpus=5);out
-
-load("problems_stats1.rda")
-dn <- new_diffnet(W, toa=X[,2], vertex.static.attrs = X[,1,drop=FALSE])
-
-dn[["cohesive_exposure"]] <- cbind(NA, exposure(dn)[,-nslices(dn)])
-dn[["adopted"]]           <- dn$cumadopt
-
-dat <- as.data.frame(dn)
-ans <- glm(adopted ~ cohesive_exposure + Measure + factor(per),
-           family = binomial(link="probit"),
-           data = dat,
-           subset = is.na(toa) | (per <= toa)
-           )
-
-summary(ans)
+save(X, W, file="stats.rda")
 ```
 
