@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Thomas W. Valente" />
+
+
+<title>Classic Diffnet Analyses</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("classic.rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">netdiffuseR at Sunbelt 2018</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="getstarted.html">Getting Started</a>
+</li>
+<li>
+  <a href="intro.html">Introduction</a>
+</li>
+<li>
+  <a href="sim.html">Simulations</a>
+</li>
+<li>
+  <a href="read.html">Reading data</a>
+</li>
+<li>
+  <a href="stats.html">Statistical inference</a>
+</li>
+<li>
+  <a href="classic.html">Classic Diffnet Analyses</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Classic Diffnet Analyses</h1>
+<h4 class="author"><em>Thomas W. Valente</em></h4>
+
+</div>
+
+
+<pre class="r"><code># This R script Demonstrates how to USE NetdifuseR to analyze the 
+# 3 classic network diffusion datasets and estimate cohesion vs
+# Structural equivalence influences on adoption 
+
+rm(list = ls())
+library(foreign)
+install.packages(&quot;netdiffuseR&quot;)
+library(netdiffuseR)
+
+# Read MI data note the &quot;groupvar&quot; option
+mi_att &lt;- read.dta(&quot;c:/misc/diffnet/mi_v2.dta&quot;)
+midiffnet &lt;- survey_to_diffnet(mi_att, idvar=&quot;id&quot;, netvars=c(&quot;net11&quot;, &quot;net12&quot;, &quot;net13&quot;,
+                                                             &quot;net21&quot;, &quot;net22&quot;, &quot;net23&quot;),
+                               toavar=&quot;toa&quot;, groupvar = &quot;city&quot;, warn.coercion = FALSE)
+# Make sure it makes sense
+summary(midiffnet)
+
+# Calculate exposures
+midiffnet[[&quot;cohexp&quot;]] &lt;- exposure(midiffnet)
+midiffnet[[&quot;seexp2&quot;]] &lt;- exposure(midiffnet, alt.graph = &quot;se&quot;, groupvar = &quot;city&quot;)
+
+midiffnet.df &lt;- diffnet.attrs(midiffnet, as.df = TRUE)                  # Convert to dataframe
+midiffnet.df$adopted &lt;- as.integer(with(midiffnet.df, ado == per))          # Set adoption variable
+midiffnet.df &lt;- midiffnet.df[midiffnet.df$per &lt;=  midiffnet.df$toa, ]        # Keep pre-adoption time only
+mod_all &lt;- as.formula(paste(&quot;adopted ~ factor(per) + proage + journ2 + science + detail + cohexp + seexp2  &quot;))
+out_all &lt;- glm(mod_all, data=midiffnet.df, family = binomial(link=&quot;logit&quot;))
+summary(out_all)
+# Draw a cumulate and new adopters graph
+plot_adopters(midiffnet)
+# Plot the the diffusion process
+plot_diffnet(midiffnet)
+plot_diffnet(midiffnet, slices=c(1, 6, 12, 18))
+
+
+
+# BF data
+bf_att &lt;- read.dta(&quot;c:/misc/diffnet/bf_v2.dta&quot;)
+bfdiffnet &lt;- survey_to_diffnet(bf_att, idvar=&quot;id&quot;, netvars=c(&quot;net11&quot;, &quot;net12&quot;, &quot;net13&quot;,
+                                                             &quot;net21&quot;, &quot;net22&quot;, &quot;net23&quot;,
+                                                             &quot;net31&quot;, &quot;net32&quot;, &quot;net33&quot;),
+                               toavar=&quot;toa&quot;, groupvar = &quot;village&quot;)
+
+summary(bfdiffnet)
+
+bfdiffnet[[&quot;cohexp&quot;]] &lt;- exposure(bfdiffnet)
+bfdiffnet[[&quot;seexp&quot;]] &lt;-  exposure(bfdiffnet, alt.graph=&quot;se&quot;, groupvar=&quot;village&quot;,
+                                  valued = TRUE)
+# Store village variable with diffnet object
+bfdiffnet[[&quot;village&quot;]] &lt;- bf_att$village
+
+bfdiffnet.df &lt;- diffnet.attrs(bfdiffnet, as.df = TRUE)
+bfdiffnet.df$adopted &lt;- as.integer(with(bfdiffnet.df, ado == per))
+bfdiffnet.df &lt;- bfdiffnet.df[bfdiffnet.df$per &lt;=  bfdiffnet.df$toa, ]
+mod_all &lt;- as.formula(paste(&quot;adopted ~ factor(per) + visits + news1 + immexp + cohexp + seexp  &quot;))
+out_all &lt;- glm(mod_all, data=bfdiffnet.df, family = binomial(link=&quot;logit&quot;))
+summary(out_all)
+# Draw a cumulate and new adopters graph
+plot_adopters(bfdiffnet)
+# Plot the the diffusion process but just one time point
+plot_diffnet(bfdiffnet, slices=10)
+# Plot the the diffusion process but just one time point and one village
+#plot_diffnet((with(bfdiffnet, village==10)), slices=10)
+
+# Plot the the diffusion process for just one village
+bfdiffnet10&lt;-bfdiffnet[[&quot;village&quot;]]==10
+plot_diffnet(bfdiffnet[bfdiffnet10], slices=10)
+
+# KFP Data
+kfp_att&lt;- read.dta(&quot;c:/misc/diffnet/kfp_v3.dta&quot;)
+kfpdiffnet &lt;- survey_to_diffnet(
+  kfp_att, idvar=&quot;id&quot;, 
+                                netvars=c(&quot;net11&quot;, &quot;net12&quot;, &quot;net13&quot;, &quot;net14&quot;, &quot;net15&quot;,
+                                                 &quot;net21&quot;, &quot;net22&quot;, &quot;net23&quot;, &quot;net24&quot;, &quot;net25&quot;,
+                                                 &quot;net31&quot;, &quot;net32&quot;, &quot;net33&quot;, &quot;net34&quot;, &quot;net35&quot;),
+                  toavar=&quot;toa&quot;, groupvar = &quot;village&quot;)
+
+summary(kfpdiffnet)
+
+kfpdiffnet[[&quot;cohexp&quot;]] &lt;- exposure(kfpdiffnet)
+kfpdiffnet[[&quot;seexp&quot;]] &lt;-  exposure(kfpdiffnet, alt.graph=&quot;se&quot;, groupvar=&quot;village&quot;,
+                                   valued=TRUE)
+
+
+kfpdiffnet.df &lt;- diffnet.attrs(kfpdiffnet, as.df = TRUE)
+kfpdiffnet.df$adopted &lt;- as.integer(with(kfpdiffnet.df, ado == per))
+kfpdiffnet.df &lt;- kfpdiffnet.df[kfpdiffnet.df$per &lt;=  kfpdiffnet.df$toa, ]
+mod_all &lt;- as.formula(paste(&quot;adopted ~ factor(per) + sons + mmex + pregs + cohexp + seexp  &quot;))
+out_all &lt;- glm(mod_all, data=kfpdiffnet.df, family = binomial(link=&quot;logit&quot;))
+summary(out_all)
+
+
+########################################################################
+#                       The End                                        #
+########################################################################</code></pre>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ2xhc3NpYyBEaWZmbmV0IEFuYWx5c2VzIgphdXRob3I6ICJUaG9tYXMgVy4gVmFsZW50ZSIKLS0tCgpgYGByCiMgVGhpcyBSIHNjcmlwdCBEZW1vbnN0cmF0ZXMgaG93IHRvIFVTRSBOZXRkaWZ1c2VSIHRvIGFuYWx5emUgdGhlIAojIDMgY2xhc3NpYyBuZXR3b3JrIGRpZmZ1c2lvbiBkYXRhc2V0cyBhbmQgZXN0aW1hdGUgY29oZXNpb24gdnMKIyBTdHJ1Y3R1cmFsIGVxdWl2YWxlbmNlIGluZmx1ZW5jZXMgb24gYWRvcHRpb24gCgpybShsaXN0ID0gbHMoKSkKbGlicmFyeShmb3JlaWduKQppbnN0YWxsLnBhY2thZ2VzKCJuZXRkaWZmdXNlUiIpCmxpYnJhcnkobmV0ZGlmZnVzZVIpCgojIFJlYWQgTUkgZGF0YSBub3RlIHRoZSAiZ3JvdXB2YXIiIG9wdGlvbgptaV9hdHQgPC0gcmVhZC5kdGEoImM6L21pc2MvZGlmZm5ldC9taV92Mi5kdGEiKQptaWRpZmZuZXQgPC0gc3VydmV5X3RvX2RpZmZuZXQobWlfYXR0LCBpZHZhcj0iaWQiLCBuZXR2YXJzPWMoIm5ldDExIiwgIm5ldDEyIiwgIm5ldDEzIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJuZXQyMSIsICJuZXQyMiIsICJuZXQyMyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdG9hdmFyPSJ0b2EiLCBncm91cHZhciA9ICJjaXR5Iiwgd2Fybi5jb2VyY2lvbiA9IEZBTFNFKQojIE1ha2Ugc3VyZSBpdCBtYWtlcyBzZW5zZQpzdW1tYXJ5KG1pZGlmZm5ldCkKCiMgQ2FsY3VsYXRlIGV4cG9zdXJlcwptaWRpZmZuZXRbWyJjb2hleHAiXV0gPC0gZXhwb3N1cmUobWlkaWZmbmV0KQptaWRpZmZuZXRbWyJzZWV4cDIiXV0gPC0gZXhwb3N1cmUobWlkaWZmbmV0LCBhbHQuZ3JhcGggPSAic2UiLCBncm91cHZhciA9ICJjaXR5IikKCm1pZGlmZm5ldC5kZiA8LSBkaWZmbmV0LmF0dHJzKG1pZGlmZm5ldCwgYXMuZGYgPSBUUlVFKSAgICAgICAgICAgICAgICAgICMgQ29udmVydCB0byBkYXRhZnJhbWUKbWlkaWZmbmV0LmRmJGFkb3B0ZWQgPC0gYXMuaW50ZWdlcih3aXRoKG1pZGlmZm5ldC5kZiwgYWRvID09IHBlcikpICAgICAgICAgICMgU2V0IGFkb3B0aW9uIHZhcmlhYmxlCm1pZGlmZm5ldC5kZiA8LSBtaWRpZmZuZXQuZGZbbWlkaWZmbmV0LmRmJHBlciA8PSAgbWlkaWZmbmV0LmRmJHRvYSwgXSAgICAgICAgIyBLZWVwIHByZS1hZG9wdGlvbiB0aW1lIG9ubHkKbW9kX2FsbCA8LSBhcy5mb3JtdWxhKHBhc3RlKCJhZG9wdGVkIH4gZmFjdG9yKHBlcikgKyBwcm9hZ2UgKyBqb3VybjIgKyBzY2llbmNlICsgZGV0YWlsICsgY29oZXhwICsgc2VleHAyICAiKSkKb3V0X2FsbCA8LSBnbG0obW9kX2FsbCwgZGF0YT1taWRpZmZuZXQuZGYsIGZhbWlseSA9IGJpbm9taWFsKGxpbms9ImxvZ2l0IikpCnN1bW1hcnkob3V0X2FsbCkKIyBEcmF3IGEgY3VtdWxhdGUgYW5kIG5ldyBhZG9wdGVycyBncmFwaApwbG90X2Fkb3B0ZXJzKG1pZGlmZm5ldCkKIyBQbG90IHRoZSB0aGUgZGlmZnVzaW9uIHByb2Nlc3MKcGxvdF9kaWZmbmV0KG1pZGlmZm5ldCkKcGxvdF9kaWZmbmV0KG1pZGlmZm5ldCwgc2xpY2VzPWMoMSwgNiwgMTIsIDE4KSkKCgoKIyBCRiBkYXRhCmJmX2F0dCA8LSByZWFkLmR0YSgiYzovbWlzYy9kaWZmbmV0L2JmX3YyLmR0YSIpCmJmZGlmZm5ldCA8LSBzdXJ2ZXlfdG9fZGlmZm5ldChiZl9hdHQsIGlkdmFyPSJpZCIsIG5ldHZhcnM9YygibmV0MTEiLCAibmV0MTIiLCAibmV0MTMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIm5ldDIxIiwgIm5ldDIyIiwgIm5ldDIzIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJuZXQzMSIsICJuZXQzMiIsICJuZXQzMyIpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdG9hdmFyPSJ0b2EiLCBncm91cHZhciA9ICJ2aWxsYWdlIikKCnN1bW1hcnkoYmZkaWZmbmV0KQoKYmZkaWZmbmV0W1siY29oZXhwIl1dIDwtIGV4cG9zdXJlKGJmZGlmZm5ldCkKYmZkaWZmbmV0W1sic2VleHAiXV0gPC0gIGV4cG9zdXJlKGJmZGlmZm5ldCwgYWx0LmdyYXBoPSJzZSIsIGdyb3VwdmFyPSJ2aWxsYWdlIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZhbHVlZCA9IFRSVUUpCiMgU3RvcmUgdmlsbGFnZSB2YXJpYWJsZSB3aXRoIGRpZmZuZXQgb2JqZWN0CmJmZGlmZm5ldFtbInZpbGxhZ2UiXV0gPC0gYmZfYXR0JHZpbGxhZ2UKCmJmZGlmZm5ldC5kZiA8LSBkaWZmbmV0LmF0dHJzKGJmZGlmZm5ldCwgYXMuZGYgPSBUUlVFKQpiZmRpZmZuZXQuZGYkYWRvcHRlZCA8LSBhcy5pbnRlZ2VyKHdpdGgoYmZkaWZmbmV0LmRmLCBhZG8gPT0gcGVyKSkKYmZkaWZmbmV0LmRmIDwtIGJmZGlmZm5ldC5kZltiZmRpZmZuZXQuZGYkcGVyIDw9ICBiZmRpZmZuZXQuZGYkdG9hLCBdCm1vZF9hbGwgPC0gYXMuZm9ybXVsYShwYXN0ZSgiYWRvcHRlZCB+IGZhY3RvcihwZXIpICsgdmlzaXRzICsgbmV3czEgKyBpbW1leHAgKyBjb2hleHAgKyBzZWV4cCAgIikpCm91dF9hbGwgPC0gZ2xtKG1vZF9hbGwsIGRhdGE9YmZkaWZmbmV0LmRmLCBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSJsb2dpdCIpKQpzdW1tYXJ5KG91dF9hbGwpCiMgRHJhdyBhIGN1bXVsYXRlIGFuZCBuZXcgYWRvcHRlcnMgZ3JhcGgKcGxvdF9hZG9wdGVycyhiZmRpZmZuZXQpCiMgUGxvdCB0aGUgdGhlIGRpZmZ1c2lvbiBwcm9jZXNzIGJ1dCBqdXN0IG9uZSB0aW1lIHBvaW50CnBsb3RfZGlmZm5ldChiZmRpZmZuZXQsIHNsaWNlcz0xMCkKIyBQbG90IHRoZSB0aGUgZGlmZnVzaW9uIHByb2Nlc3MgYnV0IGp1c3Qgb25lIHRpbWUgcG9pbnQgYW5kIG9uZSB2aWxsYWdlCiNwbG90X2RpZmZuZXQoKHdpdGgoYmZkaWZmbmV0LCB2aWxsYWdlPT0xMCkpLCBzbGljZXM9MTApCgojIFBsb3QgdGhlIHRoZSBkaWZmdXNpb24gcHJvY2VzcyBmb3IganVzdCBvbmUgdmlsbGFnZQpiZmRpZmZuZXQxMDwtYmZkaWZmbmV0W1sidmlsbGFnZSJdXT09MTAKcGxvdF9kaWZmbmV0KGJmZGlmZm5ldFtiZmRpZmZuZXQxMF0sIHNsaWNlcz0xMCkKCiMgS0ZQIERhdGEKa2ZwX2F0dDwtIHJlYWQuZHRhKCJjOi9taXNjL2RpZmZuZXQva2ZwX3YzLmR0YSIpCmtmcGRpZmZuZXQgPC0gc3VydmV5X3RvX2RpZmZuZXQoCiAga2ZwX2F0dCwgaWR2YXI9ImlkIiwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmV0dmFycz1jKCJuZXQxMSIsICJuZXQxMiIsICJuZXQxMyIsICJuZXQxNCIsICJuZXQxNSIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAibmV0MjEiLCAibmV0MjIiLCAibmV0MjMiLCAibmV0MjQiLCAibmV0MjUiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIm5ldDMxIiwgIm5ldDMyIiwgIm5ldDMzIiwgIm5ldDM0IiwgIm5ldDM1IiksCiAgICAgICAgICAgICAgICAgIHRvYXZhcj0idG9hIiwgZ3JvdXB2YXIgPSAidmlsbGFnZSIpCgpzdW1tYXJ5KGtmcGRpZmZuZXQpCgprZnBkaWZmbmV0W1siY29oZXhwIl1dIDwtIGV4cG9zdXJlKGtmcGRpZmZuZXQpCmtmcGRpZmZuZXRbWyJzZWV4cCJdXSA8LSAgZXhwb3N1cmUoa2ZwZGlmZm5ldCwgYWx0LmdyYXBoPSJzZSIsIGdyb3VwdmFyPSJ2aWxsYWdlIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2YWx1ZWQ9VFJVRSkKCgprZnBkaWZmbmV0LmRmIDwtIGRpZmZuZXQuYXR0cnMoa2ZwZGlmZm5ldCwgYXMuZGYgPSBUUlVFKQprZnBkaWZmbmV0LmRmJGFkb3B0ZWQgPC0gYXMuaW50ZWdlcih3aXRoKGtmcGRpZmZuZXQuZGYsIGFkbyA9PSBwZXIpKQprZnBkaWZmbmV0LmRmIDwtIGtmcGRpZmZuZXQuZGZba2ZwZGlmZm5ldC5kZiRwZXIgPD0gIGtmcGRpZmZuZXQuZGYkdG9hLCBdCm1vZF9hbGwgPC0gYXMuZm9ybXVsYShwYXN0ZSgiYWRvcHRlZCB+IGZhY3RvcihwZXIpICsgc29ucyArIG1tZXggKyBwcmVncyArIGNvaGV4cCArIHNlZXhwICAiKSkKb3V0X2FsbCA8LSBnbG0obW9kX2FsbCwgZGF0YT1rZnBkaWZmbmV0LmRmLCBmYW1pbHkgPSBiaW5vbWlhbChsaW5rPSJsb2dpdCIpKQpzdW1tYXJ5KG91dF9hbGwpCgoKIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjCiMgICAgICAgICAgICAgICAgICAgICAgIFRoZSBFbmQgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIwojIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMKYGBgCgo=</div>
+<p>
+  <center><a href="http://cana.usc.edu" target="_new">University of Southern California<br>Center for Applied Network Analysis (<b>CANA</b>)</a>
+  </center>
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

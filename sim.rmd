@@ -269,6 +269,6 @@ legend(
 
 1.  Given the following types of networks: Small-world, Scale-free, Bernoulli,
     what set of $n$ initiators maximizes diffusion?
-    ([solution script](sim-solutions.r) and [solution plot](sim-solutions.png))
+    (<a href="sim-solutions.r" target="_blank">solution script</a> and <a href="sim-solutions.png" target="_blank">solution plot</a>)
     
 

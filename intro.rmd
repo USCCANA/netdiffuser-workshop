@@ -102,7 +102,7 @@ plot_hazard(x)
 
 1.  Using the diffnet object in [`intro.rda`](intro.rda), use the function `plot_threshold` specifying
     shapes and colors according to the variables ItrustMyFriends and Age. Do you see any pattern?
-    ([solution script](intro-solutions.r) and [solution plot](intro-solutions.png))
+    (<a href="intro-solutions.r" target="_blank">solution script</a> and <a href="intro-solutions.png" target="_blank">solution plot</a>)
 
 ```{r datasim, echo=FALSE, eval=TRUE}
 set.seed(1252)

@@ -155,7 +155,7 @@ plot_diffnet(diffnet_dynsurvey)
 1.  Using the rda file [read.rda](read.rda), read in the edgelist `net_edgelist` and the adjacency
     matrix `net_list` as a diffnet objects. In both cases you should use the data.frame `X`
     which has the time of adoption variable.
-    ([solution script](read-solutions.r))
+    (<a href="read-solutions.r" target="_blank">solution script</a>)
     
 ```{r 2-generates-data, echo=FALSE, cache=TRUE, warning=FALSE, message=FALSE, results='hide'}
 library(igraph)

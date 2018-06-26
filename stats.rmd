@@ -236,10 +236,12 @@ Using the dataset [stats.rda](stats.rda):
 1.  Compute Moran's I as the function `summary.diffnet` does. For this you'll need
 to use the function `toa_mat` (which calculates the cumulative adoption matrix),
 and `approx_geodesic` (which computes the geodesic matrix). (see `?summary.diffnet`
-for more details). ([solution script](stats-solutions.r))
+for more details).
 
 2.  Read the data as diffnet object, and fit the following logit model $adopt = Exposure*\gamma + Measure*\beta + \varepsilon$.
     What happens if you exclude the time fixed effects?
+    
+(<a href="stats-solutions.r" target="_blank">solution script</a>)
 
 ```{r datagen, echo=FALSE, cache=TRUE}
 set.seed(1)

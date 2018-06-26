@@ -16,6 +16,8 @@ navbar:
     href: read.html
   - text: Statistical inference
     href: stats.html
+  - text: Classic Diffnet Analyses
+    href: classic.html
 output_dir: docs
 output:
   html_document:

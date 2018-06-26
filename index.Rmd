@@ -19,6 +19,7 @@ Source code per section:
 3.  <a href="https://raw.githubusercontent.com/USCCANA/netdiffuser-sunbelt2018/master/intro.rmd" target="_blank">Introduction</a>
 4.  <a href="https://raw.githubusercontent.com/USCCANA/netdiffuser-sunbelt2018/master/sim.rmd" target="_blank">Simulations</a>
 5.  <a href="https://raw.githubusercontent.com/USCCANA/netdiffuser-sunbelt2018/master/stats.rmd" target="_blank">Statistical inference</a>
+5.  <a href="https://raw.githubusercontent.com/USCCANA/netdiffuser-sunbelt2018/master/classic.rmd" target="_blank">Classic Diffnet Analyses</a>
 
 From the description:
 
