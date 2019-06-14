@@ -1,7 +1,7 @@
 ---
-title: "netdiffuseR at Sunbelt 2018"
+title: "netdiffuseR at Sunbelt 2019"
 author: "Thomas W. Valente and George G. Vega Yon"
-date: "June 27, 2018"
+date: "June 18, 2019"
 output: html_document
 ---
 

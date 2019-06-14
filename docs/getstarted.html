@@ -12,7 +12,7 @@
 <meta name="author" content="George G. Vega Yon" />
 
 
-<title></title>
+<title>getstarted.utf8.md</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -78,9 +78,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -105,6 +103,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -119,7 +120,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -139,6 +139,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -160,13 +197,71 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
 });
 </script>
 
@@ -176,11 +271,10 @@ $(document).ready(function () {
 </style>
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("getstarted.rmd");
+  window.initializeSourceEmbed("getstarted.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
-
 
 
 
@@ -269,6 +363,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -289,7 +393,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">netdiffuseR at Sunbelt 2018</a>
+      <a class="navbar-brand" href="index.html">netdiffuseR at Sunbelt 2019</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -359,7 +463,7 @@ div.tocify {
 </div>
 <div id="github-version" class="section level2">
 <h2>Github version</h2>
-<p>For the github version you will need to have installed the <a href="https://cran.r-project.org/package=devtools"><code>devtools</code></a> R package which allows to build netdiffuseR from source<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. This can be done in the following steps:</p>
+<p>For the github version you will need to have installed the <a href="https://cran.r-project.org/package=devtools"><code>devtools</code></a> R package which allows to build netdiffuseR from source<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. This can be done in the following steps:</p>
 <pre class="r"><code>install.packages(&quot;devtools&quot;) # If you don&#39;t have devtools already!
 devtools::install_github(&quot;USCCANA/netdiffuseR&quot;)</code></pre>
 </div>
@@ -527,10 +631,10 @@ while (i &gt; 0) {
 ## [1] &quot;I&#39;m step 1 / 10&quot;</code></pre></li>
 <li>R has a very nice set of pseudo random number generation functions. In general, distribution functions have the following name structure:
 <ol style="list-style-type: lower-alpha">
-<li>Random Number Generation: <code>r[name-of-the-distribution]</code>, e.g. <code>rnorm</code> for normal, <code>runif</code> for uniform.</li>
-<li>Density function: <code>d[name-of-the-distribution]</code>, e.g. <code>dnorm</code> for normal, <code>dunif</code> for uniform.</li>
-<li>Cumulative Distribution Function (CDF): <code>p[name-of-the-distribution]</code>, e.g. <code>pnorm</code> for normal, <code>punif</code> for uniform.</li>
-<li>Inverse (quantile) function: <code>q[name-of-the-distribution]</code>, e.g. <code>qnorm</code> for the normal, <code>qunif</code> for the uniform.</li>
+<li>Random Number Generation: <code>r[name-of-the-distribution]</code>, e.g. <code>rnorm</code> for normal, <code>runif</code> for uniform.</li>
+<li>Density function: <code>d[name-of-the-distribution]</code>, e.g. <code>dnorm</code> for normal, <code>dunif</code> for uniform.</li>
+<li>Cumulative Distribution Function (CDF): <code>p[name-of-the-distribution]</code>, e.g. <code>pnorm</code> for normal, <code>punif</code> for uniform.</li>
+<li>Inverse (quantile) function: <code>q[name-of-the-distribution]</code>, e.g. <code>qnorm</code> for the normal, <code>qunif</code> for the uniform.</li>
 </ol>
 <p>Here are some examples:</p>
 <pre class="r"><code># To ensure reproducibility
@@ -563,7 +667,7 @@ hist(x)</code></pre>
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>Building an R package from source means that you will use <code>R CMD INSTALL</code> utility on the command line of your operating system. Depending on the R package, it may require having a C/C++ compiler such as gcc g++ or clang. This makes installing packages from source code a bit harder, that’s why we recommend getting the CRAN version which is already compiled and ready for your operating system.<a href="#fnref1">↩</a></p></li>
+<li id="fn1"><p>Building an R package from source means that you will use <code>R CMD INSTALL</code> utility on the command line of your operating system. Depending on the R package, it may require having a C/C++ compiler such as gcc g++ or clang. This makes installing packages from source code a bit harder, that’s why we recommend getting the CRAN version which is already compiled and ready for your operating system.<a href="#fnref1" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
 

@@ -11,9 +11,9 @@
 
 <meta name="author" content="Thomas W. Valente and George G. Vega Yon" />
 
-<meta name="date" content="2018-06-27" />
+<meta name="date" content="2019-06-18" />
 
-<title>netdiffuseR at Sunbelt 2018</title>
+<title>netdiffuseR at Sunbelt 2019</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -79,9 +79,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -106,6 +104,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -120,7 +121,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -140,6 +140,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -161,13 +198,71 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
 });
 </script>
 
@@ -177,11 +272,10 @@ $(document).ready(function () {
 </style>
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("contents.rmd");
+  window.initializeSourceEmbed("contents.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
-
 
 
 
@@ -270,6 +364,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -290,7 +394,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">netdiffuseR at Sunbelt 2018</a>
+      <a class="navbar-brand" href="index.html">netdiffuseR at Sunbelt 2019</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -337,9 +441,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">netdiffuseR at Sunbelt 2018</h1>
-<h4 class="author"><em>Thomas W. Valente and George G. Vega Yon</em></h4>
-<h4 class="date"><em>June 27, 2018</em></h4>
+<h1 class="title toc-ignore">netdiffuseR at Sunbelt 2019</h1>
+<h4 class="author">Thomas W. Valente and George G. Vega Yon</h4>
+<h4 class="date">June 18, 2019</h4>
 
 </div>
 
@@ -494,7 +598,7 @@ g &lt;- rdiffnet(seed.graph = net, t=10, threshold.dist = function(x) rbeta(1, 2
 </ul>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAibmV0ZGlmZnVzZVIgYXQgU3VuYmVsdCAyMDE4IgphdXRob3I6ICJUaG9tYXMgVy4gVmFsZW50ZSBhbmQgR2VvcmdlIEcuIFZlZ2EgWW9uIgpkYXRlOiAiSnVuZSAyNywgMjAxOCIKb3V0cHV0OiBodG1sX2RvY3VtZW50Ci0tLQoKIyBJbnRyb2R1Y3Rpb24KCiMjIFRvZGF5J3Mgb2JqZWN0aXZlczoKCjEuICBSZWFkIGRhdGEgaW50byBuZXRkaWZmdXNlUgoKMi4gIFNpbXVsYXRlIGRpZmZ1c2lvbiBuZXR3b3JrcwoKMy4gIFVzZSB0aGUgdmlzdWFsaXphdGlvbiB0b29scwoKNC4gIFVzZSBzdGF0aXN0aWNhbCBpbmZlcmVuY2UgdG9vbHMKCgojIyBEeW5hbWljIG9mIHdvcmsKCjEuICBXZSB3aWxsIGludHJvZHVjZSBhIGNvbmNlcHQvZnVuY3Rpb24KCjIuICBXZSB3aWxsIHByb3ZpZGUgZXhhbXBsZXMKCjMuICBBdHRlbmRlZXMgd2lsbCBiZSBhc2tlZCB0byBhbnN3ZXIgYSBjb3VwbGUgb2YgcXVlc3Rpb25zIHVzaW5nIG5ldGRpZmZ1c2VSCgoKIyBTaW11bGF0aW9uIG9mIGRpZmZ1c2lvbiBuZXR3b3JrczogcmRpZmZuZXQKCiogICBEaXNlYXNlIHNwcmVhZGluZwoKKiAgIENvbXBsZXggY29udGFnaW9uCgoqICAgTmV0d29yayBpbnRlcnZlbnRpb25zOiBNZW50b3IgbWF0Y2hpbmcKCiogICBFeGFtcGxlIHNpbXVsYXRpbmcgYSB0aG91c2FuZCBuZXR3b3JrcyBieSBjaGFuZ2luZyB0aHJlc2hvbGQgbGV2ZWxzLgogICAgVGhlIGZpbmFsIHByZXZhbGVuY2UsIG9yIGhhemFyZCBhcyBhIGZ1bmN0aW9uIG9mIHRocmVzaG9sZCBsZXZlbHMuCgojIyBQcm9ibGVtcwoKMS4gIEdpdmVuIHRoZSBmb2xsb3dpbmcgdHlwZXMgb2YgbmV0d29ya3M6IFNtYWxsLXdvcmxkLCBTY2FsZS1mcmVlLCBCZXJub3VsbGksCiAgICB3aGF0IHNldCBvZiAkbiQgaW5pdGlhdG9ycyBtYXhpbWl6ZXMgZGlmZnVzaW9uPwoKCiMgUmVhZGluZyBuZXR3b3Jrczogc3VydmV5X3RvX2RpZmZuZXQKCiogICBTdXJ2ZXkgZGF0YQoKKiAgIFN0YXRpYyBuZXR3b3JrcwoKKiAgIEZyb20gb3RoZXIgZm9ybWF0cwoKIyMgUHJvYmxlbXMKCjIuICBSZWFkIGluIGFsbCB0aGUgMyBkaWZmZXJlbnQgbmV0d29ya3Mgb2JqZWN0cyBpbiAuLi4gYW5kIGNyZWF0ZSBkaWZmbmV0CiAgICBvYmplY3RzLiBBIGZha2UgZHluYW1pYyBzdXJ2ZXksIGFuIHNucyBuZXR3b3JrIGFuZCBhbiBpZ3JhcGggbmV0d29yay4KICAgIChoaW50OiBBbGwgMyBuZXR3b3JrcyBzaG91bGQgcmVzdWx0IGluIHRoZSBzYW1lIGRpZmZuZXQgb2JqZWN0KQoKMy4gIFdpdGggdGhlIG5ldyBkaWZmbmV0IG9iamVjdCwgYXBwbHkgdGhlIHNhbWUgYW5hbHlzaXMgYXMgYmVmb3JlLgogICAgV2hpY2ggc3RyYXRlZ3kgbWF4aW1pemVzIGFkb3B0aW9uPwoKIyBDb21wdXRhdGlvbiBvZiBleHBvc3VyZSB0ZXJtcwoKKiAgIENvaGVzaXZlIGV4cG9zdXJlCgoqICAgU3RydWN0dXJhbCBFcXVpdmFsZW5jZSBFeHBvc3VyZQoKKiAgIEF0dHJpYnV0ZSB3ZWlnaHRlZCBleHBvc3VyZQoKKiAgIEF0dHJpYnV0ZSBzaW1pbGFyaXR5IHdlaWdodGVkIGV4cG9zdXJlCgojIyBQcm9ibGVtcwoKNC4gIFVzaW5nIHRoZSBuZXR3b3JrIGZyb20gcHJvYmxlbSAzLCBjb21wdXRlIHRoZSBmb2xsb3dpbmcgZXhwb3N1cmVzOgogICAgCiAgICBhLiAgQ29oZXNpdmUsIGFuZCBTRSBleHBvc3VyZQogICAgYi4gIEFCQyBhdHRyaWJ1dGUgd2VpZ2h0ZWQKICAgIGMuICBTaW1pbGFyaXR5IHdlaWdodGVkIGV4cG9zdXJlIGluIGdlbmRlciBhbmQgYWdlLgogICAgCgojIFN0YXRpc3RpY2FsIGluZmVyZW5jZSBJCgoqICAgTW9yYW4ncyBJCgoqICAgUGVybXV0YXRpb24gdGVzdHM6IFN0cnVjdHVyYWwgdGVzdAogICAgCiAgICAqICAgU2ltcGxlIGlzb21vcnBoaWMKICAgICAgICAKICAgICogICBXaGVuIGRlZ3JlZSBpcyBlbmRvZ2Vub3VzCgojIyBQcm9ibGVtcwoKNS4gIFVzaW5nIHRoZSBmdW5jdGlvbiBgbW9yYW5gLCByZXBsaWNhdGUgdGhlIG1vcmFuJ3MgSSBzdGF0aXN0aWNzCiAgICB0aGF0IHRoZSBgc3VtbWFyeWAgbWV0aG9kIHJlcG9ydHMgd2hlbiBhcHBsaWVkIHRvIHRoZSBkaWZmbmV0IG9iamVjdAogICAgZnJvbSBwcm9ibGVtIDMuCiAgICAKNi4gIAoKYGBge3J9CmxpYnJhcnkobmV0ZGlmZnVzZVIpCnNldC5zZWVkKDEyMzEpCm5ldCA8LSByZ3JhcGhfYmEobT00TCwgdD0xOTkpClggICA8LSBkZ3IobmV0KQoKYWx0bmV0IDwtIHZlcnRleF9jb3ZhcmlhdGVfY29tcGFyZShuZXQsIFgsICJkaXN0YW5jZSIpCmFsdG5ldEB4IDwtIDEvYWx0bmV0QHgKZyA8LSByZGlmZm5ldChzZWVkLmdyYXBoID0gbmV0LCB0PTEwLCB0aHJlc2hvbGQuZGlzdCA9IGZ1bmN0aW9uKHgpIHJiZXRhKDEsIDIsIDEwKSwKICAgICAgICAgICAgICBleHBvc3VyZS5hcmdzID0gbGlzdChhbHQuZ3JhcGggPSBhbHRuZXQsIHZhbHVlZD0gVFJVRSkpCgpgYGAKCgoKIyBTdGF0aXN0aWNhbCBpbmZlcmVuY2UgSUkKCiogICBMYWdnZWQgRXhwb3N1cmUgTW9kZWxzOiBPTFMgYW5kIG90aGVycwoKKiAgIENvbnRlbXBvcmFuZW91cyBFeHBvc3VyZSBNb2RlbHM6IFNwYXRpYWwgQXV0b3JlZ3Jlc3NpdmUgTW9kZWxzCgoKIyBWaXN1YWxpemF0aW9uIG9mIGRpZmZ1c2lvbiBwcm9jZXNzZXMKCiogICAKCgojIE90aGVyIGFwcGxpY2F0aW9ucwoKCgoqICAgQmFzcyBkaWZmdXNpb24gbW9kZWxzCgoqICAgTmV0d29yayBib290c3RyYXBwaW5nCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAibmV0ZGlmZnVzZVIgYXQgU3VuYmVsdCAyMDE5IgphdXRob3I6ICJUaG9tYXMgVy4gVmFsZW50ZSBhbmQgR2VvcmdlIEcuIFZlZ2EgWW9uIgpkYXRlOiAiSnVuZSAxOCwgMjAxOSIKb3V0cHV0OiBodG1sX2RvY3VtZW50Ci0tLQoKIyBJbnRyb2R1Y3Rpb24KCiMjIFRvZGF5J3Mgb2JqZWN0aXZlczoKCjEuICBSZWFkIGRhdGEgaW50byBuZXRkaWZmdXNlUgoKMi4gIFNpbXVsYXRlIGRpZmZ1c2lvbiBuZXR3b3JrcwoKMy4gIFVzZSB0aGUgdmlzdWFsaXphdGlvbiB0b29scwoKNC4gIFVzZSBzdGF0aXN0aWNhbCBpbmZlcmVuY2UgdG9vbHMKCgojIyBEeW5hbWljIG9mIHdvcmsKCjEuICBXZSB3aWxsIGludHJvZHVjZSBhIGNvbmNlcHQvZnVuY3Rpb24KCjIuICBXZSB3aWxsIHByb3ZpZGUgZXhhbXBsZXMKCjMuICBBdHRlbmRlZXMgd2lsbCBiZSBhc2tlZCB0byBhbnN3ZXIgYSBjb3VwbGUgb2YgcXVlc3Rpb25zIHVzaW5nIG5ldGRpZmZ1c2VSCgoKIyBTaW11bGF0aW9uIG9mIGRpZmZ1c2lvbiBuZXR3b3JrczogcmRpZmZuZXQKCiogICBEaXNlYXNlIHNwcmVhZGluZwoKKiAgIENvbXBsZXggY29udGFnaW9uCgoqICAgTmV0d29yayBpbnRlcnZlbnRpb25zOiBNZW50b3IgbWF0Y2hpbmcKCiogICBFeGFtcGxlIHNpbXVsYXRpbmcgYSB0aG91c2FuZCBuZXR3b3JrcyBieSBjaGFuZ2luZyB0aHJlc2hvbGQgbGV2ZWxzLgogICAgVGhlIGZpbmFsIHByZXZhbGVuY2UsIG9yIGhhemFyZCBhcyBhIGZ1bmN0aW9uIG9mIHRocmVzaG9sZCBsZXZlbHMuCgojIyBQcm9ibGVtcwoKMS4gIEdpdmVuIHRoZSBmb2xsb3dpbmcgdHlwZXMgb2YgbmV0d29ya3M6IFNtYWxsLXdvcmxkLCBTY2FsZS1mcmVlLCBCZXJub3VsbGksCiAgICB3aGF0IHNldCBvZiAkbiQgaW5pdGlhdG9ycyBtYXhpbWl6ZXMgZGlmZnVzaW9uPwoKCiMgUmVhZGluZyBuZXR3b3Jrczogc3VydmV5X3RvX2RpZmZuZXQKCiogICBTdXJ2ZXkgZGF0YQoKKiAgIFN0YXRpYyBuZXR3b3JrcwoKKiAgIEZyb20gb3RoZXIgZm9ybWF0cwoKIyMgUHJvYmxlbXMKCjIuICBSZWFkIGluIGFsbCB0aGUgMyBkaWZmZXJlbnQgbmV0d29ya3Mgb2JqZWN0cyBpbiAuLi4gYW5kIGNyZWF0ZSBkaWZmbmV0CiAgICBvYmplY3RzLiBBIGZha2UgZHluYW1pYyBzdXJ2ZXksIGFuIHNucyBuZXR3b3JrIGFuZCBhbiBpZ3JhcGggbmV0d29yay4KICAgIChoaW50OiBBbGwgMyBuZXR3b3JrcyBzaG91bGQgcmVzdWx0IGluIHRoZSBzYW1lIGRpZmZuZXQgb2JqZWN0KQoKMy4gIFdpdGggdGhlIG5ldyBkaWZmbmV0IG9iamVjdCwgYXBwbHkgdGhlIHNhbWUgYW5hbHlzaXMgYXMgYmVmb3JlLgogICAgV2hpY2ggc3RyYXRlZ3kgbWF4aW1pemVzIGFkb3B0aW9uPwoKIyBDb21wdXRhdGlvbiBvZiBleHBvc3VyZSB0ZXJtcwoKKiAgIENvaGVzaXZlIGV4cG9zdXJlCgoqICAgU3RydWN0dXJhbCBFcXVpdmFsZW5jZSBFeHBvc3VyZQoKKiAgIEF0dHJpYnV0ZSB3ZWlnaHRlZCBleHBvc3VyZQoKKiAgIEF0dHJpYnV0ZSBzaW1pbGFyaXR5IHdlaWdodGVkIGV4cG9zdXJlCgojIyBQcm9ibGVtcwoKNC4gIFVzaW5nIHRoZSBuZXR3b3JrIGZyb20gcHJvYmxlbSAzLCBjb21wdXRlIHRoZSBmb2xsb3dpbmcgZXhwb3N1cmVzOgogICAgCiAgICBhLiAgQ29oZXNpdmUsIGFuZCBTRSBleHBvc3VyZQogICAgYi4gIEFCQyBhdHRyaWJ1dGUgd2VpZ2h0ZWQKICAgIGMuICBTaW1pbGFyaXR5IHdlaWdodGVkIGV4cG9zdXJlIGluIGdlbmRlciBhbmQgYWdlLgogICAgCgojIFN0YXRpc3RpY2FsIGluZmVyZW5jZSBJCgoqICAgTW9yYW4ncyBJCgoqICAgUGVybXV0YXRpb24gdGVzdHM6IFN0cnVjdHVyYWwgdGVzdAogICAgCiAgICAqICAgU2ltcGxlIGlzb21vcnBoaWMKICAgICAgICAKICAgICogICBXaGVuIGRlZ3JlZSBpcyBlbmRvZ2Vub3VzCgojIyBQcm9ibGVtcwoKNS4gIFVzaW5nIHRoZSBmdW5jdGlvbiBgbW9yYW5gLCByZXBsaWNhdGUgdGhlIG1vcmFuJ3MgSSBzdGF0aXN0aWNzCiAgICB0aGF0IHRoZSBgc3VtbWFyeWAgbWV0aG9kIHJlcG9ydHMgd2hlbiBhcHBsaWVkIHRvIHRoZSBkaWZmbmV0IG9iamVjdAogICAgZnJvbSBwcm9ibGVtIDMuCiAgICAKNi4gIAoKYGBge3J9CmxpYnJhcnkobmV0ZGlmZnVzZVIpCnNldC5zZWVkKDEyMzEpCm5ldCA8LSByZ3JhcGhfYmEobT00TCwgdD0xOTkpClggICA8LSBkZ3IobmV0KQoKYWx0bmV0IDwtIHZlcnRleF9jb3ZhcmlhdGVfY29tcGFyZShuZXQsIFgsICJkaXN0YW5jZSIpCmFsdG5ldEB4IDwtIDEvYWx0bmV0QHgKZyA8LSByZGlmZm5ldChzZWVkLmdyYXBoID0gbmV0LCB0PTEwLCB0aHJlc2hvbGQuZGlzdCA9IGZ1bmN0aW9uKHgpIHJiZXRhKDEsIDIsIDEwKSwKICAgICAgICAgICAgICBleHBvc3VyZS5hcmdzID0gbGlzdChhbHQuZ3JhcGggPSBhbHRuZXQsIHZhbHVlZD0gVFJVRSkpCgpgYGAKCgoKIyBTdGF0aXN0aWNhbCBpbmZlcmVuY2UgSUkKCiogICBMYWdnZWQgRXhwb3N1cmUgTW9kZWxzOiBPTFMgYW5kIG90aGVycwoKKiAgIENvbnRlbXBvcmFuZW91cyBFeHBvc3VyZSBNb2RlbHM6IFNwYXRpYWwgQXV0b3JlZ3Jlc3NpdmUgTW9kZWxzCgoKIyBWaXN1YWxpemF0aW9uIG9mIGRpZmZ1c2lvbiBwcm9jZXNzZXMKCiogICAKCgojIE90aGVyIGFwcGxpY2F0aW9ucwoKCgoqICAgQmFzcyBkaWZmdXNpb24gbW9kZWxzCgoqICAgTmV0d29yayBib290c3RyYXBwaW5nCgo=</div>
 <p>
   <center><a href="http://cana.usc.edu" target="_new">University of Southern California<br>Center for Applied Network Analysis (<b>CANA</b>)</a>
   </center>

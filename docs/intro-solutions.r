@@ -1,5 +1,5 @@
 # What they should see
-load("problems_intro.rda")
+load("intro.rda")
 library(netdiffuseR)
 
 plot_threshold(
