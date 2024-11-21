@@ -16,8 +16,8 @@ jobs:
         id: cache-r-packages
         with:
           path: |
-            /usr/lib/R/site-library/
-          key: ${{ runner.os }}
+            netdiffuseR_*
+          key: ${{ runner.os }}-netdiffuseR-pkg
 
       - name: Download netdiffuseR
         if: steps.cache-r-packages.outputs.cache-hit != 'true'
@@ -34,8 +34,13 @@ jobs:
       - name: Install netdiffuseR
         if: steps.cache-r-packages.outputs.cache-hit != 'true'
         run: |
-          R CMD INSTALL netdiffuseR
+          R CMD INSTALL --build netdiffuseR
           rm -rf netdiffuseR
+    
+      - name: Restoring cached version of netdiffuseR
+        if: steps.cache-r-packages.outputs.cache-hit == 'true'
+        run: |
+          R CMD INSTALL netdiffuseR_*
 
       - name: Install Quarto
         run: |
