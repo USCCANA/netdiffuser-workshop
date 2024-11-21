@@ -12,7 +12,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install netdiffuseR
+        uses: actions/checkout@v4
+        with:
+          repository: USCCANA/netdiffuseR
+          path: netdiffuseR
+
+      - name: Install netdiffuseR
         run: |
-          installGithub.r USCCANA/netdiffuseR
           install2.r igraph networkDynamic statnet
+          R CMD INSTALL netdiffuseR
 
