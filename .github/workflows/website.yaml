@@ -19,17 +19,21 @@ jobs:
             /usr/lib/R/site-library/
           key: ${{ runner.os }}
 
-      - name: Install netdiffuseR
+      - name: Download netdiffuseR
+        if: steps.cache-r-packages.outputs.cache-hit != 'true'
         uses: actions/checkout@v4
         with:
           repository: USCCANA/netdiffuseR
           path: netdiffuseR
 
-      - name: Install netdiffuseR
-        if: steps.cache-r-packages.outputs.cache-hit != 'true'
+      - name: Install dependencies
         run: |
           install2.r igraph networkDynamic statnet Rcpp MatchIt \
             SparseM viridisLite RcppArmadillo rmarkdown knitr microbenchmark
+
+      - name: Install netdiffuseR
+        if: steps.cache-r-packages.outputs.cache-hit != 'true'
+        run: |
           R CMD INSTALL netdiffuseR
           rm -rf netdiffuseR
 
