@@ -31,7 +31,7 @@ We will simulate a diffusion network with the following parameters:
 6.  Will use the WS algorithmwith $p=.2$ (probability of rewire).
 7.  Threshold levels will be uniformly distributed between [0.3, 0.7\]
 
-To generate this diffusion network we can use the `rdiffnet` function included in the package:
+To generate this diffusion network, we can use the `rdiffnet` function included in the package:
 
 
 ```{r Generating the random graph}
