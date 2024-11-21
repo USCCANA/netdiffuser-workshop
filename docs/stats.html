@@ -1,486 +1,306 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.53">
 
-<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="pandoc" />
+<meta name="author" content="Thomas W. Valente and George G. Vega Yon">
 
-
-<meta name="author" content="Thomas W. Valente and George G. Vega Yon" />
-
-
-<title>Statistical inference</title>
-
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
-<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
-<script src="site_libs/navigation-1.1/sourceembed.js"></script>
-<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
+<title>Statistical inference – netdiffuseR: A workshop</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
   }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
 <script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
   }
 }
+window.Quarto = {
+  typesetMath
+};
 </script>
 
-
-
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-#rmd-source-code {
-  display: none;
-}
-</style>
-
-
-
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
-img {
-  max-width:100%;
-  height: auto;
-}
-.tabbed-pane {
-  padding-top: 12px;
-}
-.html-widget {
-  margin-bottom: 20px;
-}
-button.code-folding-btn:focus {
-  outline: none;
-}
-summary {
-  display: list-item;
-}
-</style>
-
-
-<style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.dropdown-submenu {
-  position: relative;
-}
-.dropdown-submenu>.dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -6px;
-  margin-left: -1px;
-  border-radius: 0 6px 6px 6px;
-}
-.dropdown-submenu:hover>.dropdown-menu {
-  display: block;
-}
-.dropdown-submenu>a:after {
-  display: block;
-  content: " ";
-  float: right;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 5px 0 5px 5px;
-  border-left-color: #cccccc;
-  margin-top: 5px;
-  margin-right: -10px;
-}
-.dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
-}
-.dropdown-submenu.pull-left {
-  float: none;
-}
-.dropdown-submenu.pull-left>.dropdown-menu {
-  left: -100%;
-  margin-left: 10px;
-  border-radius: 6px 0 6px 6px;
-}
-</style>
-
-<script>
-// manage active state of menu based on current page
-$(document).ready(function () {
-  // active menu anchor
-  href = window.location.pathname
-  href = href.substr(href.lastIndexOf('/') + 1)
-  if (href === "")
-    href = "index.html";
-  var menuAnchor = $('a[href="' + href + '"]');
-
-  // mark it active
-  menuAnchor.parent().addClass('active');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
-});
-</script>
-
-<!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
-  max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
-}
-
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
-}
-
-.tabset-dropdown > .nav-tabs > li {
-  display: none;
-}
-</style>
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
-<!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
-<script>
-$(document).ready(function () {
-  window.initializeSourceEmbed("stats.Rmd");
-  window.initializeCodeFolding("show" === "show");
-});
-</script>
-
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
-
+<link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
+<body class="nav-fixed">
 
-
-<div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
-
-
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.html">netdiffuseR at Sunbelt 2019</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">netdiffuseR: A workshop</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
         <li>
-  <a href="index.html">Home</a>
-</li>
-<li>
-  <a href="getstarted.html">Getting Started</a>
-</li>
-<li>
-  <a href="intro.html">Introduction</a>
-</li>
-<li>
-  <a href="sim.html">Simulations</a>
-</li>
-<li>
-  <a href="read.html">Reading data</a>
-</li>
-<li>
-  <a href="stats.html">Statistical inference</a>
-</li>
-<li>
-  <a href="classic.html">Classic Diffnet Analyses</a>
-</li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div><!--/.container -->
-</div><!--/.navbar -->
-
-<div class="fluid-row" id="header">
-
-<div class="btn-group pull-right">
-<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-<li role="separator" class="divider"></li>
-<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+    <a class="dropdown-item" href="./getstarted.html">
+ <span class="dropdown-text">Getting Started</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./intro.html">
+ <span class="dropdown-text">Introduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./sim.html">
+ <span class="dropdown-text">Simulations</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./read.html">
+ <span class="dropdown-text">Reading data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./stats.html">
+ <span class="dropdown-text">Statistical inference</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./classic.html"> 
+<span class="menu-text">Classic Diffnet Analyses</span></a>
+  </li>  
 </ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#morans-i" id="toc-morans-i" class="nav-link active" data-scroll-target="#morans-i">Moran’s I</a>
+  <ul class="collapse">
+  <li><a href="#using-geodesics" id="toc-using-geodesics" class="nav-link" data-scroll-target="#using-geodesics">Using geodesics</a></li>
+  </ul></li>
+  <li><a href="#structural-dependence-and-permutation-tests" id="toc-structural-dependence-and-permutation-tests" class="nav-link" data-scroll-target="#structural-dependence-and-permutation-tests">Structural dependence and permutation tests</a>
+  <ul class="collapse">
+  <li><a href="#idea" id="toc-idea" class="nav-link" data-scroll-target="#idea">Idea</a></li>
+  <li><a href="#example-not-random-toa" id="toc-example-not-random-toa" class="nav-link" data-scroll-target="#example-not-random-toa">Example Not random TOA</a></li>
+  </ul></li>
+  <li><a href="#regression-analysis" id="toc-regression-analysis" class="nav-link" data-scroll-target="#regression-analysis">Regression analysis</a>
+  <ul class="collapse">
+  <li><a href="#lagged-exposure-models" id="toc-lagged-exposure-models" class="nav-link" data-scroll-target="#lagged-exposure-models">Lagged exposure models</a></li>
+  <li><a href="#contemporaneous-exposure-models" id="toc-contemporaneous-exposure-models" class="nav-link" data-scroll-target="#contemporaneous-exposure-models">Contemporaneous exposure models</a></li>
+  </ul></li>
+  <li><a href="#problems" id="toc-problems" class="nav-link" data-scroll-target="#problems">Problems</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/USCCANA/netdiffuser-workshop/edit/main/stats.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/USCCANA/netdiffuser-workshop/blob/main/stats.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Statistical inference</h1>
 </div>
 
 
 
-<h1 class="title toc-ignore">Statistical inference</h1>
-<h4 class="author">Thomas W. Valente and George G. Vega Yon</h4>
+<div class="quarto-title-meta">
 
-</div>
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Thomas W. Valente and George G. Vega Yon </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
 
 
-<div id="morans-i" class="section level1">
+</header>
+
+
+<section id="morans-i" class="level1">
 <h1>Moran’s I</h1>
 <ul>
 <li><p>Moran’s I tests for spatial autocorrelation.</p></li>
 <li><p><strong>netdiffuseR</strong> implements the test in <code>moran</code>, which is suited for sparse matrices.</p></li>
 <li><p>We can use Moran’s I as a first look to whether there is something happening: let that be influence or homophily.</p></li>
 </ul>
-<div id="using-geodesics" class="section level2">
-<h2>Using geodesics</h2>
+<section id="using-geodesics" class="level2">
+<h2 class="anchored" data-anchor-id="using-geodesics">Using geodesics</h2>
 <ul>
 <li><p>One approach is to use the geodesic (shortes path length) matrix to account for indirect influence.</p></li>
 <li><p>In the case of sparse matrices, and furthermore, in the presence of structural holes it is more convenient to calculate the distance matrix taking this into account.</p></li>
 <li><p><strong>netdiffuseR</strong> has a function to do so, the <code>approx_geodesic</code> function which, using graph powers, computes the shortest path up to <code>n</code> steps. This could be faster (if you only care up to <code>n</code> steps) than <code>igraph</code> or <code>sns</code>:</p>
-<pre class="r"><code># Extracting the large adjacency matrix (stacked)
-dgc &lt;- diag_expand(medInnovationsDiffNet$graph)
-ig  &lt;- igraph::graph_from_adjacency_matrix(dgc)
-mat &lt;- network::as.network(as.matrix(dgc))
-
-# Measuring times
-times &lt;- microbenchmark::microbenchmark(
-  netdiffuseR = netdiffuseR::approx_geodesic(dgc),
-  igraph = igraph::distances(ig),
-  sna = sna::geodist(mat),
-  times = 50, unit=&quot;relative&quot;
-)</code></pre>
-<p><img src="stats_files/figure-html/geodesic_speed-box-1.png" width="672" /></p></li>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extracting the large adjacency matrix (stacked)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dgc <span class="ot">&lt;-</span> <span class="fu">diag_expand</span>(medInnovationsDiffNet<span class="sc">$</span>graph)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ig  <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">graph_from_adjacency_matrix</span>(dgc)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> network<span class="sc">::</span><span class="fu">as.network</span>(<span class="fu">as.matrix</span>(dgc))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Measuring times</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> microbenchmark<span class="sc">::</span><span class="fu">microbenchmark</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">netdiffuseR =</span> netdiffuseR<span class="sc">::</span><span class="fu">approx_geodesic</span>(dgc),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">igraph =</span> igraph<span class="sc">::</span><span class="fu">distances</span>(ig),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">sna =</span> sna<span class="sc">::</span><span class="fu">geodist</span>(mat),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">times =</span> <span class="dv">50</span>, <span class="at">unit=</span><span class="st">"relative"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code># Warning in microbenchmark::microbenchmark(netdiffuseR =
+# netdiffuseR::approx_geodesic(dgc), : less accurate nanosecond times to avoid
+# potential integer overflows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="stats_files/figure-html/geodesic_speed-box-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div></li>
 <li><p>The <code>summary.diffnet</code> method already runs Moran’s for you. What happens under the hood is:</p>
-<pre class="r"><code># For each time point we compute the geodesic distances matrix
-W &lt;- approx_geodesic(medInnovationsDiffNet$graph[[1]])
-
-# We get the element-wise inverse
-W@x &lt;- 1/W@x
-
-# And then compute moran
-moran(medInnovationsDiffNet$cumadopt[,1], W)</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For each time point we compute the geodesic distances matrix</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>W <span class="ot">&lt;-</span> <span class="fu">approx_geodesic</span>(medInnovationsDiffNet<span class="sc">$</span>graph[[<span class="dv">1</span>]])</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># We get the element-wise inverse</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>W<span class="sc">@</span>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>W<span class="sc">@</span>x</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># And then compute moran</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">moran</span>(medInnovationsDiffNet<span class="sc">$</span>cumadopt[,<span class="dv">1</span>], W)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
 <pre><code># $observed
 # [1] 0.06624028
 # 
@@ -493,46 +313,54 @@ moran(medInnovationsDiffNet$cumadopt[,1], W)</code></pre>
 # $p.value
 # [1] 0.02286087
 # 
-# attr(,&quot;class&quot;)
-# [1] &quot;diffnet_moran&quot;</code></pre></li>
+# attr(,"class")
+# [1] "diffnet_moran"</code></pre>
+</div>
+</div></li>
 </ul>
-</div>
-</div>
-<div id="structural-dependence-and-permutation-tests" class="section level1">
+</section>
+</section>
+<section id="structural-dependence-and-permutation-tests" class="level1">
 <h1>Structural dependence and permutation tests</h1>
 <ul>
 <li>A novel statistical method (work-in-progress) that allows conducting inference.</li>
 <li>Included in the package, tests whether a particular network statistic actually depends on network structure</li>
 <li>Suitable to be applied to network thresholds (you can’t use thresholds in regression-like models!)</li>
 </ul>
-<div id="idea" class="section level2">
-<h2>Idea</h2>
+<section id="idea" class="level2">
+<h2 class="anchored" data-anchor-id="idea">Idea</h2>
 <ul>
 <li><p>Let <span class="math inline">\(\mathcal{G} = (V,E)\)</span> be a graph, <span class="math inline">\(\gamma\)</span> a vertex attribute, and <span class="math inline">\(\beta = f(\gamma,\mathcal{G})\)</span>, then</p>
 <p><span class="math display">\[\gamma \perp \mathcal{G} \implies \mathbb{E}\left[\beta(\gamma,\mathcal{G})|\mathcal{G}\right] = \mathbb{E}\left[\beta(\gamma,\mathcal{G})\right]\]</span></p></li>
 <li><p>This is, if for example time of adoption is independent on the structure of the network, then the average threshold level will be independent from the network structure as well.</p></li>
 <li><p>Another way of looking at this is that the test will allow us to see how probable is to have this combination of network structure and network threshold (if it is uncommon then we say that the diffusion model is highly likely)</p></li>
 </ul>
-</div>
-<div id="example-not-random-toa" class="section level2">
-<h2>Example Not random TOA</h2>
+</section>
+<section id="example-not-random-toa" class="level2">
+<h2 class="anchored" data-anchor-id="example-not-random-toa">Example Not random TOA</h2>
 <ul>
 <li><pre><code>To use this test, __netdiffuseR__ has the `struct_test` function.</code></pre></li>
 <li><pre><code>Basically it simulates networks with the same density and computes a particular statistic every time, generating an EDF (Empirical Distribution Function) under the Null hyphothesis (p-values).</code></pre>
-<pre class="r"><code># Simulating network
-set.seed(1123)
-net &lt;- rdiffnet(n=500, t=10, seed.graph = &quot;small-world&quot;)
-
-# Running the test
-test &lt;- struct_test(
-  graph     = net, 
-  statistic = function(x) mean(threshold(x), na.rm = TRUE),
-  R         = 1e3,
-  ncpus=4, parallel=&quot;multicore&quot;
-  )
-
-# See the output
-test</code></pre>
+<p>::: {.cell}</p>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulating network</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1123</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>net <span class="ot">&lt;-</span> <span class="fu">rdiffnet</span>(<span class="at">n=</span><span class="dv">500</span>, <span class="at">t=</span><span class="dv">10</span>, <span class="at">seed.graph =</span> <span class="st">"small-world"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>::: {.cell-output .cell-output-stderr}</p>
+<pre><code># The option -copy.first- is set to TRUE. In this case, the first graph will be treated as a baseline, and thus, networks after T=1 will be replaced with T-1.TRUE</code></pre>
+<p>:::</p>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Running the test</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">struct_test</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">graph     =</span> net, </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic =</span> <span class="cf">function</span>(x) <span class="fu">mean</span>(<span class="fu">threshold</span>(x), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">R         =</span> <span class="fl">1e3</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ncpus=</span><span class="dv">4</span>, <span class="at">parallel=</span><span class="st">"multicore"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>::: {.cell-output .cell-output-stderr}</p>
+<pre><code># The option -copy.first- is set to TRUE. In this case, the first graph will be treated as a baseline, and thus, networks after T=1 will be replaced with T-1.TRUE</code></pre>
+<p>:::</p>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># See the output</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>::: {.cell-output .cell-output-stdout}</p>
 <pre><code># 
 # Structure dependence test
 # # Simulations     : 1,000
@@ -541,24 +369,37 @@ test</code></pre>
 # --------------------------------------------------------------------------------
 #  H0: E[beta(Y,G)|G] - E[beta(Y,G)] = 0 (no structure dependency)
 #     observed    expected       p.val
-#       0.5513      0.2516      0.0000</code></pre></li>
+#       0.5513      0.2514      0.0000</code></pre>
+<p>::: :::</p></li>
 </ul>
-<p><img src="stats_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="stats_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <ul>
 <li><p>Now we shuffle toas, so that is random</p>
-<pre class="r"><code># Resetting TOAs (now will be completely random)
-diffnet.toa(net) &lt;- sample(diffnet.toa(net), nnodes(net), TRUE)
-
-# Running the test
-test &lt;- struct_test(
-  graph     = net, 
-  statistic = function(x) mean(threshold(x), na.rm = TRUE),
-  R         = 1e3,
-  ncpus=4, parallel=&quot;multicore&quot;
-  )
-
-# See the output
-test</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Resetting TOAs (now will be completely random)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">diffnet.toa</span>(net) <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">diffnet.toa</span>(net), <span class="fu">nnodes</span>(net), <span class="cn">TRUE</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Running the test</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">struct_test</span>(</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">graph     =</span> net, </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic =</span> <span class="cf">function</span>(x) <span class="fu">mean</span>(<span class="fu">threshold</span>(x), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">R         =</span> <span class="fl">1e3</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">ncpus=</span><span class="dv">4</span>, <span class="at">parallel=</span><span class="st">"multicore"</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code># The option -copy.first- is set to TRUE. In this case, the first graph will be treated as a baseline, and thus, networks after T=1 will be replaced with T-1.TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># See the output</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
 <pre><code># 
 # Structure dependence test
 # # Simulations     : 1,000
@@ -567,12 +408,22 @@ test</code></pre>
 # --------------------------------------------------------------------------------
 #  H0: E[beta(Y,G)|G] - E[beta(Y,G)] = 0 (no structure dependency)
 #     observed    expected       p.val
-#       0.2714      0.2580      0.4120</code></pre>
-<p><img src="stats_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p></li>
+#       0.2714      0.2587      0.4000</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="stats_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div></li>
 </ul>
-</div>
-</div>
-<div id="regression-analysis" class="section level1">
+</section>
+</section>
+<section id="regression-analysis" class="level1">
 <h1>Regression analysis</h1>
 <ul>
 <li><p>In regression analysis we want to see if exposure, once we control for other covariates, had any effect on the adoption of a behavior.</p></li>
@@ -580,8 +431,8 @@ test</code></pre>
 <li><p>Unless we can control for such variable, regression analysis will be generically biased.</p></li>
 <li><p>On the other hand, if you can claim that either such variable doesn’t exists or you actually can control for it, then we have two options: lagged exposure models, or contemporaneous exposure models. We will focus on the former.</p></li>
 </ul>
-<div id="lagged-exposure-models" class="section level2">
-<h2>Lagged exposure models</h2>
+<section id="lagged-exposure-models" class="level2">
+<h2 class="anchored" data-anchor-id="lagged-exposure-models">Lagged exposure models</h2>
 <ul>
 <li><p>In this type of models we usually have the following</p>
 <p><span class="math display">\[
@@ -597,36 +448,36 @@ y_{it} = \left\{
 \right.
 \]</span></p></li>
 <li><p>In netdiffuseR is as easy as doing the following:</p>
-<pre class="r"><code># fakedata
-set.seed(121)
-
-W   &lt;- rgraph_ws(1e3, 8, .2)
-X   &lt;- cbind(var1 = rnorm(1e3))
-toa &lt;- sample(c(NA,1:5), 1e3, TRUE)
-
-dn  &lt;- new_diffnet(W, toa=toa, vertex.static.attrs = X)</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fakedata</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">121</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>W   <span class="ot">&lt;-</span> <span class="fu">rgraph_ws</span>(<span class="fl">1e3</span>, <span class="dv">8</span>, .<span class="dv">2</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>X   <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">var1 =</span> <span class="fu">rnorm</span>(<span class="fl">1e3</span>))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>toa <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="cn">NA</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>), <span class="fl">1e3</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>dn  <span class="ot">&lt;-</span> <span class="fu">new_diffnet</span>(W, <span class="at">toa=</span>toa, <span class="at">vertex.static.attrs =</span> X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
 <pre><code># Warning in new_diffnet(W, toa = toa, vertex.static.attrs = X): -graph- is
 # static and will be recycled (see ?new_diffnet).</code></pre>
-<pre class="r"><code># Computing exposure and adoption for regression
-dn[[&quot;cohesive_expo&quot;]] &lt;- cbind(NA, exposure(dn)[,-nslices(dn)])
-dn[[&quot;adopt&quot;]]         &lt;- dn$cumadopt
-
-
-# Generating the data and running the model
-dat &lt;- as.data.frame(dn)
-ans &lt;- glm(adopt ~ cohesive_expo + var1 + factor(per),
-           data = dat,
-           family = binomial(link=&quot;probit&quot;),
-           subset = is.na(toa) | (per &lt;= toa))
-summary(ans)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Computing exposure and adoption for regression</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>dn[[<span class="st">"cohesive_expo"</span>]] <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="cn">NA</span>, <span class="fu">exposure</span>(dn)[,<span class="sc">-</span><span class="fu">nslices</span>(dn)])</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>dn[[<span class="st">"adopt"</span>]]         <span class="ot">&lt;-</span> dn<span class="sc">$</span>cumadopt</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating the data and running the model</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(dn)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">glm</span>(adopt <span class="sc">~</span> cohesive_expo <span class="sc">+</span> var1 <span class="sc">+</span> <span class="fu">factor</span>(per),</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> dat,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"probit"</span>),</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">subset =</span> <span class="fu">is.na</span>(toa) <span class="sc">|</span> (per <span class="sc">&lt;=</span> toa))</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
 <pre><code># 
 # Call:
-# glm(formula = adopt ~ cohesive_expo + var1 + factor(per), family = binomial(link = &quot;probit&quot;), 
+# glm(formula = adopt ~ cohesive_expo + var1 + factor(per), family = binomial(link = "probit"), 
 #     data = dat, subset = is.na(toa) | (per &lt;= toa))
-# 
-# Deviance Residuals: 
-#     Min       1Q   Median       3Q      Max  
-# -1.1754  -0.8462  -0.6645   1.2878   1.9523  
 # 
 # Coefficients:
 #               Estimate Std. Error z value Pr(&gt;|z|)    
@@ -637,7 +488,7 @@ summary(ans)</code></pre>
 # factor(per)4   0.33902    0.09897   3.425 0.000614 ***
 # factor(per)5   0.59851    0.12193   4.909 9.18e-07 ***
 # ---
-# Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+# Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 # 
 # (Dispersion parameter for binomial family taken to be 1)
 # 
@@ -647,17 +498,17 @@ summary(ans)</code></pre>
 # AIC: 2675.5
 # 
 # Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
 <p>Alternatively, we could have used the new function <code>diffreg</code></p>
-<pre class="r"><code>ans &lt;- diffreg(dn ~ exposure + var1 + factor(per), type = &quot;probit&quot;)
-summary(ans)</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">diffreg</span>(dn <span class="sc">~</span> exposure <span class="sc">+</span> var1 <span class="sc">+</span> <span class="fu">factor</span>(per), <span class="at">type =</span> <span class="st">"probit"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
 <pre><code># 
 # Call:
-# glm(formula = Adopt ~ exposure + var1 + factor(per), family = binomial(link = &quot;probit&quot;), 
+# glm(formula = Adopt ~ exposure + var1 + factor(per), family = binomial(link = "probit"), 
 #     data = dat, subset = ifelse(is.na(toa), TRUE, toa &gt;= per))
-# 
-# Deviance Residuals: 
-#     Min       1Q   Median       3Q      Max  
-# -1.1754  -0.8462  -0.6645   1.2878   1.9523  
 # 
 # Coefficients:
 #              Estimate Std. Error z value Pr(&gt;|z|)    
@@ -668,7 +519,7 @@ summary(ans)</code></pre>
 # factor(per)4  0.33902    0.09897   3.425 0.000614 ***
 # factor(per)5  0.59851    0.12193   4.909 9.18e-07 ***
 # ---
-# Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+# Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 # 
 # (Dispersion parameter for binomial family taken to be 1)
 # 
@@ -677,11 +528,13 @@ summary(ans)</code></pre>
 #   (1000 observations deleted due to missingness)
 # AIC: 2675.5
 # 
-# Number of Fisher Scoring iterations: 4</code></pre></li>
-</ul>
+# Number of Fisher Scoring iterations: 4</code></pre>
 </div>
-<div id="contemporaneous-exposure-models" class="section level2">
-<h2>Contemporaneous exposure models</h2>
+</div></li>
+</ul>
+</section>
+<section id="contemporaneous-exposure-models" class="level2">
+<h2 class="anchored" data-anchor-id="contemporaneous-exposure-models">Contemporaneous exposure models</h2>
 <ul>
 <li><p>Similar to he lagged exposure models, we usually have the following</p>
 <p><span class="math display">\[
@@ -698,58 +551,450 @@ y_{it} = \left\{
 \]</span></p></li>
 <li><p>Unfortunately, since <span class="math inline">\(y_t\)</span> is in both sides of the equation, this models cannot be fitted using a standard probit or logit regression.</p></li>
 <li><p>Two alternatives to solve this:</p>
-<ol style="list-style-type: lower-alpha">
+<ol type="a">
 <li><p>Using Instrumental Variables Probit (ivprobit in both R and Stata)</p></li>
 <li><p>Use a Spatial Autoregressive (SAR) Probit (SpatialProbit and ProbitSpatial in R).</p></li>
 </ol></li>
 <li><p>We won’t cover these here.</p></li>
 </ul>
-</div>
-</div>
-<div id="problems" class="section level1">
+</section>
+</section>
+<section id="problems" class="level1">
 <h1>Problems</h1>
 <p>Using the dataset <a href="stats.rda">stats.rda</a>:</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li><p>Compute Moran’s I as the function <code>summary.diffnet</code> does. For this you’ll need to use the function <code>toa_mat</code> (which calculates the cumulative adoption matrix), and <code>approx_geodesic</code> (which computes the geodesic matrix). (see <code>?summary.diffnet</code> for more details).</p></li>
 <li><p>Read the data as diffnet object, and fit the following logit model <span class="math inline">\(adopt = Exposure*\gamma + Measure*\beta + \varepsilon\)</span>. What happens if you exclude the time fixed effects?</p></li>
 </ol>
 <p>(<a href="stats-solutions.r" target="_blank">solution script</a>)</p>
-</div>
-
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiU3RhdGlzdGljYWwgaW5mZXJlbmNlIgphdXRob3I6ICJUaG9tYXMgVy4gVmFsZW50ZSBhbmQgR2VvcmdlIEcuIFZlZ2EgWW9uIgotLS0KCmBgYHtyIHNldHVwLCBlY2hvPUZBTFNFLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KG5ldGRpZmZ1c2VSKQprbml0cjo6b3B0c19jaHVuayRzZXQoY29tbWVudCA9ICIjIikKCmBgYAoKIyBNb3JhbidzIEkKCiogICBNb3JhbidzIEkgdGVzdHMgZm9yIHNwYXRpYWwgYXV0b2NvcnJlbGF0aW9uLgogICAgCiogICBfX25ldGRpZmZ1c2VSX18gaW1wbGVtZW50cyB0aGUgdGVzdCBpbiBgbW9yYW5gLCB3aGljaCBpcyBzdWl0ZWQgZm9yIHNwYXJzZSBtYXRyaWNlcy4KCiogICBXZSBjYW4gdXNlIE1vcmFuJ3MgSSBhcyBhIGZpcnN0IGxvb2sgdG8gd2hldGhlciB0aGVyZSBpcyBzb21ldGhpbmcgaGFwcGVuaW5nOgogICAgbGV0IHRoYXQgYmUgaW5mbHVlbmNlIG9yIGhvbW9waGlseS4KCiMjIFVzaW5nIGdlb2Rlc2ljcwoKKiAgIE9uZSBhcHByb2FjaCBpcyB0byB1c2UgdGhlIGdlb2Rlc2ljIChzaG9ydGVzIHBhdGggbGVuZ3RoKSBtYXRyaXggdG8gYWNjb3VudCBmb3IgaW5kaXJlY3QKICAgIGluZmx1ZW5jZS4KICAgIAoqICAgSW4gdGhlIGNhc2Ugb2Ygc3BhcnNlIG1hdHJpY2VzLCBhbmQgZnVydGhlcm1vcmUsIGluIHRoZSBwcmVzZW5jZSBvZiBzdHJ1Y3R1cmFsIGhvbGVzCiAgICBpdCBpcyBtb3JlIGNvbnZlbmllbnQgdG8gY2FsY3VsYXRlIHRoZSBkaXN0YW5jZSBtYXRyaXggdGFraW5nIHRoaXMgaW50byBhY2NvdW50LgogICAgCiogICBfX25ldGRpZmZ1c2VSX18gaGFzIGEgZnVuY3Rpb24gdG8gZG8gc28sIHRoZSBgYXBwcm94X2dlb2Rlc2ljYCBmdW5jdGlvbiB3aGljaCwKICAgIHVzaW5nIGdyYXBoIHBvd2VycywgY29tcHV0ZXMgdGhlIHNob3J0ZXN0IHBhdGggdXAgdG8gYG5gIHN0ZXBzLiBUaGlzIGNvdWxkIGJlCiAgICBmYXN0ZXIgKGlmIHlvdSBvbmx5IGNhcmUgdXAgdG8gYG5gIHN0ZXBzKSB0aGFuIGBpZ3JhcGhgIG9yIGBzbnNgOgoKICAgIGBgYHtyIGdlb2Rlc2ljX3NwZWVkLCBjYWNoZT1UUlVFfQogICAgIyBFeHRyYWN0aW5nIHRoZSBsYXJnZSBhZGphY2VuY3kgbWF0cml4IChzdGFja2VkKQogICAgZGdjIDwtIGRpYWdfZXhwYW5kKG1lZElubm92YXRpb25zRGlmZk5ldCRncmFwaCkKICAgIGlnICA8LSBpZ3JhcGg6OmdyYXBoX2Zyb21fYWRqYWNlbmN5X21hdHJpeChkZ2MpCiAgICBtYXQgPC0gbmV0d29yazo6YXMubmV0d29yayhhcy5tYXRyaXgoZGdjKSkKICAgIAogICAgIyBNZWFzdXJpbmcgdGltZXMKICAgIHRpbWVzIDwtIG1pY3JvYmVuY2htYXJrOjptaWNyb2JlbmNobWFyaygKICAgICAgbmV0ZGlmZnVzZVIgPSBuZXRkaWZmdXNlUjo6YXBwcm94X2dlb2Rlc2ljKGRnYyksCiAgICAgIGlncmFwaCA9IGlncmFwaDo6ZGlzdGFuY2VzKGlnKSwKICAgICAgc25hID0gc25hOjpnZW9kaXN0KG1hdCksCiAgICAgIHRpbWVzID0gNTAsIHVuaXQ9InJlbGF0aXZlIgogICAgKQogICAgYGBgCiAgICAKICAgIGBgYHtyIGdlb2Rlc2ljX3NwZWVkLWJveCwgYXV0b2RlcD1UUlVFLCBlY2hvPUZBTFNFfQogICAgbWljcm9iZW5jaG1hcms6Ojpib3hwbG90Lm1pY3JvYmVuY2htYXJrKHRpbWVzKQogICAgYGBgCgoqICAgVGhlIGBzdW1tYXJ5LmRpZmZuZXRgIG1ldGhvZCBhbHJlYWR5IHJ1bnMgTW9yYW4ncyBmb3IgeW91LiBXaGF0IGhhcHBlbnMgdW5kZXIgdGhlIGhvb2QgaXM6CiAgICAKICAgIGBgYHtyfQogICAgIyBGb3IgZWFjaCB0aW1lIHBvaW50IHdlIGNvbXB1dGUgdGhlIGdlb2Rlc2ljIGRpc3RhbmNlcyBtYXRyaXgKICAgIFcgPC0gYXBwcm94X2dlb2Rlc2ljKG1lZElubm92YXRpb25zRGlmZk5ldCRncmFwaFtbMV1dKQogICAgCiAgICAjIFdlIGdldCB0aGUgZWxlbWVudC13aXNlIGludmVyc2UKICAgIFdAeCA8LSAxL1dAeAogICAgCiAgICAjIEFuZCB0aGVuIGNvbXB1dGUgbW9yYW4KICAgIG1vcmFuKG1lZElubm92YXRpb25zRGlmZk5ldCRjdW1hZG9wdFssMV0sIFcpCiAgICBgYGAKCgoKIyBTdHJ1Y3R1cmFsIGRlcGVuZGVuY2UgYW5kIHBlcm11dGF0aW9uIHRlc3RzCgoKLSBBIG5vdmVsIHN0YXRpc3RpY2FsIG1ldGhvZCAod29yay1pbi1wcm9ncmVzcykgdGhhdCBhbGxvd3MgY29uZHVjdGluZyBpbmZlcmVuY2UuCi0gSW5jbHVkZWQgaW4gdGhlIHBhY2thZ2UsIHRlc3RzIHdoZXRoZXIgYSBwYXJ0aWN1bGFyIG5ldHdvcmsgc3RhdGlzdGljIGFjdHVhbGx5IGRlcGVuZHMgb24gbmV0d29yayBzdHJ1Y3R1cmUKLSBTdWl0YWJsZSB0byBiZSBhcHBsaWVkIHRvIG5ldHdvcmsgdGhyZXNob2xkcyAoeW91IGNhbid0IHVzZSB0aHJlc2hvbGRzIGluIHJlZ3Jlc3Npb24tbGlrZSBtb2RlbHMhKQoKIyMgSWRlYQoKLSAgIExldCAkXG1hdGhjYWx7R30gPSAoVixFKSQgYmUgYSBncmFwaCwgJFxnYW1tYSQgYSB2ZXJ0ZXggYXR0cmlidXRlLCBhbmQgJFxiZXRhID0gZihcZ2FtbWEsXG1hdGhjYWx7R30pJCwgdGhlbgoKICAgICQkXGdhbW1hIFxwZXJwIFxtYXRoY2Fse0d9IFxpbXBsaWVzIFxtYXRoYmJ7RX1cbGVmdFtcYmV0YShcZ2FtbWEsXG1hdGhjYWx7R30pfFxtYXRoY2Fse0d9XHJpZ2h0XSA9IFxtYXRoYmJ7RX1cbGVmdFtcYmV0YShcZ2FtbWEsXG1hdGhjYWx7R30pXHJpZ2h0XSQkCgotIFRoaXMgaXMsIGlmIGZvciBleGFtcGxlIHRpbWUgb2YgYWRvcHRpb24gaXMgaW5kZXBlbmRlbnQgb24gdGhlIHN0cnVjdHVyZSBvZiB0aGUgbmV0d29yaywgdGhlbiB0aGUgYXZlcmFnZSB0aHJlc2hvbGQgbGV2ZWwgd2lsbCBiZSBpbmRlcGVuZGVudCBmcm9tIHRoZSBuZXR3b3JrIHN0cnVjdHVyZSBhcyB3ZWxsLgoKLSBBbm90aGVyIHdheSBvZiBsb29raW5nIGF0IHRoaXMgaXMgdGhhdCB0aGUgdGVzdCB3aWxsIGFsbG93IHVzIHRvIHNlZSBob3cgcHJvYmFibGUgaXMgdG8gaGF2ZSB0aGlzIGNvbWJpbmF0aW9uIG9mIG5ldHdvcmsgc3RydWN0dXJlIGFuZCBuZXR3b3JrIHRocmVzaG9sZCAoaWYgaXQgaXMgdW5jb21tb24gdGhlbiB3ZSBzYXkgdGhhdCB0aGUgZGlmZnVzaW9uIG1vZGVsIGlzIGhpZ2hseSBsaWtlbHkpCgoKIyMgRXhhbXBsZSBOb3QgcmFuZG9tIFRPQQoKLSAgICAgVG8gdXNlIHRoaXMgdGVzdCwgX19uZXRkaWZmdXNlUl9fIGhhcyB0aGUgYHN0cnVjdF90ZXN0YCBmdW5jdGlvbi4KLSAgICAgQmFzaWNhbGx5IGl0IHNpbXVsYXRlcyBuZXR3b3JrcyB3aXRoIHRoZSBzYW1lIGRlbnNpdHkgYW5kIGNvbXB1dGVzIGEgcGFydGljdWxhciBzdGF0aXN0aWMgZXZlcnkgdGltZSwgZ2VuZXJhdGluZyBhbiBFREYgKEVtcGlyaWNhbCBEaXN0cmlidXRpb24gRnVuY3Rpb24pIHVuZGVyIHRoZSBOdWxsIGh5cGhvdGhlc2lzIChwLXZhbHVlcykuCiAgICAKICAgIGBgYHtyIFN0cnVjdCBub24tcmFuZG9tLXRvYSwgY2FjaGU9VFJVRX0KICAgICMgU2ltdWxhdGluZyBuZXR3b3JrCiAgICBzZXQuc2VlZCgxMTIzKQogICAgbmV0IDwtIHJkaWZmbmV0KG49NTAwLCB0PTEwLCBzZWVkLmdyYXBoID0gInNtYWxsLXdvcmxkIikKICAgIAogICAgIyBSdW5uaW5nIHRoZSB0ZXN0CiAgICB0ZXN0IDwtIHN0cnVjdF90ZXN0KAogICAgICBncmFwaCAgICAgPSBuZXQsIAogICAgICBzdGF0aXN0aWMgPSBmdW5jdGlvbih4KSBtZWFuKHRocmVzaG9sZCh4KSwgbmEucm0gPSBUUlVFKSwKICAgICAgUiAgICAgICAgID0gMWUzLAogICAgICBuY3B1cz00LCBwYXJhbGxlbD0ibXVsdGljb3JlIgogICAgICApCiAgICAKICAgICMgU2VlIHRoZSBvdXRwdXQKICAgIHRlc3QKICAgIGBgYAoKYGBge3IsIGVjaG89RkFMU0V9Cmhpc3QodGVzdCkKYGBgCgotICAgTm93IHdlIHNodWZmbGUgdG9hcywgc28gdGhhdCBpcyByYW5kb20KICAgIAogICAgYGBge3IgcmFuZG9tLXRvYSwgY2FjaGU9VFJVRX0KICAgICMgUmVzZXR0aW5nIFRPQXMgKG5vdyB3aWxsIGJlIGNvbXBsZXRlbHkgcmFuZG9tKQogICAgZGlmZm5ldC50b2EobmV0KSA8LSBzYW1wbGUoZGlmZm5ldC50b2EobmV0KSwgbm5vZGVzKG5ldCksIFRSVUUpCiAgICAKICAgICMgUnVubmluZyB0aGUgdGVzdAogICAgdGVzdCA8LSBzdHJ1Y3RfdGVzdCgKICAgICAgZ3JhcGggICAgID0gbmV0LCAKICAgICAgc3RhdGlzdGljID0gZnVuY3Rpb24oeCkgbWVhbih0aHJlc2hvbGQoeCksIG5hLnJtID0gVFJVRSksCiAgICAgIFIgICAgICAgICA9IDFlMywKICAgICAgbmNwdXM9NCwgcGFyYWxsZWw9Im11bHRpY29yZSIKICAgICAgKQogICAgCiAgICAjIFNlZSB0aGUgb3V0cHV0CiAgICB0ZXN0CiAgICBgYGAKICAgIAogICAgYGBge3IsIGVjaG89RkFMU0V9CiAgICBoaXN0KHRlc3QpCiAgICBgYGAKCiMgUmVncmVzc2lvbiBhbmFseXNpcwoKKiAgIEluIHJlZ3Jlc3Npb24gYW5hbHlzaXMgd2Ugd2FudCB0byBzZWUgaWYgZXhwb3N1cmUsIG9uY2Ugd2UgY29udHJvbCBmb3Igb3RoZXIKICAgIGNvdmFyaWF0ZXMsIGhhZCBhbnkgZWZmZWN0IG9uIHRoZSBhZG9wdGlvbiBvZiBhIGJlaGF2aW9yLgoKKiAgIEluIGdlbmVyYWwsIHRoZSBiaWcgcHJvYmxlbSBoZXJlIGlzIHdoZW4gd2UgaGF2ZSBhIGxhdGVudCB2YXJpYWJsZSB0aGF0IAogICAgY28tZGV0ZXJtaW5lcyBib3RoIG5ldHdvcmsgYW5kIGJlaGF2aW9yLgogICAgCiogICBVbmxlc3Mgd2UgY2FuIGNvbnRyb2wgZm9yIHN1Y2ggdmFyaWFibGUsIHJlZ3Jlc3Npb24gYW5hbHlzaXMgd2lsbCBiZQogICAgZ2VuZXJpY2FsbHkgYmlhc2VkLgogICAgCiogICBPbiB0aGUgb3RoZXIgaGFuZCwgaWYgeW91IGNhbiBjbGFpbSB0aGF0IGVpdGhlciBzdWNoIHZhcmlhYmxlIGRvZXNuJ3QgZXhpc3RzCiAgICBvciB5b3UgYWN0dWFsbHkgY2FuIGNvbnRyb2wgZm9yIGl0LCB0aGVuIHdlIGhhdmUgdHdvIG9wdGlvbnM6IGxhZ2dlZCBleHBvc3VyZQogICAgbW9kZWxzLCBvciBjb250ZW1wb3JhbmVvdXMgZXhwb3N1cmUgbW9kZWxzLiBXZSB3aWxsIGZvY3VzIG9uIHRoZSBmb3JtZXIuCgoKIyMgTGFnZ2VkIGV4cG9zdXJlIG1vZGVscwoKKiAgIEluIHRoaXMgdHlwZSBvZiBtb2RlbHMgd2UgdXN1YWxseSBoYXZlIHRoZSBmb2xsb3dpbmcKCiAgICAkJAogICAgeV90ID0gZihXX3t0LTF9LCB5X3t0LTF9LCBYX2kpICsgXHZhcmVwc2lsb24KICAgICQkCiAgICAKICAgIEZ1cnRoZXJtb3JlLCBpbiB0aGUgY2FzZSBvZiBhZG9wdGlvbiB3ZSBoYXZlCiAgICAKICAgICQkCiAgICB5X3tpdH0gPSBcbGVmdFx7CiAgICBcYmVnaW57YXJyYXl9e2xsfQogICAgMSAmIFxtYm94e2lmfVxxdWFkIFxyaG9cc3VtX3tqXG5lcSBpfVxmcmFje1dfe2lqdC0xfXlfe2l0LTF9fXtcc3VtX3tqXG5lcSBpfVdfe2lqdC0xfX0gKyBYX3tpdH1cYmV0YSA+IDBcXAogICAgMCAmIFxtYm94e290aGVyd2lzZX0KICAgIFxlbmR7YXJyYXl9CiAgICBccmlnaHQuCiAgICAkJAogICAgCiogICBJbiBuZXRkaWZmdXNlUiBpcyBhcyBlYXN5IGFzIGRvaW5nIHRoZSBmb2xsb3dpbmc6CiAgICAKICAgIGBgYHtyIGRhdGFmb3JyZWd9CiAgICAjIGZha2VkYXRhCiAgICBzZXQuc2VlZCgxMjEpCiAgICAKICAgIFcgICA8LSByZ3JhcGhfd3MoMWUzLCA4LCAuMikKICAgIFggICA8LSBjYmluZCh2YXIxID0gcm5vcm0oMWUzKSkKICAgIHRvYSA8LSBzYW1wbGUoYyhOQSwxOjUpLCAxZTMsIFRSVUUpCiAgICAKICAgIGRuICA8LSBuZXdfZGlmZm5ldChXLCB0b2E9dG9hLCB2ZXJ0ZXguc3RhdGljLmF0dHJzID0gWCkKICAgIAogICAgIyBDb21wdXRpbmcgZXhwb3N1cmUgYW5kIGFkb3B0aW9uIGZvciByZWdyZXNzaW9uCiAgICBkbltbImNvaGVzaXZlX2V4cG8iXV0gPC0gY2JpbmQoTkEsIGV4cG9zdXJlKGRuKVssLW5zbGljZXMoZG4pXSkKICAgIGRuW1siYWRvcHQiXV0gICAgICAgICA8LSBkbiRjdW1hZG9wdAoKICAgIAogICAgIyBHZW5lcmF0aW5nIHRoZSBkYXRhIGFuZCBydW5uaW5nIHRoZSBtb2RlbAogICAgZGF0IDwtIGFzLmRhdGEuZnJhbWUoZG4pCiAgICBhbnMgPC0gZ2xtKGFkb3B0IH4gY29oZXNpdmVfZXhwbyArIHZhcjEgKyBmYWN0b3IocGVyKSwKICAgICAgICAgICAgICAgZGF0YSA9IGRhdCwKICAgICAgICAgICAgICAgZmFtaWx5ID0gYmlub21pYWwobGluaz0icHJvYml0IiksCiAgICAgICAgICAgICAgIHN1YnNldCA9IGlzLm5hKHRvYSkgfCAocGVyIDw9IHRvYSkpCiAgICBzdW1tYXJ5KGFucykKICAgIGBgYAogICAgCiAgICBBbHRlcm5hdGl2ZWx5LCB3ZSBjb3VsZCBoYXZlIHVzZWQgdGhlIG5ldyBmdW5jdGlvbiBgZGlmZnJlZ2AKICAgIAogICAgYGBge3J9CiAgICBhbnMgPC0gZGlmZnJlZyhkbiB+IGV4cG9zdXJlICsgdmFyMSArIGZhY3RvcihwZXIpLCB0eXBlID0gInByb2JpdCIpCiAgICBzdW1tYXJ5KGFucykKICAgIGBgYAogICAgCgojIyBDb250ZW1wb3JhbmVvdXMgZXhwb3N1cmUgbW9kZWxzCgoqICAgU2ltaWxhciB0byBoZSBsYWdnZWQgZXhwb3N1cmUgbW9kZWxzLCB3ZSB1c3VhbGx5IGhhdmUgdGhlIGZvbGxvd2luZwoKICAgICQkCiAgICB5X3QgPSBmKFdfdCwgeV90LCBYX3QpICsgXHZhcmVwc2lsb24KICAgICQkCiAgICAKICAgIEZ1cnRoZXJtb3JlLCBpbiB0aGUgY2FzZSBvZiBhZG9wdGlvbiB3ZSBoYXZlCiAgICAKICAgICQkCiAgICB5X3tpdH0gPSBcbGVmdFx7CiAgICBcYmVnaW57YXJyYXl9e2xsfQogICAgMSAmIFxtYm94e2lmfVxxdWFkIFxyaG9cc3VtX3tqXG5lcSBpfVxmcmFje1dfe2lqdH15X3tpdH19e1xzdW1fe2pcbmVxIGl9V197aWp0fX0gKyBYX3tpdH1cYmV0YSA+IDBcXAogICAgMCAmIFxtYm94e290aGVyd2lzZX0KICAgIFxlbmR7YXJyYXl9CiAgICBccmlnaHQuCiAgICAkJAogICAgCiogICBVbmZvcnR1bmF0ZWx5LCBzaW5jZSAkeV90JCBpcyBpbiBib3RoIHNpZGVzIG9mIHRoZSBlcXVhdGlvbiwgdGhpcyBtb2RlbHMgY2Fubm90CiAgICBiZSBmaXR0ZWQgdXNpbmcgYSBzdGFuZGFyZCBwcm9iaXQgb3IgbG9naXQgcmVncmVzc2lvbi4KICAgIAoqICAgVHdvIGFsdGVybmF0aXZlcyB0byBzb2x2ZSB0aGlzOgogICAgCiAgICBhLiAgVXNpbmcgSW5zdHJ1bWVudGFsIFZhcmlhYmxlcyBQcm9iaXQgKGl2cHJvYml0IGluIGJvdGggUiBhbmQgU3RhdGEpCiAgICAKICAgIGIuICBVc2UgYSBTcGF0aWFsIEF1dG9yZWdyZXNzaXZlIChTQVIpIFByb2JpdCAoU3BhdGlhbFByb2JpdCBhbmQgUHJvYml0U3BhdGlhbCBpbiBSKS4KICAgIAoqICAgV2Ugd29uJ3QgY292ZXIgdGhlc2UgaGVyZS4KCiMgUHJvYmxlbXMKClVzaW5nIHRoZSBkYXRhc2V0IFtzdGF0cy5yZGFdKHN0YXRzLnJkYSk6CgoxLiAgQ29tcHV0ZSBNb3JhbidzIEkgYXMgdGhlIGZ1bmN0aW9uIGBzdW1tYXJ5LmRpZmZuZXRgIGRvZXMuIEZvciB0aGlzIHlvdSdsbCBuZWVkCnRvIHVzZSB0aGUgZnVuY3Rpb24gYHRvYV9tYXRgICh3aGljaCBjYWxjdWxhdGVzIHRoZSBjdW11bGF0aXZlIGFkb3B0aW9uIG1hdHJpeCksCmFuZCBgYXBwcm94X2dlb2Rlc2ljYCAod2hpY2ggY29tcHV0ZXMgdGhlIGdlb2Rlc2ljIG1hdHJpeCkuIChzZWUgYD9zdW1tYXJ5LmRpZmZuZXRgCmZvciBtb3JlIGRldGFpbHMpLgoKMi4gIFJlYWQgdGhlIGRhdGEgYXMgZGlmZm5ldCBvYmplY3QsIGFuZCBmaXQgdGhlIGZvbGxvd2luZyBsb2dpdCBtb2RlbCAkYWRvcHQgPSBFeHBvc3VyZSpcZ2FtbWEgKyBNZWFzdXJlKlxiZXRhICsgXHZhcmVwc2lsb24kLgogICAgV2hhdCBoYXBwZW5zIGlmIHlvdSBleGNsdWRlIHRoZSB0aW1lIGZpeGVkIGVmZmVjdHM/CiAgICAKKDxhIGhyZWY9InN0YXRzLXNvbHV0aW9ucy5yIiB0YXJnZXQ9Il9ibGFuayI+c29sdXRpb24gc2NyaXB0PC9hPikKCmBgYHtyIGRhdGFnZW4sIGVjaG89RkFMU0UsIGNhY2hlPVRSVUV9CnNldC5zZWVkKDEpCgpuIDwtIDUwMApucGVyIDwtIDUKWCA8LSBjYmluZChNZWFzdXJlPXJub3JtKG4pKQp5IDwtIGNiaW5kKHNhbXBsZShjKDAsIDEpLCBuLCBUUlVFLCBwcm9iID0gYyguOSwgLjEpKSkKCgojIEJhc2VsaW5lIG5ldHdvcmsKVyA8LSAocmdyYXBoX3dzKG4sIGs9OCwgcCA9IC4yKSkKCnNpbV9zcGFjZSA8LSBmdW5jdGlvbihXLCB5LCBYLCBwZXJzID0gNCwgbGFnID0gRkFMU0UsIHJobyA9IC4yLCBiZXRhPS41KSB7CiAgVyA8LSBhcy5tYXRyaXgoVykKICBXIDwtIFcvKHJvd1N1bXMoVykgKyAxZS0yMCkKICBuIDwtIG5yb3coVykKICBmb3IgKGkgaW4gMTpwZXJzKSB7CiAgICBpZiAoIWxhZykKICAgICAgeW5ldyA8LSAoc29sdmUoZGlhZyhuKSAtIHJobypXKSAlKiUgKFgqYmV0YSkgKyBybm9ybShuKSkgPiAwCiAgICBlbHNlCiAgICAgIHluZXcgPC0gKHJobyAqIChXICUqJSB5WyxpIC0gYXMuaW50ZWdlcihpICE9IDEpLGRyb3A9RkFMU0VdKSArIGJldGEqWCArIHJub3JtKG4pKSA+IDAKICAgIAogICAgeSA8LSBjYmluZCh5LCBpZmVsc2UoCiAgICAgIHlbLGkgLSBhcy5pbnRlZ2VyKGkgIT0gMSksZHJvcD1GQUxTRV0gPT0gMSwKICAgICAgeVssaSAtIGFzLmludGVnZXIoaSAhPSAxKSxkcm9wPUZBTFNFXSwgCiAgICAgIHluZXcpCiAgICAgICkKICB9CiAgCiAgeQp9CgphbnMgPC0gc2ltX3NwYWNlKFcsIHksIFgsIHBlcnMgPSBucGVyLCBsYWc9VFJVRSkKdG9hIDwtIG5jb2woYW5zKSAtIGFwcGx5KGFucywgMSwgc3VtKQpYIDwtIGNiaW5kKFgsIHRvYT1pZmVsc2UodG9hID09IDAsIE5BLCB0b2EpKQoKc2F2ZShYLCBXLCBmaWxlPSJzdGF0cy5yZGEiKQpgYGAKCg==</div>
-<p>
-  <center><a href="http://cana.usc.edu" target="_new">University of Southern California<br>Center for Applied Network Analysis (<b>CANA</b>)</a>
-  </center>
-</p>
 
 
-</div>
-</div>
+</section>
 
-</div>
-
-<script>
-
-// add bootstrap table styles to pandoc tables
-function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
-}
-$(document).ready(function () {
-  bootstrapStylePandocTables();
+<p><text style="text-align:center">ForeSITE</text></p></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
 });
-
-
 </script>
+</div> <!-- /content -->
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 
-</body>
-</html>
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/USCCANA/netdiffuser-workshop/edit/main/stats.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/USCCANA/netdiffuser-workshop/blob/main/stats.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div></div></footer></body></html>

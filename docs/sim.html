@@ -1,466 +1,261 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.53">
 
-<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="pandoc" />
+<meta name="author" content="Thomas W. Valente and George G. Vega Yon">
 
-
-<meta name="author" content="Thomas W. Valente and George G. Vega Yon" />
-
-
-<title>Simulation of diffusion networks: rdiffnet</title>
-
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
-<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
-<script src="site_libs/navigation-1.1/sourceembed.js"></script>
-<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
+<title>Simulation of diffusion networks: rdiffnet – netdiffuseR: A workshop</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
   }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
 <script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
   }
 }
+window.Quarto = {
+  typesetMath
+};
 </script>
 
-
-
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-#rmd-source-code {
-  display: none;
-}
-</style>
-
-
-
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
-img {
-  max-width:100%;
-  height: auto;
-}
-.tabbed-pane {
-  padding-top: 12px;
-}
-.html-widget {
-  margin-bottom: 20px;
-}
-button.code-folding-btn:focus {
-  outline: none;
-}
-summary {
-  display: list-item;
-}
-</style>
-
-
-<style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.dropdown-submenu {
-  position: relative;
-}
-.dropdown-submenu>.dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -6px;
-  margin-left: -1px;
-  border-radius: 0 6px 6px 6px;
-}
-.dropdown-submenu:hover>.dropdown-menu {
-  display: block;
-}
-.dropdown-submenu>a:after {
-  display: block;
-  content: " ";
-  float: right;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 5px 0 5px 5px;
-  border-left-color: #cccccc;
-  margin-top: 5px;
-  margin-right: -10px;
-}
-.dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
-}
-.dropdown-submenu.pull-left {
-  float: none;
-}
-.dropdown-submenu.pull-left>.dropdown-menu {
-  left: -100%;
-  margin-left: 10px;
-  border-radius: 6px 0 6px 6px;
-}
-</style>
-
-<script>
-// manage active state of menu based on current page
-$(document).ready(function () {
-  // active menu anchor
-  href = window.location.pathname
-  href = href.substr(href.lastIndexOf('/') + 1)
-  if (href === "")
-    href = "index.html";
-  var menuAnchor = $('a[href="' + href + '"]');
-
-  // mark it active
-  menuAnchor.parent().addClass('active');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
-});
-</script>
-
-<!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
-  max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
-}
-
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
-}
-
-.tabset-dropdown > .nav-tabs > li {
-  display: none;
-}
-</style>
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
-<!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
-<script>
-$(document).ready(function () {
-  window.initializeSourceEmbed("sim.Rmd");
-  window.initializeCodeFolding("show" === "show");
-});
-</script>
-
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
-
+<link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
+<body class="nav-fixed">
 
-
-<div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
-
-
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.html">netdiffuseR at Sunbelt 2019</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">netdiffuseR: A workshop</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
         <li>
-  <a href="index.html">Home</a>
-</li>
-<li>
-  <a href="getstarted.html">Getting Started</a>
-</li>
-<li>
-  <a href="intro.html">Introduction</a>
-</li>
-<li>
-  <a href="sim.html">Simulations</a>
-</li>
-<li>
-  <a href="read.html">Reading data</a>
-</li>
-<li>
-  <a href="stats.html">Statistical inference</a>
-</li>
-<li>
-  <a href="classic.html">Classic Diffnet Analyses</a>
-</li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div><!--/.container -->
-</div><!--/.navbar -->
-
-<div class="fluid-row" id="header">
-
-<div class="btn-group pull-right">
-<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-<li role="separator" class="divider"></li>
-<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+    <a class="dropdown-item" href="./getstarted.html">
+ <span class="dropdown-text">Getting Started</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./intro.html">
+ <span class="dropdown-text">Introduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./sim.html">
+ <span class="dropdown-text">Simulations</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./read.html">
+ <span class="dropdown-text">Reading data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./stats.html">
+ <span class="dropdown-text">Statistical inference</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./classic.html"> 
+<span class="menu-text">Classic Diffnet Analyses</span></a>
+  </li>  
 </ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#simulating-diffusion-networks" id="toc-simulating-diffusion-networks" class="nav-link" data-scroll-target="#simulating-diffusion-networks">Simulating diffusion networks</a></li>
+  <li><a href="#rumor-spreading" id="toc-rumor-spreading" class="nav-link" data-scroll-target="#rumor-spreading">Rumor spreading</a></li>
+  <li><a href="#difussion" id="toc-difussion" class="nav-link" data-scroll-target="#difussion">Difussion</a></li>
+  <li><a href="#mentor-matching" id="toc-mentor-matching" class="nav-link" data-scroll-target="#mentor-matching">Mentor Matching</a></li>
+  <li><a href="#example-by-changing-threshold" id="toc-example-by-changing-threshold" class="nav-link" data-scroll-target="#example-by-changing-threshold">Example by changing threshold</a></li>
+  <li><a href="#problems" id="toc-problems" class="nav-link" data-scroll-target="#problems">Problems</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/USCCANA/netdiffuser-workshop/edit/main/sim.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/USCCANA/netdiffuser-workshop/blob/main/sim.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Simulation of diffusion networks: rdiffnet</h1>
 </div>
 
 
 
-<h1 class="title toc-ignore">Simulation of diffusion networks: rdiffnet</h1>
-<h4 class="author">Thomas W. Valente and George G. Vega Yon</h4>
+<div class="quarto-title-meta">
 
-</div>
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Thomas W. Valente and George G. Vega Yon </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
 
 
-<div id="introduction" class="section level1">
+</header>
+
+
+<section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p>Before we start, a review of the concepts we will be using here</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>Exposure: Proportion/number of neighbors that has adopted an innovation at each point in time.</li>
 <li>Threshold: The proportion/number of your neighbors who had adopted at or one time period before ego (the focal individual) adopted.</li>
 <li>Infectiousness: How much <span class="math inline">\(i\)</span>’s adoption affects her alters.</li>
 <li>Susceptibility: How much <span class="math inline">\(i\)</span>’s alters’ adoption affects her.</li>
 <li>Structural equivalence: How similar are <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> in terms of position in the network.</li>
 </ol>
-</div>
-<div id="simulating-diffusion-networks" class="section level1">
+</section>
+<section id="simulating-diffusion-networks" class="level1">
 <h1>Simulating diffusion networks</h1>
 <p>We will simulate a diffusion network with the following parameters:</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>Will have 1,000 vertices,</li>
 <li>Will span 20 time periods,</li>
 <li>The initial adopters (seeds) will be selected random,</li>
@@ -470,62 +265,74 @@ div.tocify {
 <li>Threshold levels will be uniformly distributed between [0.3, 0.7]</li>
 </ol>
 <p>To generate this diffusion network we can use the <code>rdiffnet</code> function included in the package:</p>
-<pre class="r"><code># Setting the seed for the RNG
-set.seed(1213)
-
-# Generating a random diffusion network
-net &lt;- rdiffnet(
-  n              = 1e3,                         # 1.
-  t              = 20,                          # 2.
-  seed.nodes     = &quot;random&quot;,                    # 3.
-  seed.p.adopt   = .1,                          # 4.
-  seed.graph     = &quot;small-world&quot;,               # 5.
-  rgraph.args    = list(p=.2),                  # 6.
-  threshold.dist = function(x) runif(1, .3, .7) # 7.
-  )</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setting the seed for the RNG</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1213</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating a random diffusion network</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>net <span class="ot">&lt;-</span> <span class="fu">rdiffnet</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">n              =</span> <span class="fl">1e3</span>,                         <span class="co"># 1.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">t              =</span> <span class="dv">20</span>,                          <span class="co"># 2.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed.nodes     =</span> <span class="st">"random"</span>,                    <span class="co"># 3.</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed.p.adopt   =</span> .<span class="dv">1</span>,                          <span class="co"># 4.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed.graph     =</span> <span class="st">"small-world"</span>,               <span class="co"># 5.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">rgraph.args    =</span> <span class="fu">list</span>(<span class="at">p=</span>.<span class="dv">2</span>),                  <span class="co"># 6.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">threshold.dist =</span> <span class="cf">function</span>(x) <span class="fu">runif</span>(<span class="dv">1</span>, .<span class="dv">3</span>, .<span class="dv">7</span>) <span class="co"># 7.</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code># The option -copy.first- is set to TRUE. In this case, the first graph will be treated as a baseline, and thus, networks after T=1 will be replaced with T-1.TRUE</code></pre>
+</div>
+</div>
 <ul>
 <li><p>The function <code>rdiffnet</code> generates random diffusion networks. Main features:</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li><p>Simulating random graph or using your own,</p></li>
 <li><p>Setting threshold levels per node,</p></li>
 <li><p>Network rewiring throughout the simulation, and</p></li>
 <li><p>Setting the seed nodes.</p></li>
 </ol></li>
 <li><p>The simulation algorithm is as follows:</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li><p>If required, a baseline graph is created,</p></li>
 <li><p>Set of initial adopters and threshold distribution are established,</p></li>
 <li><p>The set of t networks is created (if required), and</p></li>
 <li><p>Simulation starts at t=2, assigning adopters based on exposures and thresholds:</p>
-<ol style="list-style-type: lower-alpha">
+<ol type="a">
 <li><p>For each <span class="math inline">\(i \in N\)</span>, if its exposure at <span class="math inline">\(t-1\)</span> is greater than its threshold, then adopts, otherwise continue without change.</p></li>
 <li><p>next <span class="math inline">\(i\)</span></p></li>
 </ol></li>
 </ol></li>
 </ul>
-</div>
-<div id="rumor-spreading" class="section level1">
+</section>
+<section id="rumor-spreading" class="level1">
 <h1>Rumor spreading</h1>
-<pre class="r"><code>library(netdiffuseR)
-
-set.seed(09)
-diffnet_rumor &lt;- rdiffnet(
-  n = 5e2,
-  t = 5, 
-  seed.graph = &quot;small-world&quot;,
-  rgraph.args = list(k = 4, p = .3),
-  seed.nodes = &quot;random&quot;,
-  seed.p.adopt = .05,
-  rewire = TRUE,
-  threshold.dist = function(i) 1L,
-  exposure.args = list(normalized = FALSE)
-  )</code></pre>
-<pre class="r"><code>summary(diffnet_rumor)</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(netdiffuseR)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">09</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>diffnet_rumor <span class="ot">&lt;-</span> <span class="fu">rdiffnet</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="fl">5e2</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">t =</span> <span class="dv">5</span>, </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed.graph =</span> <span class="st">"small-world"</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">rgraph.args =</span> <span class="fu">list</span>(<span class="at">k =</span> <span class="dv">4</span>, <span class="at">p =</span> .<span class="dv">3</span>),</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed.nodes =</span> <span class="st">"random"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed.p.adopt =</span> .<span class="dv">05</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">rewire =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">threshold.dist =</span> <span class="cf">function</span>(i) <span class="dv">1</span>L,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">exposure.args =</span> <span class="fu">list</span>(<span class="at">normalized =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code># The option -copy.first- is set to TRUE. In this case, the first graph will be treated as a baseline, and thus, networks after T=1 will be replaced with T-1.TRUE</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(diffnet_rumor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
 <pre><code># Diffusion network summary statistics
 # Name     : A diffusion network
 # Behavior : Random contagion
 # -----------------------------------------------------------------------------
-#  Period   Adopters   Cum Adopt. (%)   Hazard Rate   Density   Moran&#39;s I (sd)  
+#  Period   Adopters   Cum Adopt. (%)   Hazard Rate   Density   Moran's I (sd)  
 # -------- ---------- ---------------- ------------- --------- ---------------- 
 #        1         25        25 (0.05)             -      0.01 -0.00 (0.00)     
 #        2         78       103 (0.21)          0.16      0.01  0.01 (0.00) *** 
@@ -537,55 +344,83 @@ diffnet_rumor &lt;- rdiffnet(
 #  Right centoring : 0.00 (0)
 #  # of nodes      : 500
 # 
-#  Moran&#39;s I was computed on contemporaneous autocorrelation using 1/geodesic
+#  Moran's I was computed on contemporaneous autocorrelation using 1/geodesic
 #  values. Significane levels  *** &lt;= .01, ** &lt;= .05, * &lt;= .1.</code></pre>
-<pre class="r"><code>plot_diffnet(diffnet_rumor, slices = c(1, 3, 5))</code></pre>
-<p><img src="sim_files/figure-html/plot-rumor-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code># We want to use igraph to compute layout
-igdf &lt;- diffnet_to_igraph(diffnet_rumor, slices=c(1,2))[[1]]
-pos &lt;- igraph::layout_with_drl(igdf)
-
-plot_diffnet2(diffnet_rumor, vertex.size = dgr(diffnet_rumor)[,1], layout=pos)</code></pre>
-<p><img src="sim_files/figure-html/plot-rumor-2.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="difussion" class="section level1">
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_diffnet</span>(diffnet_rumor, <span class="at">slices =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="sim_files/figure-html/plot-rumor-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We want to use igraph to compute layout</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>igdf <span class="ot">&lt;-</span> <span class="fu">diffnet_to_igraph</span>(diffnet_rumor, <span class="at">slices=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))[[<span class="dv">1</span>]]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">layout_with_drl</span>(igdf)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_diffnet2</span>(diffnet_rumor, <span class="at">vertex.size =</span> <span class="fu">dgr</span>(diffnet_rumor)[,<span class="dv">1</span>], <span class="at">layout=</span>pos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="sim_files/figure-html/plot-rumor-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="difussion" class="level1">
 <h1>Difussion</h1>
-<pre class="r"><code>set.seed(09)
-diffnet_complex &lt;- rdiffnet(
-  seed.graph = diffnet_rumor$graph,
-  seed.nodes = which(diffnet_rumor$toa == 1),
-  rewire = FALSE,
-  threshold.dist = function(i) rbeta(1, 3, 10),
-  name = &quot;Diffusion&quot;,
-  behavior = &quot;Some social behavior&quot;
-)</code></pre>
-<pre class="r"><code>plot_adopters(diffnet_rumor, what = &quot;cumadopt&quot;, include.legend = FALSE)
-plot_adopters(diffnet_complex, bg=&quot;tomato&quot;, add=TRUE, what = &quot;cumadopt&quot;)
-legend(&quot;topleft&quot;, legend = c(&quot;Disease&quot;, &quot;Complex&quot;), col = c(&quot;lightblue&quot;, &quot;tomato&quot;),
-       bty = &quot;n&quot;, pch=19)</code></pre>
-<p><img src="sim_files/figure-html/plot-complex-and-disease-1.png" width="672" /></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">09</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>diffnet_complex <span class="ot">&lt;-</span> <span class="fu">rdiffnet</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed.graph =</span> diffnet_rumor<span class="sc">$</span>graph,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed.nodes =</span> <span class="fu">which</span>(diffnet_rumor<span class="sc">$</span>toa <span class="sc">==</span> <span class="dv">1</span>),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">rewire =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">threshold.dist =</span> <span class="cf">function</span>(i) <span class="fu">rbeta</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">10</span>),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">"Diffusion"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">behavior =</span> <span class="st">"Some social behavior"</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="mentor-matching" class="section level1">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_adopters</span>(diffnet_rumor, <span class="at">what =</span> <span class="st">"cumadopt"</span>, <span class="at">include.legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_adopters</span>(diffnet_complex, <span class="at">bg=</span><span class="st">"tomato"</span>, <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">what =</span> <span class="st">"cumadopt"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Disease"</span>, <span class="st">"Complex"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, <span class="st">"tomato"</span>),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">pch=</span><span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sim_files/figure-html/plot-complex-and-disease-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="mentor-matching" class="level1">
 <h1>Mentor Matching</h1>
-<pre class="r"><code># Finding mentors
-mentors &lt;- mentor_matching(diffnet_rumor, 25, lead.ties.method = &quot;random&quot;)
-
-# Simulating diffusion with these mentors
-set.seed(09)
-diffnet_mentored &lt;- rdiffnet(
-  seed.graph = diffnet_complex,
-  seed.nodes = which(mentors$`1`$isleader),
-  rewire = FALSE,
-  threshold.dist = diffnet_complex[[&quot;real_threshold&quot;]],
-  name = &quot;Diffusion using Mentors&quot;
-)
-
-summary(diffnet_mentored)</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Finding mentors</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>mentors <span class="ot">&lt;-</span> <span class="fu">mentor_matching</span>(diffnet_rumor, <span class="dv">25</span>, <span class="at">lead.ties.method =</span> <span class="st">"random"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulating diffusion with these mentors</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">09</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>diffnet_mentored <span class="ot">&lt;-</span> <span class="fu">rdiffnet</span>(</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed.graph =</span> diffnet_complex,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed.nodes =</span> <span class="fu">which</span>(mentors<span class="sc">$</span><span class="st">`</span><span class="at">1</span><span class="st">`</span><span class="sc">$</span>isleader),</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">rewire =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">threshold.dist =</span> diffnet_complex[[<span class="st">"real_threshold"</span>]],</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">"Diffusion using Mentors"</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(diffnet_mentored)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
 <pre><code># Diffusion network summary statistics
 # Name     : Diffusion using Mentors
 # Behavior : Random contagion
 # -----------------------------------------------------------------------------
-#  Period   Adopters   Cum Adopt. (%)   Hazard Rate   Density   Moran&#39;s I (sd)  
+#  Period   Adopters   Cum Adopt. (%)   Hazard Rate   Density   Moran's I (sd)  
 # -------- ---------- ---------------- ------------- --------- ---------------- 
 #        1         25        25 (0.05)             -      0.01 -0.00 (0.00)     
 #        2         92       117 (0.23)          0.19      0.01  0.01 (0.00) *** 
@@ -597,175 +432,593 @@ summary(diffnet_mentored)</code></pre>
 #  Right centoring : 0.02 (8)
 #  # of nodes      : 500
 # 
-#  Moran&#39;s I was computed on contemporaneous autocorrelation using 1/geodesic
+#  Moran's I was computed on contemporaneous autocorrelation using 1/geodesic
 #  values. Significane levels  *** &lt;= .01, ** &lt;= .05, * &lt;= .1.</code></pre>
-<pre class="r"><code>cumulative_adopt_count(diffnet_complex)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cumulative_adopt_count</span>(diffnet_complex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
 <pre><code>#          1     2        3           4           5
 # num  25.00 80.00 183.0000 338.0000000 470.0000000
 # prop  0.05  0.16   0.3660   0.6760000   0.9400000
 # rate  0.00  2.20   1.2875   0.8469945   0.3905325</code></pre>
-<pre class="r"><code>cumulative_adopt_count(diffnet_mentored)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cumulative_adopt_count</span>(diffnet_mentored)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
 <pre><code>#          1       2          3           4           5
 # num  25.00 117.000 269.000000 419.0000000 492.0000000
 # prop  0.05   0.234   0.538000   0.8380000   0.9840000
 # rate  0.00   3.680   1.299145   0.5576208   0.1742243</code></pre>
 </div>
-<div id="example-by-changing-threshold" class="section level1">
+</div>
+</section>
+<section id="example-by-changing-threshold" class="level1">
 <h1>Example by changing threshold</h1>
-<pre class="r"><code>
-# Simulating a scale-free homophilic network
-set.seed(1231)
-X &lt;- rep(c(1,1,1,1,1,0,0,0,0,0), 50)
-net &lt;- rgraph_ba(t = 499, m=4, eta = X)
-
-# Taking a look in igraph
-ig  &lt;- igraph::graph_from_adjacency_matrix(net)
-plot(ig, vertex.color = c(&quot;azure&quot;, &quot;tomato&quot;)[X+1], vertex.label = NA,
-     vertex.size = sqrt(dgr(net)))</code></pre>
-<p><img src="sim_files/figure-html/sim-sim-1.png" width="672" /></p>
-<pre class="r"><code>
-# Now, simulating a bunch of diffusion processes
-nsim &lt;- 500L
-ans_1and2 &lt;- vector(&quot;list&quot;, nsim)
-set.seed(223)
-for (i in 1:nsim) {
-  # We just want the cum adopt count
-  ans_1and2[[i]] &lt;- 
-    cumulative_adopt_count(
-      rdiffnet(
-        seed.graph = net,
-        t = 10,
-        threshold.dist = sample(1:2, 500L, TRUE),
-        seed.nodes = &quot;random&quot;,
-        seed.p.adopt = .10,
-        exposure.args = list(outgoing = FALSE, normalized = FALSE),
-        rewire = FALSE
-        )
-      )
-  
-  # Are we there yet?
-  if (!(i %% 50))
-    message(&quot;Simulation &quot;, i,&quot; of &quot;, nsim, &quot; done.&quot;)
-}
-# Simulation 50 of 500 done.
-# Simulation 100 of 500 done.
-# Simulation 150 of 500 done.
-# Simulation 200 of 500 done.
-# Simulation 250 of 500 done.
-# Simulation 300 of 500 done.
-# Simulation 350 of 500 done.
-# Simulation 400 of 500 done.
-# Simulation 450 of 500 done.
-# Simulation 500 of 500 done.
-
-# Extracting prop
-ans_1and2 &lt;- do.call(rbind, lapply(ans_1and2, &quot;[&quot;, i=&quot;prop&quot;, j=))
-
-ans_2and3 &lt;- vector(&quot;list&quot;, nsim)
-set.seed(223)
-for (i in 1:nsim) {
-  # We just want the cum adopt count
-  ans_2and3[[i]] &lt;- 
-    cumulative_adopt_count(
-      rdiffnet(
-        seed.graph = net,
-        t = 10,
-        threshold.dist = sample(2:3, 500L, TRUE),
-        seed.nodes = &quot;random&quot;,
-        seed.p.adopt = .10,
-        exposure.args = list(outgoing = FALSE, normalized = FALSE),
-        rewire = FALSE
-        )
-      )
-  
-  # Are we there yet?
-  if (!(i %% 50))
-    message(&quot;Simulation &quot;, i,&quot; of &quot;, nsim, &quot; done.&quot;)
-}
-# Simulation 50 of 500 done.
-# Simulation 100 of 500 done.
-# Simulation 150 of 500 done.
-# Simulation 200 of 500 done.
-# Simulation 250 of 500 done.
-# Simulation 300 of 500 done.
-# Simulation 350 of 500 done.
-# Simulation 400 of 500 done.
-# Simulation 450 of 500 done.
-# Simulation 500 of 500 done.
-
-ans_2and3 &lt;- do.call(rbind, lapply(ans_2and3, &quot;[&quot;, i=&quot;prop&quot;, j=))</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulating a scale-free homophilic network</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1231</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>), <span class="dv">50</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>net <span class="ot">&lt;-</span> <span class="fu">rgraph_ba</span>(<span class="at">t =</span> <span class="dv">499</span>, <span class="at">m=</span><span class="dv">4</span>, <span class="at">eta =</span> X)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Taking a look in igraph</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>ig  <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">graph_from_adjacency_matrix</span>(net)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ig, <span class="at">vertex.color =</span> <span class="fu">c</span>(<span class="st">"azure"</span>, <span class="st">"tomato"</span>)[X<span class="sc">+</span><span class="dv">1</span>], <span class="at">vertex.label =</span> <span class="cn">NA</span>,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.size =</span> <span class="fu">sqrt</span>(<span class="fu">dgr</span>(net)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sim_files/figure-html/sim-sim-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Now, simulating a bunch of diffusion processes</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>nsim <span class="ot">&lt;-</span> <span class="dv">500</span>L</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>ans_1and2 <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, nsim)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">223</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsim) {</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We just want the cum adopt count</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  ans_1and2[[i]] <span class="ot">&lt;-</span> </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cumulative_adopt_count</span>(</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rdiffnet</span>(</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">seed.graph =</span> net,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">t =</span> <span class="dv">10</span>,</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">threshold.dist =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">500</span>L, <span class="cn">TRUE</span>),</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">seed.nodes =</span> <span class="st">"random"</span>,</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">seed.p.adopt =</span> .<span class="dv">10</span>,</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">exposure.args =</span> <span class="fu">list</span>(<span class="at">outgoing =</span> <span class="cn">FALSE</span>, <span class="at">normalized =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">rewire =</span> <span class="cn">FALSE</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Are we there yet?</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span>(i <span class="sc">%%</span> <span class="dv">50</span>))</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Simulation "</span>, i,<span class="st">" of "</span>, nsim, <span class="st">" done."</span>)</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 50 of 500 done.</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 100 of 500 done.</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 150 of 500 done.</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 200 of 500 done.</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 250 of 500 done.</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 300 of 500 done.</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 350 of 500 done.</span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 400 of 500 done.</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 450 of 500 done.</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 500 of 500 done.</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Extracting prop</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>ans_1and2 <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(ans_1and2, <span class="st">"["</span>, <span class="at">i=</span><span class="st">"prop"</span>, <span class="at">j=</span>))</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>ans_2and3 <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, nsim)</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">223</span>)</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsim) {</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We just want the cum adopt count</span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>  ans_2and3[[i]] <span class="ot">&lt;-</span> </span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cumulative_adopt_count</span>(</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rdiffnet</span>(</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>        <span class="at">seed.graph =</span> net,</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>        <span class="at">t =</span> <span class="dv">10</span>,</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>        <span class="at">threshold.dist =</span> <span class="fu">sample</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">500</span>L, <span class="cn">TRUE</span>),</span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>        <span class="at">seed.nodes =</span> <span class="st">"random"</span>,</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>        <span class="at">seed.p.adopt =</span> .<span class="dv">10</span>,</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>        <span class="at">exposure.args =</span> <span class="fu">list</span>(<span class="at">outgoing =</span> <span class="cn">FALSE</span>, <span class="at">normalized =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>        <span class="at">rewire =</span> <span class="cn">FALSE</span></span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Are we there yet?</span></span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span>(i <span class="sc">%%</span> <span class="dv">50</span>))</span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Simulation "</span>, i,<span class="st">" of "</span>, nsim, <span class="st">" done."</span>)</span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 50 of 500 done.</span></span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 100 of 500 done.</span></span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 150 of 500 done.</span></span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 200 of 500 done.</span></span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 250 of 500 done.</span></span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 300 of 500 done.</span></span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 350 of 500 done.</span></span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 400 of 500 done.</span></span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 450 of 500 done.</span></span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation 500 of 500 done.</span></span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a>ans_2and3 <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(ans_2and3, <span class="st">"["</span>, <span class="at">i=</span><span class="st">"prop"</span>, <span class="at">j=</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>This can actually be simplified by using the function <code>rdiffnet_multiple</code>. The following lines of code accomplish the same as the previous code avoiding the for-loop (from the user’s perspective). Besides of the usual parameters passed to <code>rdiffnet</code>, the <code>rdiffnet_multiple</code> function requires <code>R</code> (number of repetitions/simulations), and <code>statistic</code> (a function that returns the statistic of insterst). Optionally, the user may choose to specify the number of clusters to run it in parallel (multiple CPUs):</p>
-<pre class="r"><code>ans_1and3 &lt;- rdiffnet_multiple(
-  # Num of sim
-  R              = nsim,
-  # Statistic
-  statistic      = function(d) cumulative_adopt_count(d)[&quot;prop&quot;,], 
-  seed.graph     = net,
-  t              = 10,
-  threshold.dist = sample(1:3, 500, TRUE),
-  seed.nodes     = &quot;random&quot;,
-  seed.p.adopt   = .1,
-  rewire         = FALSE,
-  exposure.args  = list(outgoing=FALSE, normalized=FALSE),
-  # Running on 4 cores
-  ncpus          = 4L
-  )</code></pre>
-<pre class="r"><code>boxplot(ans_1and2, col=&quot;ivory&quot;, xlab = &quot;Time&quot;, ylab = &quot;Threshold&quot;)
-boxplot(ans_2and3, col=&quot;tomato&quot;, add=TRUE)
-boxplot(t(ans_1and3), col = &quot;steelblue&quot;, add=TRUE)
-legend(
-  &quot;topleft&quot;,
-  fill = c(&quot;ivory&quot;, &quot;tomato&quot;, &quot;steelblue&quot;),
-  legend = c(&quot;1/2&quot;, &quot;2/3&quot;, &quot;1/3&quot;),
-  title = &quot;Threshold range&quot;,
-  bty =&quot;n&quot;
-)</code></pre>
-<p><img src="sim_files/figure-html/sim-sim-results-1.png" width="672" /></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ans_1and3 <span class="ot">&lt;-</span> <span class="fu">rdiffnet_multiple</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Num of sim</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">R              =</span> nsim,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Statistic</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic      =</span> <span class="cf">function</span>(d) <span class="fu">cumulative_adopt_count</span>(d)[<span class="st">"prop"</span>,], </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed.graph     =</span> net,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">t              =</span> <span class="dv">10</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">threshold.dist =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">500</span>, <span class="cn">TRUE</span>),</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed.nodes     =</span> <span class="st">"random"</span>,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed.p.adopt   =</span> .<span class="dv">1</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">rewire         =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">exposure.args  =</span> <span class="fu">list</span>(<span class="at">outgoing=</span><span class="cn">FALSE</span>, <span class="at">normalized=</span><span class="cn">FALSE</span>),</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Running on 4 cores</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">ncpus          =</span> <span class="dv">4</span>L</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(ans_1and2, <span class="at">col=</span><span class="st">"ivory"</span>, <span class="at">xlab =</span> <span class="st">"Time"</span>, <span class="at">ylab =</span> <span class="st">"Threshold"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(ans_2and3, <span class="at">col=</span><span class="st">"tomato"</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(<span class="fu">t</span>(ans_1and3), <span class="at">col =</span> <span class="st">"steelblue"</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"topleft"</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="fu">c</span>(<span class="st">"ivory"</span>, <span class="st">"tomato"</span>, <span class="st">"steelblue"</span>),</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"1/2"</span>, <span class="st">"2/3"</span>, <span class="st">"1/3"</span>),</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Threshold range"</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">bty =</span><span class="st">"n"</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sim_files/figure-html/sim-sim-results-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <ul>
 <li>Example simulating a thousand networks by changing threshold levels. The final prevalence, or hazard as a function of threshold levels.</li>
 </ul>
-</div>
-<div id="problems" class="section level1">
+</section>
+<section id="problems" class="level1">
 <h1>Problems</h1>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>Given the following types of networks: Small-world, Scale-free, Bernoulli, what set of <span class="math inline">\(n\)</span> initiators maximizes diffusion? (<a href="sim-solutions.r" target="_blank">solution script</a> and <a href="sim-solutions.png" target="_blank">solution plot</a>)</li>
 </ol>
-</div>
-
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiU2ltdWxhdGlvbiBvZiBkaWZmdXNpb24gbmV0d29ya3M6IHJkaWZmbmV0IgphdXRob3I6ICJUaG9tYXMgVy4gVmFsZW50ZSBhbmQgR2VvcmdlIEcuIFZlZ2EgWW9uIgotLS0KCmBgYHtyIHNldHVwLCBlY2hvPUZBTFNFLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KG5ldGRpZmZ1c2VSKQprbml0cjo6b3B0c19jaHVuayRzZXQoY29tbWVudCA9ICIjIikKCmBgYAoKIyBJbnRyb2R1Y3Rpb24KCkJlZm9yZSB3ZSBzdGFydCwgYSByZXZpZXcgb2YgdGhlIGNvbmNlcHRzIHdlIHdpbGwgYmUgdXNpbmcgaGVyZQoKMS4gRXhwb3N1cmU6IFByb3BvcnRpb24vbnVtYmVyIG9mIG5laWdoYm9ycyB0aGF0IGhhcyBhZG9wdGVkIGFuIGlubm92YXRpb24gYXQgZWFjaCBwb2ludCBpbiB0aW1lLgoyLiBUaHJlc2hvbGQ6IFRoZSBwcm9wb3J0aW9uL251bWJlciBvZiB5b3VyIG5laWdoYm9ycyB3aG8gaGFkIGFkb3B0ZWQgYXQgb3Igb25lIHRpbWUgcGVyaW9kIGJlZm9yZSBlZ28gKHRoZSBmb2NhbCBpbmRpdmlkdWFsKSBhZG9wdGVkLgozLiBJbmZlY3Rpb3VzbmVzczogSG93IG11Y2ggJGkkJ3MgYWRvcHRpb24gYWZmZWN0cyBoZXIgYWx0ZXJzLgo0LiBTdXNjZXB0aWJpbGl0eTogSG93IG11Y2ggJGkkJ3MgYWx0ZXJzJyBhZG9wdGlvbiBhZmZlY3RzIGhlci4KNS4gU3RydWN0dXJhbCBlcXVpdmFsZW5jZTogSG93IHNpbWlsYXIgYXJlICRpJCBhbmQgJGokIGluIHRlcm1zIG9mIHBvc2l0aW9uIGluIHRoZSBuZXR3b3JrLgoKIyBTaW11bGF0aW5nIGRpZmZ1c2lvbiBuZXR3b3JrcwoKV2Ugd2lsbCBzaW11bGF0ZSBhIGRpZmZ1c2lvbiBuZXR3b3JrIHdpdGggdGhlIGZvbGxvd2luZyBwYXJhbWV0ZXJzOgoKMS4gIFdpbGwgaGF2ZSAxLDAwMCB2ZXJ0aWNlcywKMi4gIFdpbGwgc3BhbiAyMCB0aW1lIHBlcmlvZHMsCjMuICBUaGUgaW5pdGlhbCBhZG9wdGVycyAoc2VlZHMpIHdpbGwgYmUgc2VsZWN0ZWQgcmFuZG9tLAo0LiAgU2VlZHMgd2lsbCBiZSBhIDEwXCUgb2YgdGhlIG5ldHdvcmssCjUuICBUaGUgZ3JhcGggKG5ldHdvcmspIHdpbGwgYmUgc21hbGwtd29ybGQsCjYuICBXaWxsIHVzZSB0aGUgV1MgYWxnb3JpdGhtd2l0aCAkcD0uMiQgKHByb2JhYmlsaXR5IG9mIHJld2lyZSkuCjcuICBUaHJlc2hvbGQgbGV2ZWxzIHdpbGwgYmUgdW5pZm9ybWx5IGRpc3RyaWJ1dGVkIGJldHdlZW4gWzAuMywgMC43XF0KClRvIGdlbmVyYXRlIHRoaXMgZGlmZnVzaW9uIG5ldHdvcmsgd2UgY2FuIHVzZSB0aGUgYHJkaWZmbmV0YCBmdW5jdGlvbiBpbmNsdWRlZCBpbiB0aGUgcGFja2FnZToKCgpgYGB7ciBHZW5lcmF0aW5nIHRoZSByYW5kb20gZ3JhcGh9CiMgU2V0dGluZyB0aGUgc2VlZCBmb3IgdGhlIFJORwpzZXQuc2VlZCgxMjEzKQoKIyBHZW5lcmF0aW5nIGEgcmFuZG9tIGRpZmZ1c2lvbiBuZXR3b3JrCm5ldCA8LSByZGlmZm5ldCgKICBuICAgICAgICAgICAgICA9IDFlMywgICAgICAgICAgICAgICAgICAgICAgICAgIyAxLgogIHQgICAgICAgICAgICAgID0gMjAsICAgICAgICAgICAgICAgICAgICAgICAgICAjIDIuCiAgc2VlZC5ub2RlcyAgICAgPSAicmFuZG9tIiwgICAgICAgICAgICAgICAgICAgICMgMy4KICBzZWVkLnAuYWRvcHQgICA9IC4xLCAgICAgICAgICAgICAgICAgICAgICAgICAgIyA0LgogIHNlZWQuZ3JhcGggICAgID0gInNtYWxsLXdvcmxkIiwgICAgICAgICAgICAgICAjIDUuCiAgcmdyYXBoLmFyZ3MgICAgPSBsaXN0KHA9LjIpLCAgICAgICAgICAgICAgICAgICMgNi4KICB0aHJlc2hvbGQuZGlzdCA9IGZ1bmN0aW9uKHgpIHJ1bmlmKDEsIC4zLCAuNykgIyA3LgogICkKYGBgCgoKKiAgIFRoZSBmdW5jdGlvbiBgcmRpZmZuZXRgIGdlbmVyYXRlcyByYW5kb20gZGlmZnVzaW9uIG5ldHdvcmtzLiBNYWluIGZlYXR1cmVzOgogICAgCiAgICAxLiAgU2ltdWxhdGluZyByYW5kb20gZ3JhcGggb3IgdXNpbmcgeW91ciBvd24sCiAgICAKICAgIDIuICBTZXR0aW5nIHRocmVzaG9sZCBsZXZlbHMgcGVyIG5vZGUsCiAgICAKICAgIDMuICBOZXR3b3JrIHJld2lyaW5nIHRocm91Z2hvdXQgdGhlIHNpbXVsYXRpb24sIGFuZAogICAgCiAgICA0LiAgU2V0dGluZyB0aGUgc2VlZCBub2Rlcy4KICAgIAogICAgCiogICBUaGUgc2ltdWxhdGlvbiBhbGdvcml0aG0gaXMgYXMgZm9sbG93czoKICAgIAogICAgMS4gIElmIHJlcXVpcmVkLCBhIGJhc2VsaW5lIGdyYXBoIGlzIGNyZWF0ZWQsCiAgICAKICAgIDIuICBTZXQgb2YgaW5pdGlhbCBhZG9wdGVycyBhbmQgdGhyZXNob2xkIGRpc3RyaWJ1dGlvbiBhcmUgZXN0YWJsaXNoZWQsCiAgICAKICAgIDMuICBUaGUgc2V0IG9mIHQgbmV0d29ya3MgaXMgY3JlYXRlZCAoaWYgcmVxdWlyZWQpLCBhbmQKICAgIAogICAgNC4gIFNpbXVsYXRpb24gc3RhcnRzIGF0IHQ9MiwgYXNzaWduaW5nIGFkb3B0ZXJzIGJhc2VkIG9uIGV4cG9zdXJlcyBhbmQgdGhyZXNob2xkczoKICAgIAogICAgICAgIGEuICBGb3IgZWFjaCAkaSBcaW4gTiQsIGlmIGl0cyBleHBvc3VyZSBhdCAkdC0xJCBpcyBncmVhdGVyIHRoYW4gaXRzIHRocmVzaG9sZCwgdGhlbiAKICAgICAgICAgICAgYWRvcHRzLCBvdGhlcndpc2UgY29udGludWUgd2l0aG91dCBjaGFuZ2UuCiAgICAgICAgICAgIAogICAgICAgIGIuICBuZXh0ICRpJAogICAgCiMgUnVtb3Igc3ByZWFkaW5nCgpgYGB7ciBzaW0tcnVtb3J9CmxpYnJhcnkobmV0ZGlmZnVzZVIpCgpzZXQuc2VlZCgwOSkKZGlmZm5ldF9ydW1vciA8LSByZGlmZm5ldCgKICBuID0gNWUyLAogIHQgPSA1LCAKICBzZWVkLmdyYXBoID0gInNtYWxsLXdvcmxkIiwKICByZ3JhcGguYXJncyA9IGxpc3QoayA9IDQsIHAgPSAuMyksCiAgc2VlZC5ub2RlcyA9ICJyYW5kb20iLAogIHNlZWQucC5hZG9wdCA9IC4wNSwKICByZXdpcmUgPSBUUlVFLAogIHRocmVzaG9sZC5kaXN0ID0gZnVuY3Rpb24oaSkgMUwsCiAgZXhwb3N1cmUuYXJncyA9IGxpc3Qobm9ybWFsaXplZCA9IEZBTFNFKQogICkKYGBgCgpgYGB7ciBzdW1tYXJ5LXJ1bW9yfQpzdW1tYXJ5KGRpZmZuZXRfcnVtb3IpCmBgYAoKCmBgYHtyIHBsb3QtcnVtb3IsIGZpZy5hbGlnbj0nY2VudGVyJywgY2FjaGU9VFJVRX0KcGxvdF9kaWZmbmV0KGRpZmZuZXRfcnVtb3IsIHNsaWNlcyA9IGMoMSwgMywgNSkpCgojIFdlIHdhbnQgdG8gdXNlIGlncmFwaCB0byBjb21wdXRlIGxheW91dAppZ2RmIDwtIGRpZmZuZXRfdG9faWdyYXBoKGRpZmZuZXRfcnVtb3IsIHNsaWNlcz1jKDEsMikpW1sxXV0KcG9zIDwtIGlncmFwaDo6bGF5b3V0X3dpdGhfZHJsKGlnZGYpCgpwbG90X2RpZmZuZXQyKGRpZmZuZXRfcnVtb3IsIHZlcnRleC5zaXplID0gZGdyKGRpZmZuZXRfcnVtb3IpWywxXSwgbGF5b3V0PXBvcykKYGBgCgoKIyBEaWZ1c3Npb24KCmBgYHtyIHNpbS1jb21wbGV4fQpzZXQuc2VlZCgwOSkKZGlmZm5ldF9jb21wbGV4IDwtIHJkaWZmbmV0KAogIHNlZWQuZ3JhcGggPSBkaWZmbmV0X3J1bW9yJGdyYXBoLAogIHNlZWQubm9kZXMgPSB3aGljaChkaWZmbmV0X3J1bW9yJHRvYSA9PSAxKSwKICByZXdpcmUgPSBGQUxTRSwKICB0aHJlc2hvbGQuZGlzdCA9IGZ1bmN0aW9uKGkpIHJiZXRhKDEsIDMsIDEwKSwKICBuYW1lID0gIkRpZmZ1c2lvbiIsCiAgYmVoYXZpb3IgPSAiU29tZSBzb2NpYWwgYmVoYXZpb3IiCikKCmBgYAoKYGBge3IgcGxvdC1jb21wbGV4LWFuZC1kaXNlYXNlfQpwbG90X2Fkb3B0ZXJzKGRpZmZuZXRfcnVtb3IsIHdoYXQgPSAiY3VtYWRvcHQiLCBpbmNsdWRlLmxlZ2VuZCA9IEZBTFNFKQpwbG90X2Fkb3B0ZXJzKGRpZmZuZXRfY29tcGxleCwgYmc9InRvbWF0byIsIGFkZD1UUlVFLCB3aGF0ID0gImN1bWFkb3B0IikKbGVnZW5kKCJ0b3BsZWZ0IiwgbGVnZW5kID0gYygiRGlzZWFzZSIsICJDb21wbGV4IiksIGNvbCA9IGMoImxpZ2h0Ymx1ZSIsICJ0b21hdG8iKSwKICAgICAgIGJ0eSA9ICJuIiwgcGNoPTE5KQpgYGAKCgojIE1lbnRvciBNYXRjaGluZwoKYGBge3IgbWVudG9yLW1hdGNoLCBjYWNoZSA9IFRSVUV9CgojIEZpbmRpbmcgbWVudG9ycwptZW50b3JzIDwtIG1lbnRvcl9tYXRjaGluZyhkaWZmbmV0X3J1bW9yLCAyNSwgbGVhZC50aWVzLm1ldGhvZCA9ICJyYW5kb20iKQoKIyBTaW11bGF0aW5nIGRpZmZ1c2lvbiB3aXRoIHRoZXNlIG1lbnRvcnMKc2V0LnNlZWQoMDkpCmRpZmZuZXRfbWVudG9yZWQgPC0gcmRpZmZuZXQoCiAgc2VlZC5ncmFwaCA9IGRpZmZuZXRfY29tcGxleCwKICBzZWVkLm5vZGVzID0gd2hpY2gobWVudG9ycyRgMWAkaXNsZWFkZXIpLAogIHJld2lyZSA9IEZBTFNFLAogIHRocmVzaG9sZC5kaXN0ID0gZGlmZm5ldF9jb21wbGV4W1sicmVhbF90aHJlc2hvbGQiXV0sCiAgbmFtZSA9ICJEaWZmdXNpb24gdXNpbmcgTWVudG9ycyIKKQoKc3VtbWFyeShkaWZmbmV0X21lbnRvcmVkKQpgYGAKCmBgYHtyIHRvYV9tYXQtbWVudG9yc30KY3VtdWxhdGl2ZV9hZG9wdF9jb3VudChkaWZmbmV0X2NvbXBsZXgpCmN1bXVsYXRpdmVfYWRvcHRfY291bnQoZGlmZm5ldF9tZW50b3JlZCkKYGBgCgoKIyBFeGFtcGxlIGJ5IGNoYW5naW5nIHRocmVzaG9sZAoKYGBge3Igc2ltLXNpbSwgY2FjaGUgPSBUUlVFLCBjb2xsYXBzZSA9IFRSVUV9CgojIFNpbXVsYXRpbmcgYSBzY2FsZS1mcmVlIGhvbW9waGlsaWMgbmV0d29yawpzZXQuc2VlZCgxMjMxKQpYIDwtIHJlcChjKDEsMSwxLDEsMSwwLDAsMCwwLDApLCA1MCkKbmV0IDwtIHJncmFwaF9iYSh0ID0gNDk5LCBtPTQsIGV0YSA9IFgpCgojIFRha2luZyBhIGxvb2sgaW4gaWdyYXBoCmlnICA8LSBpZ3JhcGg6OmdyYXBoX2Zyb21fYWRqYWNlbmN5X21hdHJpeChuZXQpCnBsb3QoaWcsIHZlcnRleC5jb2xvciA9IGMoImF6dXJlIiwgInRvbWF0byIpW1grMV0sIHZlcnRleC5sYWJlbCA9IE5BLAogICAgIHZlcnRleC5zaXplID0gc3FydChkZ3IobmV0KSkpCgojIE5vdywgc2ltdWxhdGluZyBhIGJ1bmNoIG9mIGRpZmZ1c2lvbiBwcm9jZXNzZXMKbnNpbSA8LSA1MDBMCmFuc18xYW5kMiA8LSB2ZWN0b3IoImxpc3QiLCBuc2ltKQpzZXQuc2VlZCgyMjMpCmZvciAoaSBpbiAxOm5zaW0pIHsKICAjIFdlIGp1c3Qgd2FudCB0aGUgY3VtIGFkb3B0IGNvdW50CiAgYW5zXzFhbmQyW1tpXV0gPC0gCiAgICBjdW11bGF0aXZlX2Fkb3B0X2NvdW50KAogICAgICByZGlmZm5ldCgKICAgICAgICBzZWVkLmdyYXBoID0gbmV0LAogICAgICAgIHQgPSAxMCwKICAgICAgICB0aHJlc2hvbGQuZGlzdCA9IHNhbXBsZSgxOjIsIDUwMEwsIFRSVUUpLAogICAgICAgIHNlZWQubm9kZXMgPSAicmFuZG9tIiwKICAgICAgICBzZWVkLnAuYWRvcHQgPSAuMTAsCiAgICAgICAgZXhwb3N1cmUuYXJncyA9IGxpc3Qob3V0Z29pbmcgPSBGQUxTRSwgbm9ybWFsaXplZCA9IEZBTFNFKSwKICAgICAgICByZXdpcmUgPSBGQUxTRQogICAgICAgICkKICAgICAgKQogIAogICMgQXJlIHdlIHRoZXJlIHlldD8KICBpZiAoIShpICUlIDUwKSkKICAgIG1lc3NhZ2UoIlNpbXVsYXRpb24gIiwgaSwiIG9mICIsIG5zaW0sICIgZG9uZS4iKQp9CgojIEV4dHJhY3RpbmcgcHJvcAphbnNfMWFuZDIgPC0gZG8uY2FsbChyYmluZCwgbGFwcGx5KGFuc18xYW5kMiwgIlsiLCBpPSJwcm9wIiwgaj0pKQoKYW5zXzJhbmQzIDwtIHZlY3RvcigibGlzdCIsIG5zaW0pCnNldC5zZWVkKDIyMykKZm9yIChpIGluIDE6bnNpbSkgewogICMgV2UganVzdCB3YW50IHRoZSBjdW0gYWRvcHQgY291bnQKICBhbnNfMmFuZDNbW2ldXSA8LSAKICAgIGN1bXVsYXRpdmVfYWRvcHRfY291bnQoCiAgICAgIHJkaWZmbmV0KAogICAgICAgIHNlZWQuZ3JhcGggPSBuZXQsCiAgICAgICAgdCA9IDEwLAogICAgICAgIHRocmVzaG9sZC5kaXN0ID0gc2FtcGxlKDI6MywgNTAwTCwgVFJVRSksCiAgICAgICAgc2VlZC5ub2RlcyA9ICJyYW5kb20iLAogICAgICAgIHNlZWQucC5hZG9wdCA9IC4xMCwKICAgICAgICBleHBvc3VyZS5hcmdzID0gbGlzdChvdXRnb2luZyA9IEZBTFNFLCBub3JtYWxpemVkID0gRkFMU0UpLAogICAgICAgIHJld2lyZSA9IEZBTFNFCiAgICAgICAgKQogICAgICApCiAgCiAgIyBBcmUgd2UgdGhlcmUgeWV0PwogIGlmICghKGkgJSUgNTApKQogICAgbWVzc2FnZSgiU2ltdWxhdGlvbiAiLCBpLCIgb2YgIiwgbnNpbSwgIiBkb25lLiIpCn0KCmFuc18yYW5kMyA8LSBkby5jYWxsKHJiaW5kLCBsYXBwbHkoYW5zXzJhbmQzLCAiWyIsIGk9InByb3AiLCBqPSkpCmBgYAoKVGhpcyBjYW4gYWN0dWFsbHkgYmUgc2ltcGxpZmllZCBieSB1c2luZyB0aGUgZnVuY3Rpb24gYHJkaWZmbmV0X211bHRpcGxlYC4gVGhlIGZvbGxvd2luZyBsaW5lcyBvZiBjb2RlIGFjY29tcGxpc2ggdGhlIHNhbWUgYXMgdGhlIHByZXZpb3VzIGNvZGUgYXZvaWRpbmcgdGhlIGZvci1sb29wIChmcm9tIHRoZSB1c2VyJ3MgcGVyc3BlY3RpdmUpLiBCZXNpZGVzIG9mIHRoZSB1c3VhbCBwYXJhbWV0ZXJzIHBhc3NlZCB0byBgcmRpZmZuZXRgLCB0aGUgYHJkaWZmbmV0X211bHRpcGxlYCBmdW5jdGlvbiByZXF1aXJlcyBgUmAgKG51bWJlciBvZiByZXBldGl0aW9ucy9zaW11bGF0aW9ucyksIGFuZCBgc3RhdGlzdGljYCAoYSBmdW5jdGlvbiB0aGF0IHJldHVybnMgdGhlIHN0YXRpc3RpYyBvZiBpbnN0ZXJzdCkuIE9wdGlvbmFsbHksIHRoZSB1c2VyIG1heSBjaG9vc2UgdG8gc3BlY2lmeSB0aGUgbnVtYmVyIG9mIGNsdXN0ZXJzIHRvIHJ1biBpdCBpbiBwYXJhbGxlbCAobXVsdGlwbGUgQ1BVcyk6CgpgYGB7ciByZGlmZm5ldC1tdWx0aXBsZX0KYW5zXzFhbmQzIDwtIHJkaWZmbmV0X211bHRpcGxlKAogICMgTnVtIG9mIHNpbQogIFIgICAgICAgICAgICAgID0gbnNpbSwKICAjIFN0YXRpc3RpYwogIHN0YXRpc3RpYyAgICAgID0gZnVuY3Rpb24oZCkgY3VtdWxhdGl2ZV9hZG9wdF9jb3VudChkKVsicHJvcCIsXSwgCiAgc2VlZC5ncmFwaCAgICAgPSBuZXQsCiAgdCAgICAgICAgICAgICAgPSAxMCwKICB0aHJlc2hvbGQuZGlzdCA9IHNhbXBsZSgxOjMsIDUwMCwgVFJVRSksCiAgc2VlZC5ub2RlcyAgICAgPSAicmFuZG9tIiwKICBzZWVkLnAuYWRvcHQgICA9IC4xLAogIHJld2lyZSAgICAgICAgID0gRkFMU0UsCiAgZXhwb3N1cmUuYXJncyAgPSBsaXN0KG91dGdvaW5nPUZBTFNFLCBub3JtYWxpemVkPUZBTFNFKSwKICAjIFJ1bm5pbmcgb24gNCBjb3JlcwogIG5jcHVzICAgICAgICAgID0gNEwKICApCgpgYGAKCmBgYHtyIHNpbS1zaW0tcmVzdWx0c30KYm94cGxvdChhbnNfMWFuZDIsIGNvbD0iaXZvcnkiLCB4bGFiID0gIlRpbWUiLCB5bGFiID0gIlRocmVzaG9sZCIpCmJveHBsb3QoYW5zXzJhbmQzLCBjb2w9InRvbWF0byIsIGFkZD1UUlVFKQpib3hwbG90KHQoYW5zXzFhbmQzKSwgY29sID0gInN0ZWVsYmx1ZSIsIGFkZD1UUlVFKQpsZWdlbmQoCiAgInRvcGxlZnQiLAogIGZpbGwgPSBjKCJpdm9yeSIsICJ0b21hdG8iLCAic3RlZWxibHVlIiksCiAgbGVnZW5kID0gYygiMS8yIiwgIjIvMyIsICIxLzMiKSwKICB0aXRsZSA9ICJUaHJlc2hvbGQgcmFuZ2UiLAogIGJ0eSA9Im4iCikKYGBgCgoKKiAgIEV4YW1wbGUgc2ltdWxhdGluZyBhIHRob3VzYW5kIG5ldHdvcmtzIGJ5IGNoYW5naW5nIHRocmVzaG9sZCBsZXZlbHMuCiAgICBUaGUgZmluYWwgcHJldmFsZW5jZSwgb3IgaGF6YXJkIGFzIGEgZnVuY3Rpb24gb2YgdGhyZXNob2xkIGxldmVscy4KCiMgUHJvYmxlbXMKCjEuICBHaXZlbiB0aGUgZm9sbG93aW5nIHR5cGVzIG9mIG5ldHdvcmtzOiBTbWFsbC13b3JsZCwgU2NhbGUtZnJlZSwgQmVybm91bGxpLAogICAgd2hhdCBzZXQgb2YgJG4kIGluaXRpYXRvcnMgbWF4aW1pemVzIGRpZmZ1c2lvbj8KICAgICg8YSBocmVmPSJzaW0tc29sdXRpb25zLnIiIHRhcmdldD0iX2JsYW5rIj5zb2x1dGlvbiBzY3JpcHQ8L2E+IGFuZCA8YSBocmVmPSJzaW0tc29sdXRpb25zLnBuZyIgdGFyZ2V0PSJfYmxhbmsiPnNvbHV0aW9uIHBsb3Q8L2E+KQogICAgCgo=</div>
-<p>
-  <center><a href="http://cana.usc.edu" target="_new">University of Southern California<br>Center for Applied Network Analysis (<b>CANA</b>)</a>
-  </center>
-</p>
 
 
-</div>
-</div>
+</section>
 
-</div>
-
-<script>
-
-// add bootstrap table styles to pandoc tables
-function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
-}
-$(document).ready(function () {
-  bootstrapStylePandocTables();
+<p><text style="text-align:center">ForeSITE</text></p></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
 });
-
-
 </script>
+</div> <!-- /content -->
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 
-</body>
-</html>
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/USCCANA/netdiffuser-workshop/edit/main/sim.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/USCCANA/netdiffuser-workshop/blob/main/sim.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div></div></footer></body></html>
