@@ -15,7 +15,9 @@ jobs:
         name: Cache R packages
         id: cache-r-packages
         with:
-          path: '/usr/local/lib/R/site-library/'
+          path: |
+            /usr/local/lib/R/site-library/
+            /usr/lib/R/site-library/
           key: ${{ runner.os }}
 
       - name: Install netdiffuseR
