@@ -22,6 +22,7 @@ jobs:
           install2.r igraph networkDynamic statnet Rcpp MatchIt \
             SparseM viridisLite RcppArmadillo rmarkdown knitr
           R CMD INSTALL netdiffuseR
+          rm -rf netdiffuseR
 
       - name: Install Quarto
         run: |
