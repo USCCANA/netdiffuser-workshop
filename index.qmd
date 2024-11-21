@@ -1,6 +1,9 @@
 ---
-title: "netdiffuseR at Sunbelt 2019"
-author: "Thomas W. Valente and George G. Vega Yon"
+title: "netdiffuseR workshop"
+author:
+  - George G. Vega Yon
+  - Anibal L. Olivera M.
+  - Thomas W. Valente 
 ---
 
 ```{r setup, echo=FALSE}
