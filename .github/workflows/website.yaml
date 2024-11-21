@@ -19,6 +19,7 @@ jobs:
 
       - name: Install netdiffuseR
         run: |
-          install2.r igraph networkDynamic statnet
+          install2.r igraph networkDynamic statnet Rcpp MatchIt \
+            SparseM viridisLite RcppArmadillo
           R CMD INSTALL netdiffuseR
 
