@@ -42,3 +42,14 @@ jobs:
         run: |
           quarto render .
 
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy website
+        uses: actions/deploy-pages@v3
