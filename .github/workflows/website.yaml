@@ -23,3 +23,12 @@ jobs:
             SparseM viridisLite RcppArmadillo
           R CMD INSTALL netdiffuseR
 
+      - name: Install Quarto
+        run: |
+          wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.6.37/quarto-1.6.37-linux-amd64.deb
+          dpkg -i quarto-1.6.37-linux-amd64.deb
+
+      - name: Build website
+        run: |
+          quarto render .
+
