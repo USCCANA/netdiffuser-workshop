@@ -1,7 +1,7 @@
 project:
   type: website
   output-dir: 'docs'
-  
+
 website:
   title: "netdiffuseR: A workshop"
   # body-footer: <text style="text-align:center">ForeSITE</text>
