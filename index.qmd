@@ -8,10 +8,8 @@ author:
 
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(comment = "#")
-
 ```
 
-netdiffuseR at Sunbelt 2019
 
 Workshop materials can be downloaded from https://github.com/USCCANA/netdiffuser-sunbelt2018/tree/sunbelt2019. You can download the entire repository (source code of the workshop) [here](https://github.com/USCCANA/netdiffuser-sunbelt2018/archive/sunbelt2019.zip).
 
