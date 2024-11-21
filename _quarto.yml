@@ -1,0 +1,36 @@
+project:
+  type: website
+  output-dir: 'docs'
+  
+website:
+  title: "netdiffuseR: A workshop"
+  # body-footer: <text style="text-align:center">ForeSITE</text>
+  repo-url: https://github.com/USCCANA/netdiffuser-workshop
+  repo-actions: [edit, source]
+  navbar:
+    left:
+    - text: Home
+      href: index.qmd
+    - text: Lectures
+      menu:
+      - text: Getting Started
+        href: getstarted.qmd
+      - text: Introduction
+        href: intro.qmd
+      - text: Simulations
+        href: sim.qmd
+      - text: Reading data
+        href: read.qmd
+      - text: Statistical inference
+        href: stats.qmd
+    - text: Classic Diffnet Analyses
+      href: classic.qmd
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+
+execute: 
+  freeze: auto
+

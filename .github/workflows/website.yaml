@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: rocker/r2u:4.4.0
+    container: rocker/r2u:latest
 
     steps:
       - uses: actions/checkout@v4
