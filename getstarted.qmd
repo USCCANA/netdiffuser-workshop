@@ -1,5 +1,5 @@
 ---
-author: "George G. Vega Yon"
+author: "George G. Vega Yon, Ph.D."
 ---
 
 # Getting R
