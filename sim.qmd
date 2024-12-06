@@ -114,9 +114,9 @@ plot_diffnet2(diffnet_rumor, vertex.size = dgr(diffnet_rumor)[,1], layout=pos)
 
 # Difussion
 
-```{r sim-complex}
+```{r sim-disease}
 set.seed(09)
-diffnet_complex <- rdiffnet(
+diffnet_disease <- rdiffnet(
   seed.graph = diffnet_rumor$graph,
   seed.nodes = which(diffnet_rumor$toa == 1),
   rewire = FALSE,
@@ -127,13 +127,19 @@ diffnet_complex <- rdiffnet(
 
 ```
 
-```{r plot-complex-and-disease}
+```{r plot-disease-and-disease}
 plot_adopters(diffnet_rumor, what = "cumadopt", include.legend = FALSE)
-plot_adopters(diffnet_complex, bg="tomato", add=TRUE, what = "cumadopt")
-legend("topleft", legend = c("Disease", "Complex"), col = c("lightblue", "tomato"),
-       bty = "n", pch=19)
+plot_adopters(diffnet_disease, bg="lightblue", add=TRUE, what = "cumadopt")
+legend(
+  "topleft",
+  legend = c("Disease", "Rumor"),
+  col = c("lightblue", "tomato"),
+  bty = "n", pch=19
+  )
 ```
 
+
+# Multi-diffusion models (TBD)
 
 # Mentor Matching
 
@@ -145,10 +151,10 @@ mentors <- mentor_matching(diffnet_rumor, 25, lead.ties.method = "random")
 # Simulating diffusion with these mentors
 set.seed(09)
 diffnet_mentored <- rdiffnet(
-  seed.graph = diffnet_complex,
+  seed.graph = diffnet_disease,
   seed.nodes = which(mentors$`1`$isleader),
   rewire = FALSE,
-  threshold.dist = diffnet_complex[["real_threshold"]],
+  threshold.dist = diffnet_disease[["real_threshold"]],
   name = "Diffusion using Mentors"
 )
 
@@ -156,15 +162,17 @@ summary(diffnet_mentored)
 ```
 
 ```{r toa_mat-mentors}
-cumulative_adopt_count(diffnet_complex)
+cumulative_adopt_count(diffnet_disease)
 cumulative_adopt_count(diffnet_mentored)
 ```
 
 
 # Example by changing threshold
 
-```{r sim-sim, cache = TRUE, collapse = TRUE}
+The following block of code runs multiple diffnet simulations. Before we proceed, we will generate a scale-free homophilic network:
 
+```{r}
+#| label: scale-free-homophilic
 # Simulating a scale-free homophilic network
 set.seed(1231)
 X <- rep(c(1,1,1,1,1,0,0,0,0,0), 50)
@@ -174,7 +182,91 @@ net <- rgraph_ba(t = 499, m=4, eta = X)
 ig  <- igraph::graph_from_adjacency_matrix(net)
 plot(ig, vertex.color = c("azure", "tomato")[X+1], vertex.label = NA,
      vertex.size = sqrt(dgr(net)))
+```
 
+Besides of the usual parameters passed to `rdiffnet`, the `rdiffnet_multiple` function requires `R` (number of repetitions/simulations), and `statistic` (a function that returns the statistic of insterst). Optionally, the user may choose to specify the number of clusters to run it in parallel (multiple CPUs):
+
+```{r rdiffnet-multiple}
+nsim <- 500L
+
+ans_1and2 <- rdiffnet_multiple(
+  # Num of sim
+  R              = nsim,
+  # Statistic
+  statistic      = function(d) cumulative_adopt_count(d)["prop",], 
+  seed.graph     = net,
+  t              = 10,
+  threshold.dist = sample(1:2, 500L, TRUE),
+  seed.nodes     = "random",
+  seed.p.adopt   = .1,
+  rewire         = FALSE,
+  exposure.args  = list(outgoing=FALSE, normalized=FALSE),
+  # Running on 4 cores
+  ncpus          = 4L
+  ) |> t()
+
+ans_2and3 <- rdiffnet_multiple(
+  # Num of sim
+  R              = nsim,
+  # Statistic
+  statistic      = function(d) cumulative_adopt_count(d)["prop",], 
+  seed.graph     = net,
+  t              = 10,
+  threshold.dist = sample(2:3, 500, TRUE),
+  seed.nodes     = "random",
+  seed.p.adopt   = .1,
+  rewire         = FALSE,
+  exposure.args  = list(outgoing=FALSE, normalized=FALSE),
+  # Running on 4 cores
+  ncpus          = 4L
+  ) |> t()
+
+ans_1and3 <- rdiffnet_multiple(
+  # Num of sim
+  R              = nsim,
+  # Statistic
+  statistic      = function(d) cumulative_adopt_count(d)["prop",], 
+  seed.graph     = net,
+  t              = 10,
+  threshold.dist = sample(1:3, 500, TRUE),
+  seed.nodes     = "random",
+  seed.p.adopt   = .1,
+  rewire         = FALSE,
+  exposure.args  = list(outgoing=FALSE, normalized=FALSE),
+  # Running on 4 cores
+  ncpus          = 4L
+  ) |> t()
+
+```
+
+```{r sim-sim-results}
+boxplot(ans_1and2, col="ivory", xlab = "Time", ylab = "Proportion of Adopters")
+boxplot(ans_2and3, col="tomato", add=TRUE)
+boxplot(ans_1and3, col = "steelblue", add=TRUE)
+legend(
+  "topleft",
+  fill = c("ivory", "tomato", "steelblue"),
+  legend = c("1/2", "2/3", "1/3"),
+  title = "Threshold range",
+  bty ="n"
+)
+```
+
+
+*   Example simulating a thousand networks by changing threshold levels.
+    The final prevalence, or hazard as a function of threshold levels.
+
+# Problems
+
+1.  Given the following types of networks: Small-world, Scale-free, Bernoulli,
+    what set of $n$ initiators maximizes diffusion?
+    (<a href="sim-solutions.r" target="_blank">solution script</a> and <a href="sim-solutions.png" target="_blank">solution plot</a>)
+    
+# Appendix
+
+The following is example code that can be used to run multiple simulations like it is done using the `rdiffnet_multiple` function. We do not recommend this approach but it may be useful for some users:
+
+```{r sim-sim, cache = TRUE, collapse = TRUE}
 # Now, simulating a bunch of diffusion processes
 nsim <- 500L
 ans_1and2 <- vector("list", nsim)
@@ -226,49 +318,3 @@ for (i in 1:nsim) {
 
 ans_2and3 <- do.call(rbind, lapply(ans_2and3, "[", i="prop", j=))
 ```
-
-This can actually be simplified by using the function `rdiffnet_multiple`. The following lines of code accomplish the same as the previous code avoiding the for-loop (from the user's perspective). Besides of the usual parameters passed to `rdiffnet`, the `rdiffnet_multiple` function requires `R` (number of repetitions/simulations), and `statistic` (a function that returns the statistic of insterst). Optionally, the user may choose to specify the number of clusters to run it in parallel (multiple CPUs):
-
-```{r rdiffnet-multiple}
-ans_1and3 <- rdiffnet_multiple(
-  # Num of sim
-  R              = nsim,
-  # Statistic
-  statistic      = function(d) cumulative_adopt_count(d)["prop",], 
-  seed.graph     = net,
-  t              = 10,
-  threshold.dist = sample(1:3, 500, TRUE),
-  seed.nodes     = "random",
-  seed.p.adopt   = .1,
-  rewire         = FALSE,
-  exposure.args  = list(outgoing=FALSE, normalized=FALSE),
-  # Running on 4 cores
-  ncpus          = 4L
-  )
-
-```
-
-```{r sim-sim-results}
-boxplot(ans_1and2, col="ivory", xlab = "Time", ylab = "Threshold")
-boxplot(ans_2and3, col="tomato", add=TRUE)
-boxplot(t(ans_1and3), col = "steelblue", add=TRUE)
-legend(
-  "topleft",
-  fill = c("ivory", "tomato", "steelblue"),
-  legend = c("1/2", "2/3", "1/3"),
-  title = "Threshold range",
-  bty ="n"
-)
-```
-
-
-*   Example simulating a thousand networks by changing threshold levels.
-    The final prevalence, or hazard as a function of threshold levels.
-
-# Problems
-
-1.  Given the following types of networks: Small-world, Scale-free, Bernoulli,
-    what set of $n$ initiators maximizes diffusion?
-    (<a href="sim-solutions.r" target="_blank">solution script</a> and <a href="sim-solutions.png" target="_blank">solution plot</a>)
-    
-
