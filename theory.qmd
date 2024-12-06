@@ -269,44 +269,54 @@ they first used a modern family planning method.
 | In Degree | 1.04 | 1.06\*\* | 1.02\* |
 | Exposure (Cohesion) | 0.94 | 1.16 | 2.16\*\* |
 
+## Simulating diffusion
 
+- Seeds:
+    - Type (central, bridging, marginal, random, etc.)
+    - Size (e.g., 5%, 10%, 15%)
 
+- Network structure:
+    - Random
+    - Small world
+    - Empirical
+    - Scale-free (centralized)
+    - Attribute-based (e.g., homophily)
 
+- Threshold distribution:
+    - Uniform
+    - Normal (varying variance)
+    - Skewed 
+    - Beta
 
+- Mechanism:
+    - Cohesion
+    - Structural equivalence
+    - Indirect ties
+    - Attribute-based (e.g., homophilous more persuasive)
 
+- Adoption behavior:
+    - No-disadoption
+    - Disadoption
+    - Conflicting behaviors (perhaps coded as -1,0, 1)
+    - Incorporate uncertainty
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Simulating Diffusion
-
-Reading Data Challenges
+## Reading Data Challenges
 
 - Merging attribute and network data
 
-- Nominated but no attribute data
+    - Nominated but no attribute data
 
-- Attribute data no network data
+    - Attribute data no network data
 
 - Data file formats
 
-- Single flat file
+    - Single flat file
 
-- 2 files: edgelist and attribute file (flat)
+    - 2 files: edgelist and attribute file (flat)
 
-- Cohort studies: 1 file separate waves of data
+    - Cohort studies: 1 file separate waves of data
 
-Formats
+## Formats
 
 - Survey Data (static & dynamic)
 
@@ -316,8 +326,27 @@ Formats
 
 - STATNET, Igraph, ....
 
-Input Types: Single Flat File
+## Input Types: Single Flat File
 
-Input Types: Double Files
+- Flat File with IDs, Nodelist, and Time of Adoption
+- Typically a retrospective study
+- Examples, Medical Innovation, Korean Family Planning; Brazilian Farmers
 
-Input Types: Classic Cohort/Longitudinal
+![](figs/slides-single-flat.png){width="40%"}
+
+## Input Types: Double Files
+
+- Files will have mostly matching IDs 
+- One or both files may contain time information
+- Edgelist may also, potentially, contain values or spell information
+
+![](figs/slides-double-files.png){width="80%"}
+
+
+## Input Types: Classic Cohort/Longitudinal
+
+- IDs and Nodelist Network data 
+- Behavior is typically binary (e.g., ever smoked) or potentially valued (e.g., # of cigarettes
+- Examples SNS
+
+![](figs/slides-file-long.png){width="50%"}
