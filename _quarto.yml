@@ -14,17 +14,19 @@ website:
     - text: Lectures
       menu:
       - text: Getting Started
-        href: getstarted.qmd
+        href: 0-getstarted.qmd
       - text: Diffusion Theory
-        href: theory.qmd
+        href: 1-theory.qmd
       - text: The netdiffuseR package
-        href: netdiffuser.qmd
+        href: 2-netdiffuser.qmd
       - text: Simulations
-        href: sim.qmd
+        href: 3-sim.qmd
+      - text: New features
+        href: 4-newfeatures.qmd
       - text: Reading data
-        href: read.qmd
+        href: 5-read.qmd
       - text: Statistical inference
-        href: stats.qmd
+        href: 6-stats.qmd
     - text: Classic Diffnet Analyses
       href: classic.qmd
 

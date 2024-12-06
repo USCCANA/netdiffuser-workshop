@@ -15,12 +15,13 @@ Workshop materials can be downloaded from <https://github.com/USCCANA/netdiffuse
 
 Sections:
 
-1. [Getting started](getstarted.qmd) (optional)
-2. [Diffusion Theory](theory.qmd)
-3. [The netdiffuseR package](netdiffuser.qmd)
-4. [Simulations](sim.qmd)
-5. [Reading data](read.qmd)
-6. [Statistical inference](stats.qmd)
+1. [Getting started](0-getstarted.qmd) (optional)
+2. [Diffusion Theory](1-theory.qmd)
+3. [The netdiffuseR package](2-netdiffuser.qmd)
+4. [Simulations](3-sim.qmd)
+4. [New features](4-newfeatures.qmd)
+5. [Reading data](5-read.qmd)
+6. [Statistical inference](6-stats.qmd)
 
 From the description:
 
