@@ -15,12 +15,12 @@ Workshop materials can be downloaded from https://github.com/USCCANA/netdiffuser
 
 Source code per section:
 
-1.  <a href="Network Interventions INSNA updated.ppt" target="_blank">Presentation</a>
-2.  <a href="https://raw.githubusercontent.com/USCCANA/netdiffuser-sunbelt2018/sunbelt2019/getstarted.Rmd" target="_blank">Getting started</a>
-3.  <a href="https://raw.githubusercontent.com/USCCANA/netdiffuser-sunbelt2018/sunbelt2019/intro.Rmd" target="_blank">Introduction</a>
-4.  <a href="https://raw.githubusercontent.com/USCCANA/netdiffuser-sunbelt2018/sunbelt2019/sim.Rmd" target="_blank">Simulations</a>
-5.  <a href="https://raw.githubusercontent.com/USCCANA/netdiffuser-sunbelt2018/sunbelt2019/stats.Rmd" target="_blank">Statistical inference</a>
-5.  <a href="https://raw.githubusercontent.com/USCCANA/netdiffuser-sunbelt2018/sunbelt2019/classic.Rmd" target="_blank">Classic Diffnet Analyses</a>
+1. [Getting started](getstarted.qmd) (optional)
+2. [Diffusion Theory](theory.qmd)
+3. [The netdiffuseR package](netdiffuser.qmd)
+4. [Simulations](sim.qmd)
+5. [Reading data](read.qmd)
+6. [Statistical inference](stats.qmd)
 
 From the description:
 

@@ -17,8 +17,8 @@ website:
         href: getstarted.qmd
       - text: Diffusion Theory
         href: theory.qmd
-      - text: Introduction
-        href: intro.qmd
+      - text: The netdiffuseR package
+        href: netdiffuser.qmd
       - text: Simulations
         href: sim.qmd
       - text: Reading data
