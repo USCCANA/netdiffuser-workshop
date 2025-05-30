@@ -1,6 +1,8 @@
 ---
 title: "Simulation of diffusion networks: rdiffnet, multi- and dis- adoption"
 author: "Aníbal Olivera M."
+date: "2025-06-24"
+date-modified: "2025-06-24"
 html-math-method: mathml
 self-contained-math: true
 ---

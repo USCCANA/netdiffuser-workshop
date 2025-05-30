@@ -1,6 +1,8 @@
 ---
 title: "Simulation of diffusion networks: rdiffnet"
 author: "Thomas W. Valente, George G. Vega Yon, and Aníbal Olivera M."
+date: "2025-06-24"
+date-modified: "2025-06-24"
 ---
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}

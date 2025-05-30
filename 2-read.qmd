@@ -1,6 +1,8 @@
 ---
 title: "Reading Data"
 author: "Thomas W. Valente and George G. Vega Yon"
+date: "2025-06-24"
+date-modified: "2025-06-24"
 ---
 
 ```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
