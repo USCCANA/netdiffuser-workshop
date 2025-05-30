@@ -1,6 +1,6 @@
 ---
+title: "Simulation of diffusion networks: rdiffnet, multi- and dis- adoption"
 author: "Aníbal Olivera M."
-date: "2024-12-06"
 html-math-method: mathml
 self-contained-math: true
 ---
@@ -22,6 +22,7 @@ To study a multi-adoption process, you can pass a **`list`** as the **`seed.p.ad
 ```{r}
 #| label: simulation-multiadoption-process-1
 
+library(netdiffuseR)
 set.seed(1231)
 
 n <- 200
