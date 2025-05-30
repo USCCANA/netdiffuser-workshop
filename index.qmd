@@ -2,7 +2,7 @@
 title: "netdiffuseR workshop"
 author:
   - George G. Vega Yon
-  - Anibal L. Olivera M.
+  - Aníbal L. Olivera M.
   - Thomas W. Valente 
 ---
 
@@ -13,8 +13,6 @@ knitr::opts_chunk$set(comment = "#")
 
 Workshop materials can be downloaded from <https://github.com/USCCANA/netdiffuser-workshop>.
 
-The netdiffuseR project repository can be found at <https://github.com/USCCANA/netdiffuseR>.
-
 Sections:
 
 1. [Diffusion Theory](1-theory.qmd)
@@ -24,11 +22,15 @@ Sections:
 5. [Simulations pt.1](5-sim.qmd)
 6. [Simulations pt.2](6-multi-and-dis.qmd)
 
+In [Miscellaneous](0-getstarted.qmd) section, you can find a *Quick n’ Dirty Introduction to R*. 
+
+Also, You can also see older versions of this workshop at <https://github.com/USCCANA/netdiffuser-workshop/tags>.
+
 From the description:
 
 > Empirical statistical analysis, visualization and simulation of diffusion and contagion processes on networks. The package implements algorithms for calculating network diffusion statistics such as transmission rate, hazard rates, exposure models, network threshold levels, infectiousness (contagion), and susceptibility. The package is inspired by work published in Valente, et al., (2015) DOI:10.1016/j.socscimed.2015.10.001; Valente (1995) ISBN:9781881303213, Myers (2000) DOI:10.1086/303110, Iyengar and others (2011) DOI:10.1287/mksc.1100.0566, Burt (1987) DOI:10.1086/228667; among others.
 
-You can also see older versions of this workshop at <https://github.com/USCCANA/netdiffuser-workshop/tags>
+The netdiffuseR project repository can be found at <https://github.com/USCCANA/netdiffuseR>.
 
 __Acknowledgements__: netdiffuseR was created with the support of grant R01
 CA157577 from the National Cancer Institute/National Institutes of Health.
