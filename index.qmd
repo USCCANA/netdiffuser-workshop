@@ -19,10 +19,10 @@ Sections:
 
 1. [Diffusion Theory](1-theory.qmd)
 2. [Reading data](2-read.qmd)
-3. [Visualization](3-netdiffuser.qmd)
+3. [Visualization](3-visualization.qmd)
 4. [Statistical inference](4-stats.qmd)
-5. [Simulations](5-sim.qmd)
-6. [Simulations](6-multi-and-dis.qmd)
+5. [Simulations pt.1](5-sim.qmd)
+6. [Simulations pt.2](6-multi-and-dis.qmd)
 
 From the description:
 
