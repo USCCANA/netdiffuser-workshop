@@ -74,7 +74,7 @@ diffnet_2
 or pass diffnet objects as input, already containing the seed graph and time points:
 
 ```{r, message=FALSE, warning=FALSE}
-#| label: simulation-multiadoption-process-5
+#| label: simulation-multiadoption-process-3
 
 data(kfamily)
 kfamily <- subset(kfamily, village %in% c(2, 21))
@@ -89,13 +89,13 @@ groupvar = "village"
 
 set.seed(1231)
 
-diffnet_4 <- rdiffnet(
+diffnet_3 <- rdiffnet(
  seed.graph     = kfam_diffnet,
  seed.p.adopt   = list(0.1, 0.15),
  threshold.dist = runif(nvertices(kfam_diffnet), .3,.5)
  )
 
-diffnet_4
+diffnet_3
 ```
 
 
@@ -106,7 +106,7 @@ We can use the `split_behaviors` function to split a diffnet object into a list 
 Then, we can use the `plot_adopters` (or any single-adoption function) to visualize the diffusion process for each behavior:
 
 ```{r}
-#| label: simulation-multiadoption-process-6-plot
+#| label: simulation-multiadoption-process-4-plot
 
 diffnets <- split_behaviors(diffnet_1)
 
@@ -160,7 +160,7 @@ $$
 The following code shows how to build such a function:
 
 ```{r}
-#| label: disadoption-example-2-fun
+#| label: disadoption-example-1-fun
 
 one_only <- function(expo, cumadopt, time) {
 
@@ -179,25 +179,25 @@ one_only <- function(expo, cumadopt, time) {
 Let's simulate a diffusion process with the disadoption function `one_only`:
 
 ```{r, message=FALSE, warning=FALSE}
-#| label: disadoption-example-2
+#| label: disadoption-example-1
 
 set.seed(331)
 
-diffnet_6 <- rdiffnet(
+diffnet_4 <- rdiffnet(
  200, 10,
  disadopt = one_only,
  seed.p.adopt = list(0.1, 0.1)
  )
 
-diffnet_6
+diffnet_4
 ```
 
 We will use the `toa_mat` function which extract the **cumulative adoption matrix** from the model. We look the last time point:
 
 ```{r}
-#| label: checking-if-works
+#| label: disadoption-example-1-checking-if-works
 
-toas <- toa_mat(diffnet_6)
+toas <- toa_mat(diffnet_4)
 
 # Putting the two behaviors together
 adopted <-  cbind(
@@ -215,7 +215,7 @@ table(adopted[, 1], adopted[, 2])
 The following code shows how to build a disadoption function that randomly selects 10% of the adopters at time `t - 1`:
 
 ```{r}
-#| label: disadoption-example-1-setup
+#| label: disadoption-example-2-fun
 
 random_dis <- function(expo, cumadopt, time) {
 
@@ -249,7 +249,7 @@ random_dis <- function(expo, cumadopt, time) {
 To **simulate** a diffusion process **with disadoption**, we can use the `rdiffnet` function as follows:
 
 ```{r, message=FALSE, warning=FALSE}
-#| label: disadoption-example-1
+#| label: disadoption-example-2
 
 diffnet_5  <- rdiffnet(
  seed.graph   = graph,
