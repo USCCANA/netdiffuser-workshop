@@ -7,6 +7,11 @@ html-math-method: mathml
 self-contained-math: true
 ---
 
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+library(netdiffuseR)
+knitr::opts_chunk$set(comment = "#")
+```
+
 # Multiadoption and Disadoption
 
 Starting with version 1.24.0, **netdiffuseR** supports simulating multi- and dis-adoption diffusion processes.
@@ -24,7 +29,6 @@ To study a multi-adoption process, you can pass a **`list`** as the **`seed.p.ad
 ```{r}
 #| label: simulation-multiadoption-process-1
 
-library(netdiffuseR)
 set.seed(1231)
 
 n <- 200
