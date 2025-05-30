@@ -69,8 +69,11 @@ knitr::opts_chunk$set(comment = "#")
     regression analysis will be generically biased.
     
 *   If you can claim that either such variable doesn't exists or you actually can
-    control for it, then we have two options: 1) *lagged exposure models*, or 
-    2) contemporaneous exposure models. We will focus on the former.
+    control for it, then we have two options: 
+    1) *lagged exposure models*, or 
+    2) contemporaneous exposure models. 
+    
+    We will focus on the former.
 
 
 ## Lagged exposure models
@@ -203,22 +206,22 @@ save(X, W, file="files/stats.rda")
 -     To use this test, __netdiffuseR__ has the `struct_test` function.
 -     Basically it simulates networks with the same density and computes a particular statistic every time, generating an EDF (Empirical Distribution Function) under the Null hyphothesis (p-values).
     
-    ```{r Struct non-random-toa, cache=TRUE}
-    # Simulating network
-    set.seed(1123)
-    net <- rdiffnet(n=500, t=10, seed.graph = "small-world")
-    
-    # Running the test
-    test <- struct_test(
-      graph     = net, 
-      statistic = function(x) mean(threshold(x), na.rm = TRUE),
-      R         = 1e3,
-      ncpus=4, parallel="multicore"
-      )
-    
-    # See the output
-    test
-    ```
+```{r Struct non-random-toa, cache=TRUE}
+# Simulating network
+set.seed(1123)
+net <- rdiffnet(n=500, t=10, seed.graph = "small-world")
+
+# Running the test
+test <- struct_test(
+  graph     = net, 
+  statistic = function(x) mean(threshold(x), na.rm = TRUE),
+  R         = 1e3,
+  ncpus=4, parallel="multicore"
+  )
+
+# See the output
+test
+```
 
 ```{r, echo=FALSE}
 hist(test)
@@ -226,22 +229,22 @@ hist(test)
 
 -   Now we shuffle toas, so that is random
     
-    ```{r random-toa, cache=TRUE}
-    # Resetting TOAs (now will be completely random)
-    diffnet.toa(net) <- sample(diffnet.toa(net), nnodes(net), TRUE)
+```{r random-toa, cache=TRUE}
+# Resetting TOAs (now will be completely random)
+diffnet.toa(net) <- sample(diffnet.toa(net), nnodes(net), TRUE)
+
+# Running the test
+test <- struct_test(
+  graph     = net, 
+  statistic = function(x) mean(threshold(x), na.rm = TRUE),
+  R         = 1e3,
+  ncpus=4, parallel="multicore"
+  )
+
+# See the output
+test
+```
     
-    # Running the test
-    test <- struct_test(
-      graph     = net, 
-      statistic = function(x) mean(threshold(x), na.rm = TRUE),
-      R         = 1e3,
-      ncpus=4, parallel="multicore"
-      )
-    
-    # See the output
-    test
-    ```
-    
-    ```{r, echo=FALSE}
-    hist(test)
-    ```
+```{r, echo=FALSE}
+hist(test)
+```
