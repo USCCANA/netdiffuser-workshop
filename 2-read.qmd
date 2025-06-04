@@ -70,7 +70,7 @@ These are created using `new_diffnet` (or its wrappers).
     fakesurvey
     ```
 
-*   In group one 4 nominates id 6, who does not show in the data, and in group two 1 nominates 3, 4, and 8, also individuals who don't show up in the survey.
+*   In group one, id 4 nominates id 6, who does not show in the data, and in group two id 1 nominates 3, 4, and 8, also individuals who don't show up in the survey.
     
     ```{r 2-static-survey-cont1}
     d1 <- survey_to_diffnet(
@@ -105,6 +105,8 @@ These are created using `new_diffnet` (or its wrappers).
 
 # Dynamic survey (survey_to_diffnet)
 
+ -- ADD SOME DESCRIPTIONS HERE --
+
 ```{r 2-static-dynsurvey}
 data("fakesurveyDyn")
 fakesurveyDyn
@@ -122,6 +124,38 @@ diffnet_dynsurvey <- survey_to_diffnet(
 
 plot_diffnet(diffnet_dynsurvey)
 ```
+
+# Datasets in netdiffuseR
+
+-   **netdiffuseR** has the three classic Diffusion Network Datasets (as surveys):
+
+    -   `medInnovations` Doctors and the innovation of Tetracycline (1955).
+    -   `brfarmers` Brazilian farmers and the innovation of Hybrid Corn Seed (1966).
+    -   `kfamily` Korean women and Family Planning methods (1973).
+
+Let's have a look to `kfamily`:
+
+```{r kfamily-look}
+data(kfamily)
+unique(kfamily$village)
+
+hist(kfamily$toa)
+```
+
+We can construct a `diffnet` object from from those survey data:
+
+```{r kfamily-survey-to-diffnet}
+kfamily_diffnet <- survey_to_diffnet(
+  dat      = kfamily,
+  idvar    = "id",
+  netvars  = c("net11", "net12", "net13", "net14", "net15"),
+  toavar   = "toa",
+  groupvar = "village"
+)
+
+kfamily_diffnet
+```
+
 
 # Other network formats
 
