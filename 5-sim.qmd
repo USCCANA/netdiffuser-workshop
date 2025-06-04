@@ -28,8 +28,8 @@ Where $E_i$ is i's exposure to the innovation and $\mathbf{X}$ is the adjacency 
 
 Here is a review of the concepts we will be using:
 
-1. Exposure $E_i$: Proportion/number of neighbors that has adopted an innovation at each point in time.
-2. Threshold $\tau$: The proportion/number of your neighbors who had adopted at or one time period before ego (the focal individual) adopted.
+1. Exposure $E_i$ : Proportion/number of neighbors that has adopted an innovation at each point in time.
+2. Threshold $\tau$ : The proportion/number of your neighbors who had adopted at or one time period before ego (the focal individual) adopted.
 3. Infectiousness: How much $i$'s adoption affects her alters.
 4. Susceptibility: How much $i$'s alters' adoption affects her.
 5. Structural equivalence: How similar are $i$ and $j$ in terms of position in the network.

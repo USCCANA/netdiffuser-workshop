@@ -25,14 +25,12 @@ website:
         href: 5-sim.qmd
       - text: Simulations pt.2
         href: 6-multi-and-dis.qmd
-    - text: Classic Diffnet Analyses
-      href: classic.qmd
     - text: Miscellaneous
       menu:
       - text: Getting started with R
         href: 0-getstarted.qmd
-      - text: Getting started with R
-        href: 0-netdiffuser.qmd
+      - text: Classic Diffnet Analyses
+        href: classic.qmd
 
 format:
   html:
