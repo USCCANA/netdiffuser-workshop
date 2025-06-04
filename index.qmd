@@ -22,7 +22,11 @@ Sections:
 5. [Simulations pt.1](5-sim.qmd)
 6. [Simulations pt.2](6-multi-and-dis.qmd)
 
-In [Miscellaneous](0-getstarted.qmd) section, you can find a *Quick n’ Dirty Introduction to R*. 
+In [Miscellaneous](0-getstarted.qmd) section, you can find 
+
+1. a *Quick n’ Dirty Introduction to R*, 
+2. a brief introduction to netdiffuseR package, and
+3. an example of a classical diffusion analysis.
 
 Also, You can also see older versions of this workshop at <https://github.com/USCCANA/netdiffuser-workshop/tags>.
 

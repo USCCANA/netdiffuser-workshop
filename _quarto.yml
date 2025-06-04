@@ -29,8 +29,10 @@ website:
       menu:
       - text: Getting started with R
         href: 0-getstarted.qmd
+      - text: The netdiffuseR package
+        href: 0-netdiffuser.qmd
       - text: Classic Diffnet Analyses
-        href: classic.qmd
+        href: 0-classic.qmd
 
 format:
   html:
