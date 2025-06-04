@@ -13,6 +13,39 @@ knitr::opts_chunk$set(comment = "#")
 
 # Visualization methods
 
+## diffnet from survey_to_diffnet()
+
+We can select a specific village and visualize its diffusion dynamics:
+
+```{r kfamily-village-21, warnings=FALSE, messages=FALSE}
+data(kfamily)
+
+kfamily_21 <- subset(kfamily, village %in% c(21))
+
+kfamily_diffnet_21 <- survey_to_diffnet(
+  dat      = kfamily_21,
+  idvar    = "id",
+  netvars  = c(
+    # Neighbors talk to about FP
+    "net11", "net12", "net13", "net14", "net15", 
+    # Closest neighbor most frequently met
+    "net21", "net22", "net23", "net24", "net25", 
+    # Advice on FP sought from 
+    "net31", "net32", "net33", "net34", "net35"), 
+  toavar   = "toa",
+  groupvar = "village"
+)
+
+plot_adopters(kfamily_diffnet_21)
+
+plot_threshold(kfamily_diffnet_21)
+
+plot_diffnet(kfamily_diffnet_21)
+
+```
+
+## diffnet from rdiffnet() -remove-
+
 ```{r viz, cache=TRUE, eval=TRUE}
 set.seed(12315)
 diffnet_1 <- rdiffnet(
