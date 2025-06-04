@@ -1,0 +1,66 @@
+---
+title: "Introduction to the package"
+author: "George G. Vega Yon and Aníbal Olivera M."
+date: "2025-06-24"
+date-modified: "2025-06-24"
+---
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+library(netdiffuseR)
+knitr::opts_chunk$set(comment = "#")
+```
+
+
+-   **Network thresholds** (Valente, 1995; 1996), $\tau$, are defined as the required proportion or number of neighbors that leads you to adopt a particular behavior (innovation), $a=1$. In (very) general terms\pause
+
+$$
+  a_i = \left\{\begin{array}{ll}
+  1 &\mbox{if } \tau_i\leq E_i \\
+  0 & \mbox{Otherwise}
+  \end{array}\right. \qquad
+  E_i \equiv \frac{\sum_{j\neq i}\mathbf{X}_{ij}a_j}{\sum_{j\neq i}\mathbf{X}_{ij}}
+$$
+
+Where $E_i$ is i's exposure to the innovation and $\mathbf{X}$ is the adjacency matrix (the network).
+
+-   This can be generalized and extended to include covariates and other network weighting schemes (that's what __netdiffuseR__ is all about).
+
+# netdiffuseR
+
+-   **netdiffuseR** is an R package that:
+
+    -   Allow to generalize the network threshold concept to include covariates and other network weighting schemes.
+    
+    -   Is designed for Visualizing, Analyzing and Simulating network diffusion data (in general).
+    
+    -   Depends on some pretty popular packages:
+    
+        - _RcppArmadillo_: So it's fast,
+        - _Matrix_: So it's big,
+        - _statnet_ and _igraph_: So it's not from scratch
+
+    -   Can handle big graphs, e.g., an adjacency matrix with more than 4 billion elements (PR for RcppArmadillo).
+
+    -   Already on CRAN with +48,000 downloads since its first version, Feb 2016.
+    
+    <!-- Can simulate Threshold Diffusion Models (also know as Complex Contagion) in different scenarios, including multiple simulations at once, multi-diffusion settings, and disadoption parameters. -->
+
+- **Datasets**
+
+    -   **netdiffuseR** has the three classic Diffusion Network Datasets, both as surveys:
+    
+        -   `medInnovations` Doctors and the innovation of Tetracycline (1955),
+        -   `brfarmers` Brazilian farmers and the innovation of Hybrid Corn Seed (1966),
+        -   `kfamily` Korean women and Family Planning methods (1973),
+        
+        and as `diffnet` objects:
+        
+        -   `medInnovationsDiffNet` Doctors and the innovation of Tetracycline (1955),
+        -   `brfarmersDiffNet` Brazilian farmers and the innovation of Hybrid Corn Seed (1966),
+        -   `kfamilyDiffNet` Korean women and Family Planning methods (1973)
+
+        ```{r printing}
+        brfarmersDiffNet
+        medInnovationsDiffNet
+        kfamilyDiffNet
+        ```

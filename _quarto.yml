@@ -31,6 +31,8 @@ website:
       menu:
       - text: Getting started with R
         href: 0-getstarted.qmd
+      - text: Getting started with R
+        href: 0-netdiffuser.qmd
 
 format:
   html:
