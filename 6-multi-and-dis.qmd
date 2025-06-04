@@ -81,23 +81,26 @@ or pass diffnet objects as input, already containing the seed graph and time poi
 #| label: simulation-multiadoption-process-3
 
 data(kfamily)
-kfamily <- subset(kfamily, village %in% c(2, 21))
+kfamily_21 <- subset(kfamily, village %in% c(21))
 
-kfam_diffnet <- survey_to_diffnet(
-dat      = kfamily,
-idvar    = "id",
-netvars  = c("net11", "net12", "net13", "net14", "net15"),
-toavar   = "toa",
-groupvar = "village"
+kfamily_diffnet_21 <- survey_to_diffnet(
+  dat      = kfamily_21,
+  idvar    = "id",
+  netvars  = c(
+    "net11", "net12", "net13", "net14", "net15", 
+    "net21", "net22", "net23", "net24", "net25", 
+    "net31", "net32", "net33", "net34", "net35"), 
+  toavar   = "toa",
+  groupvar = "village"
 )
 
 set.seed(1231)
 
 diffnet_3 <- rdiffnet(
- seed.graph     = kfam_diffnet,
- seed.p.adopt   = list(0.1, 0.15),
- threshold.dist = runif(nvertices(kfam_diffnet), .3,.5)
- )
+  seed.graph     = kfamily_diffnet_21,
+  seed.p.adopt   = list(0.15, 0.1),
+  threshold.dist = runif(nvertices(kfamily_diffnet_21), .3,.5)
+)
 
 diffnet_3
 ```
@@ -112,16 +115,15 @@ Then, we can use the `plot_adopters` (or any single-adoption function) to visual
 ```{r}
 #| label: simulation-multiadoption-process-4-plot
 
-diffnets <- split_behaviors(diffnet_1)
+diffnets_3 <- split_behaviors(diffnet_3)
 
 op <- par(mfrow=c(1,2), cex = .8)
-
-plot_adopters(diffnets[[1]], main = "Behavior 1")
-plot_adopters(diffnets[[2]], main = "Behavior 2")
+plot_adopters(diffnets_3[[1]], main = "Behavior 1")
+plot_adopters(diffnets_3[[2]], main = "Behavior 2")
 par(op)
 ```
 
-## Disadoption
+# Disadoption
 
 
 The disadoption feature included in **netdiffuseR** version 1.24.0 opened a new way of studying network diffusion processes ([Lehmann 2017 2024](DOI: 10.1007/s13162-017-0093-8), [Alipour 2024](https://doi.org/10.1093/pnasnexus/pgae428).
@@ -145,7 +147,7 @@ disadoption_function <- function(expo, cumadopt, time) {
 }
 ```
 
-# Examples of disaopt parameter
+## Examples of disaopt parameter
 
 To clarify the inputs:
 
@@ -154,6 +156,7 @@ To clarify the inputs:
 <!-- The value of `cumadopt[i, t, q]` is 1 if node `i` has adopted behavior `q` at time `t`. -->
 - `time` is the current time point in the simulation.
 
+### Example 1
 
 We can build a disadoption function that restricts nodes from adopting more than one behavior at a time:
 
@@ -185,15 +188,21 @@ Let's simulate a diffusion process with the disadoption function `one_only`:
 ```{r, message=FALSE, warning=FALSE}
 #| label: disadoption-example-1
 
-set.seed(331)
+set.seed(1231)
 
 diffnet_4 <- rdiffnet(
- 200, 10,
- disadopt = one_only,
- seed.p.adopt = list(0.1, 0.1)
- )
+  seed.graph     = kfamily_diffnet_21,
+  seed.p.adopt   = list(0.15, 0.10),
+  threshold.dist = runif(nvertices(kfamily_diffnet_21), .3,.5),
+  disadopt       = one_only
+)
 
-diffnet_4
+diffnets_4 <- split_behaviors(diffnet_4)
+
+op <- par(mfrow=c(1,2), cex = .8)
+plot_adopters(diffnets_4[[1]], main = "Behavior 1")
+plot_adopters(diffnets_4[[2]], main = "Behavior 2")
+par(op)
 ```
 
 We will use the `toa_mat` function which extract the **cumulative adoption matrix** from the model. We look the last time point:
@@ -209,12 +218,11 @@ adopted <-  cbind(
  toas[[2]]$cumadopt[, 10]
 )
 
-# Looking at the first 5 nodes
-head(adopted, 5)
-
 # Tabulating side by side
 table(adopted[, 1], adopted[, 2])
 ```
+
+### Example 2
 
 The following code shows how to build a disadoption function that randomly selects 10% of the adopters at time `t - 1`:
 
@@ -240,7 +248,7 @@ random_dis <- function(expo, cumadopt, time) {
      # selecting 10% of adopters to disadopt
      list_disadopt[[q]] <- sample(
        adopters_old,
-       ceiling(0.10 * length(adopters_old)
+       round(0.10 * length(adopters_old)
        )
      )
    }
@@ -255,14 +263,24 @@ To **simulate** a diffusion process **with disadoption**, we can use the `rdiffn
 ```{r, message=FALSE, warning=FALSE}
 #| label: disadoption-example-2
 
+set.seed(123)
+
 diffnet_5  <- rdiffnet(
- seed.graph   = graph,
- t            = t,
- seed.p.adopt = 0.1,
- disadopt     = random_dis
- )
+  seed.graph   = kfamily_diffnet_21,
+  seed.p.adopt = list(0.1,0.15),
+)
 
 diffnet_5
+
+set.seed(123)
+
+diffnet_6  <- rdiffnet(
+  seed.graph   = kfamily_diffnet_21,
+  seed.p.adopt = list(0.1,0.15),
+  disadopt     = random_dis
+)
+
+diffnet_6
 ```
 
 
