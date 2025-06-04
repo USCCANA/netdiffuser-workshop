@@ -230,31 +230,31 @@ The following code shows how to build a disadoption function that randomly selec
 #| label: disadoption-example-2-fun
 
 random_dis <- function(expo, cumadopt, time) {
-
- # Number of behaviors
- num_of_behaviors <- dim(cumadopt)[3]
- 
- # Making room for the disadopted nodes
- list_disadopt <- list(integer(), integer())
- 
- # We iterate through the behaviors
- for (q in 1:num_of_behaviors) {
-
-   # Identifying the adopters at time t-1
-   adopters_old <- which(cumadopt[, time - 1, q] == 1)
-
-   if (length(adopters_old) != 0) {
-
-     # selecting 10% of adopters to disadopt
-     list_disadopt[[q]] <- sample(
-       adopters_old,
-       round(0.10 * length(adopters_old)
-       )
-     )
-   }
-
- }
- return(list_disadopt)
+  
+  # Number of behaviors
+  num_of_behaviors <- dim(cumadopt)[3]
+  
+  # Making room for the disadopted nodes: list(integer(), integer())
+  list_disadopt <- replicate(num_of_behaviors, integer())
+  
+  # We iterate through the behaviors
+  for (q in 1:num_of_behaviors) {
+    
+    # Identifying the adopters at time t-1
+    adopters_old <- which(cumadopt[, time - 1, q] == 1)
+    
+    if (length(adopters_old) != 0) {
+      
+      # selecting 10% of adopters to disadopt
+      list_disadopt[[q]] <- sample(
+        adopters_old,
+        round(0.10 * length(adopters_old)
+        )
+      )
+    }
+    
+  }
+  return(list_disadopt)
 }
 ```
 
