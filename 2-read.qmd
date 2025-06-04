@@ -149,13 +149,42 @@ We can construct a `diffnet` object from from those survey data:
 kfamily_diffnet <- survey_to_diffnet(
   dat      = kfamily,
   idvar    = "id",
-  # Neighbors talk to about FP
-  netvars  = c("net11", "net12", "net13", "net14", "net15"),
+  netvars  = c(
+    # Neighbors talk to about FP
+    "net11", "net12", "net13", "net14", "net15", 
+    # Closest neighbor most frequently met
+    "net21", "net22", "net23", "net24", "net25", 
+    # Advice on FP sought from 
+    "net31", "net32", "net33", "net34", "net35"), 
   toavar   = "toa",
   groupvar = "village"
 )
 
 kfamily_diffnet
+summary(kfamily_diffnet)
+```
+
+We can calculate direct exposure (cohesion) and indirect influence (structural equivalence):
+
+```{r kfamily-exposure, warnings=FALSE, messages=FALSE}
+
+kfamily_diffnet[["cohexp"]] <- exposure(kfamily_diffnet)
+
+kfamily_diffnet[["seexp"]] <-  exposure(kfamily_diffnet, alt.graph="se", 
+                                        groupvar="village", valued=TRUE)
+
+# Retrieving attributes as data.frame
+kfamily_diffnet.df <- diffnet.attrs(kfamily_diffnet, as.df = TRUE)
+
+# Time step for adoption -NEEDS MORE EXPLANATION- 
+kfamily_diffnet.df$adopted <- as.integer(with(kfamily_diffnet.df, ado == per))
+kfamily_diffnet.df <- kfamily_diffnet.df[kfamily_diffnet.df$per <=  kfamily_diffnet.df$toa, ]
+
+#media1 Possession of Radio -NEEDS MORE EXPLANATION OF VARS- (original_ mmex)
+model <- as.formula(paste("adopted ~ factor(per) + sons + media1 + pregs + cohexp + seexp  "))
+reg_result <- glm(model, data=kfamily_diffnet.df, family = binomial(link="logit"))
+
+summary(reg_result)
 ```
 
 
