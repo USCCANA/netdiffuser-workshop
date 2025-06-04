@@ -125,7 +125,7 @@ diffnet_dynsurvey <- survey_to_diffnet(
 plot_diffnet(diffnet_dynsurvey)
 ```
 
-# Datasets in netdiffuseR
+# Datasets in netdiffuseR (surveys)
 
 -   **netdiffuseR** has the three classic Diffusion Network Datasets (as surveys):
 
@@ -139,15 +139,17 @@ Let's have a look to `kfamily`:
 data(kfamily)
 unique(kfamily$village)
 
+# toa = 11 means 'no adoption'
 hist(kfamily$toa)
 ```
 
 We can construct a `diffnet` object from from those survey data:
 
-```{r kfamily-survey-to-diffnet}
+```{r kfamily-survey-to-diffnet, warnings=FALSE, messages=FALSE}
 kfamily_diffnet <- survey_to_diffnet(
   dat      = kfamily,
   idvar    = "id",
+  # Neighbors talk to about FP
   netvars  = c("net11", "net12", "net13", "net14", "net15"),
   toavar   = "toa",
   groupvar = "village"
