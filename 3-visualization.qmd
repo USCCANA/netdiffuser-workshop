@@ -20,7 +20,7 @@ $$
   0 & \mbox{Otherwise}
   \end{array}\right. \qquad
   E_i \equiv \frac{\sum_{j\neq i}\mathbf{X}_{ij}a_j}{\sum_{j\neq i}\mathbf{X}_{ij}}
-  $$
+$$
 
 Where $E_i$ is i's exposure to the innovation and $\mathbf{X}$ is the adjacency matrix (the network).
 
