@@ -1,6 +1,7 @@
 ---
 title: "Simulation of diffusion networks: multi- and dis- adoption"
-author: "Aníbal Olivera M."
+author:
+  - Aníbal Olivera M.
 date: "2025-06-24"
 date-modified: "2025-06-24"
 html-math-method: mathml
@@ -23,57 +24,6 @@ So, we can study for example **competitive** diffusion between multiple innovati
 -   Disadoption of the previous innovation or behavior.
 
 ## Multiadoption Simulations
-
-To study a multi-adoption process, you can pass a **`list`** as the **`seed.p.adopt`** parameter. Here is a simple example with two behaviors:
-
-```{r}
-#| label: simulation-multiadoption-process-1
-
-set.seed(1231)
-
-n <- 200
-t <- 10
-
-graph <- rgraph_ws(n, t, p=.3)  # Watts-Strogatz model
-
-diffnet_1 <- rdiffnet(
- seed.graph = graph,
- t = t,
- seed.p.adopt = list(0.1, 0.15)
- )
-
-diffnet_1
-
-```
-
-The  "Num of behaviors" entry now shows `2`, the "Behavior" entry also shows two behaviors, `"Random contagion \_1, Random contagion\_2"`, and finally, the "Prevalence" entry also shows two numbers: `0.29, 0.97`. 
-
-::: {.callout-tip}
-In the current implementation of `rdiffnet`, the multi-adoption module simulates behaviors independently. That is, the code above would be equivalent to simulating the same behavior twice. More complicated models in which behaviors are interdependent are supported via the `disadopt` parameter.
-:::
-
-We can specify different parameters for each behavior,
-
-```{r, message=FALSE, warning=FALSE}
-#| label: simulation-multiadoption-process-2
-
-set.seed(1231)
-
-diffnet_2 <- rdiffnet(
- seed.graph = graph,
- t = t,
- seed.p.adopt = list(0.1, 0.15),
- threshold.dist = list(
-   runif(n, .3, .5),
-   runif(n, .2, .4)
- ),
- seed.nodes = list("central", "random"),
- behavior   = list("tobacco", "alcohol")
-)
-
-diffnet_2
-```
-
 
 or pass diffnet objects as input, already containing the seed graph and time points:
 
@@ -301,3 +251,58 @@ disadoption_function <- function(expo, cumadopt, time) {
 ```
 
 creates a disadoption function that simulates a **fashion that dies** incrementally **over time**. You can try this for one or more fads. ([solution file](files/declining_fashion.R))
+
+# Appendix
+
+## Other examples with multiadoption
+
+To study a multi-adoption process, you can pass a **`list`** as the **`seed.p.adopt`** parameter. Here is a simple example with two behaviors:
+
+```{r}
+#| label: simulation-multiadoption-process-1
+#| warning: false
+#| message: false
+set.seed(1231)
+
+n <- 200
+t <- 10
+
+graph <- rgraph_ws(n, t, p=.3)  # Watts-Strogatz model
+
+diffnet_1 <- rdiffnet(
+ seed.graph = graph,
+ t = t,
+ seed.p.adopt = list(0.1, 0.15)
+ )
+
+diffnet_1
+
+```
+
+The  "Num of behaviors" entry now shows `2`, the "Behavior" entry also shows two behaviors, `"Random contagion \_1, Random contagion\_2"`, and finally, the "Prevalence" entry also shows two numbers: `0.29, 0.97`. 
+
+::: {.callout-tip}
+In the current implementation of `rdiffnet`, the multi-adoption module simulates behaviors independently. That is, the code above would be equivalent to simulating the same behavior twice. More complicated models in which behaviors are interdependent are supported via the `disadopt` parameter.
+:::
+
+We can specify different parameters for each behavior,
+
+```{r, message=FALSE, warning=FALSE}
+#| label: simulation-multiadoption-process-2
+
+set.seed(1231)
+
+diffnet_2 <- rdiffnet(
+ seed.graph = graph,
+ t = t,
+ seed.p.adopt = list(0.1, 0.15),
+ threshold.dist = list(
+   runif(n, .3, .5),
+   runif(n, .2, .4)
+ ),
+ seed.nodes = list("central", "random"),
+ behavior   = list("tobacco", "alcohol")
+)
+
+diffnet_2
+```

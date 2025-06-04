@@ -1,6 +1,8 @@
 ---
 title: "Simulation of diffusion networks: rdiffnet"
-author: "George G. Vega Yon, and Aníbal Olivera M."
+author:
+  - George G. Vega Yon
+  - Aníbal Olivera M.
 date: "2025-06-24"
 date-modified: "2025-06-24"
 ---
@@ -11,7 +13,7 @@ knitr::opts_chunk$set(comment = "#")
 
 ```
 
-# Introduction
+# Recap
 
 **Network thresholds** (Valente, 1995; 1996), $\tau$, are defined as the required proportion or number of neighbors that leads you to adopt a particular behavior (innovation), $a=1$. So, in simulations, the adoption rule follows \pause
 
@@ -128,7 +130,79 @@ legend(
   )
 ```
 
-# Example by changing threshold (rdiffnet_multiple)
+# Problems
+
+1. Using the Korean family village 21, compare which strategy setting the seed nodes maximizes the diffusion. Use `rdiffnet_multiple` to run 500 simulations for each strategy. The strategies are:
+
+    - Random seed nodes.
+    - Central seed nodes.
+    - Marginal seed nodes.
+    - One of your own making.
+
+2.  Given the following types of networks: Small-world, Scale-free, Bernoulli,
+    what set of $n$ initiators maximizes diffusion?
+    (<a href="files/sim-solutions.r" target="_blank">solution script</a> and <a href="files/sim-solutions.png" target="_blank">solution plot</a>)
+    
+# Appendix
+
+## Not using rdiffnet_multiple
+
+The following is example code that can be used to run multiple simulations like it is done using the `rdiffnet_multiple` function. We do not recommend this approach but it may be useful for some users:
+
+```{r sim-sim, cache = TRUE, collapse = TRUE}
+# Now, simulating a bunch of diffusion processes
+nsim <- 500L
+ans_1and2 <- vector("list", nsim)
+set.seed(223)
+for (i in 1:nsim) {
+  # We just want the cum adopt count
+  ans_1and2[[i]] <- 
+    cumulative_adopt_count(
+      rdiffnet(
+        seed.graph = net,
+        t = 10,
+        threshold.dist = sample(1:2, 500L, TRUE),
+        seed.nodes = "random",
+        seed.p.adopt = .10,
+        exposure.args = list(outgoing = FALSE, normalized = FALSE),
+        rewire = FALSE
+        )
+      )
+  
+  # Are we there yet?
+  if (!(i %% 50))
+    message("Simulation ", i," of ", nsim, " done.")
+}
+
+# Extracting prop
+ans_1and2 <- do.call(rbind, lapply(ans_1and2, "[", i="prop", j=))
+
+ans_2and3 <- vector("list", nsim)
+set.seed(223)
+for (i in 1:nsim) {
+  # We just want the cum adopt count
+  ans_2and3[[i]] <- 
+    cumulative_adopt_count(
+      rdiffnet(
+        seed.graph = net,
+        t = 10,
+        threshold.dist = sample(2:3, 500L, TRUE),
+        seed.nodes = "random",
+        seed.p.adopt = .10,
+        exposure.args = list(outgoing = FALSE, normalized = FALSE),
+        rewire = FALSE
+        )
+      )
+  
+  # Are we there yet?
+  if (!(i %% 50))
+    message("Simulation ", i," of ", nsim, " done.")
+}
+
+ans_2and3 <- do.call(rbind, lapply(ans_2and3, "[", i="prop", j=))
+```
+
+## Example by changing threshold (rdiffnet_multiple)
 
 The following block of code runs multiple diffnet simulations. 
 
@@ -222,67 +296,4 @@ legend(
   title = "Threshold range",
   bty ="n"
 )
-```
-
-# Problems
-
-1.  Given the following types of networks: Small-world, Scale-free, Bernoulli,
-    what set of $n$ initiators maximizes diffusion?
-    (<a href="files/sim-solutions.r" target="_blank">solution script</a> and <a href="files/sim-solutions.png" target="_blank">solution plot</a>)
-    
-# Appendix
-
-The following is example code that can be used to run multiple simulations like it is done using the `rdiffnet_multiple` function. We do not recommend this approach but it may be useful for some users:
-
-```{r sim-sim, cache = TRUE, collapse = TRUE}
-# Now, simulating a bunch of diffusion processes
-nsim <- 500L
-ans_1and2 <- vector("list", nsim)
-set.seed(223)
-for (i in 1:nsim) {
-  # We just want the cum adopt count
-  ans_1and2[[i]] <- 
-    cumulative_adopt_count(
-      rdiffnet(
-        seed.graph = net,
-        t = 10,
-        threshold.dist = sample(1:2, 500L, TRUE),
-        seed.nodes = "random",
-        seed.p.adopt = .10,
-        exposure.args = list(outgoing = FALSE, normalized = FALSE),
-        rewire = FALSE
-        )
-      )
-  
-  # Are we there yet?
-  if (!(i %% 50))
-    message("Simulation ", i," of ", nsim, " done.")
-}
-
-# Extracting prop
-ans_1and2 <- do.call(rbind, lapply(ans_1and2, "[", i="prop", j=))
-
-ans_2and3 <- vector("list", nsim)
-set.seed(223)
-for (i in 1:nsim) {
-  # We just want the cum adopt count
-  ans_2and3[[i]] <- 
-    cumulative_adopt_count(
-      rdiffnet(
-        seed.graph = net,
-        t = 10,
-        threshold.dist = sample(2:3, 500L, TRUE),
-        seed.nodes = "random",
-        seed.p.adopt = .10,
-        exposure.args = list(outgoing = FALSE, normalized = FALSE),
-        rewire = FALSE
-        )
-      )
-  
-  # Are we there yet?
-  if (!(i %% 50))
-    message("Simulation ", i," of ", nsim, " done.")
-}
-
-ans_2and3 <- do.call(rbind, lapply(ans_2and3, "[", i="prop", j=))
 ```

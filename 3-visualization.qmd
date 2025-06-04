@@ -15,13 +15,18 @@ knitr::opts_chunk$set(comment = "#")
 
 ## diffnet from survey_to_diffnet()
 
-We can select a specific village and visualize its diffusion dynamics:
+We can select a specific village and visualize its diffusion dynamics. As we did in the previous section, we will use the `kfamily` dataset, which contains data on Korean Family Planning, and we will focus on village 21:
 
-```{r kfamily-village-21, warnings=FALSE, messages=FALSE}
+```{r}
+#| label: kfamily-village-21
+#| warning: false
+#| message: false
 data(kfamily)
 
-kfamily_21 <- subset(kfamily, village %in% c(21))
+# Subset the kfamily dataset for village 21
+kfamily_21 <- subset(kfamily, village == 21)
 
+# Convert the subsetted data to a diffnet object
 kfamily_diffnet_21 <- survey_to_diffnet(
   dat      = kfamily_21,
   idvar    = "id",
@@ -42,30 +47,6 @@ plot_threshold(kfamily_diffnet_21)
 
 plot_diffnet(kfamily_diffnet_21)
 
-```
-
-## diffnet from rdiffnet() -remove-
-
-```{r viz, cache=TRUE, eval=TRUE}
-set.seed(12315)
-diffnet_1 <- rdiffnet(
-  n = 400, t = 6,
-  rgraph.args    = list(k=6, p=.3),
-  seed.graph     = "small-world",
-  seed.nodes     = "central",
-  rewire         = FALSE,
-  threshold.dist = 1/4
-  )
-diffnet_1
-```
-
-Diffusion networks can visualized using many methods included in the package. Here are some of them:
-
-```{r}
-#| label: plot-methods
-plot_diffnet(diffnet_1)
-plot_adopters(diffnet_1)
-plot_threshold(diffnet_1)
 ```
 
 # Problems
@@ -95,4 +76,32 @@ diffnet[["ItrustMyFriends"]] <- dat$ItrustMyFriends
 diffnet[["Age"]] <- dat$Age
 
 save(diffnet, file = "files/intro.rda")
+```
+
+# Appendix
+
+Another example using the `rdiffnet` function to generate random diffusion networks. This example creates a small-world network with 400 nodes and 6 time steps, where the connections are rewired based on a threshold distance of 1/4. The `seed.graph` is set to "small-world" and the `seed.nodes` to "central", which means that the initial nodes are chosen from the center of the network.
+
+
+```{r}
+#| label: rdiffnet-example
+set.seed(12315)
+diffnet_1 <- rdiffnet(
+  n = 400, t = 6,
+  rgraph.args    = list(k=6, p=.3),
+  seed.graph     = "small-world",
+  seed.nodes     = "central",
+  rewire         = FALSE,
+  threshold.dist = 1/4
+  )
+diffnet_1
+```
+
+Diffusion networks can visualized using many methods included in the package. Here are some of them:
+
+```{r}
+#| label: plot-methods
+plot_diffnet(diffnet_1)
+plot_adopters(diffnet_1)
+plot_threshold(diffnet_1)
 ```
