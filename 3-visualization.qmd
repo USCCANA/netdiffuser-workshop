@@ -10,41 +10,6 @@ library(netdiffuseR)
 knitr::opts_chunk$set(comment = "#")
 ```
 
-# Overview of netdiffuseR
-
--   **Network thresholds** (Valente, 1995; 1996), $\tau$, are defined as the required proportion or number of neighbors that leads you to adopt a particular behavior (innovation), $a=1$. In (very) general terms\pause
-
-$$
-  a_i = \left\{\begin{array}{ll}
-  1 &\mbox{if } \tau_i\leq E_i \\
-  0 & \mbox{Otherwise}
-  \end{array}\right. \qquad
-  E_i \equiv \frac{\sum_{j\neq i}\mathbf{X}_{ij}a_j}{\sum_{j\neq i}\mathbf{X}_{ij}}
-$$
-
-Where $E_i$ is i's exposure to the innovation and $\mathbf{X}$ is the adjacency matrix (the network).
-
-- **netdiffuseR** is an R package that:
-
-    -   Allow to generalize the network threshold concept to include covariates and other network weighting schemes.
-    
-    -   Is designed for Visualizing, Analyzing and Simulating network diffusion data (in general).
-
-    -   Already on CRAN with +48,000 downloads since its first version, Feb 2016.
-
-- **Datasets**
-
-    -   **netdiffuseR** has the three classic Diffusion Network Datasets:
-
-        -   `medInnovationsDiffNet` Doctors and the innovation of Tetracycline (1955).
-        -   `brfarmersDiffNet` Brazilian farmers and the innovation of Hybrid Corn Seed (1966).
-        -   `kfamilyDiffNet` Korean women and Family Planning methods (1973).
-
-        ```{r printing}
-        brfarmersDiffNet
-        medInnovationsDiffNet
-        kfamilyDiffNet
-        ```
 
 # Visualization methods
 

@@ -1,6 +1,6 @@
 ---
 title: "Simulation of diffusion networks: rdiffnet"
-author: "Thomas W. Valente, George G. Vega Yon, and Aníbal Olivera M."
+author: "George G. Vega Yon, and Aníbal Olivera M."
 date: "2025-06-24"
 date-modified: "2025-06-24"
 ---
@@ -13,10 +13,23 @@ knitr::opts_chunk$set(comment = "#")
 
 # Introduction
 
-Before we start, a review of the concepts we will be using here
+**Network thresholds** (Valente, 1995; 1996), $\tau$, are defined as the required proportion or number of neighbors that leads you to adopt a particular behavior (innovation), $a=1$. So, in simulations, the adoption rule follows \pause
 
-1. Exposure: Proportion/number of neighbors that has adopted an innovation at each point in time.
-2. Threshold: The proportion/number of your neighbors who had adopted at or one time period before ego (the focal individual) adopted.
+$$
+  a_i = \left\{\begin{array}{ll}
+  1 &\mbox{if } \tau_i\leq E_i \\
+  0 & \mbox{Otherwise}
+  \end{array}\right. ,\qquad \text{where} \quad
+  E_i \equiv \frac{\sum_{j\neq i}\mathbf{X}_{ij}a_j}{\sum_{j\neq i}\mathbf{X}_{ij}}.
+$$
+
+Where $E_i$ is i's exposure to the innovation and $\mathbf{X}$ is the adjacency matrix (the network).
+
+
+Here is a review of the concepts we will be using:
+
+1. Exposure $E_i$: Proportion/number of neighbors that has adopted an innovation at each point in time.
+2. Threshold $\tau$: The proportion/number of your neighbors who had adopted at or one time period before ego (the focal individual) adopted.
 3. Infectiousness: How much $i$'s adoption affects her alters.
 4. Susceptibility: How much $i$'s alters' adoption affects her.
 5. Structural equivalence: How similar are $i$ and $j$ in terms of position in the network.
