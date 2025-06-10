@@ -76,7 +76,7 @@ par(op)
 # Disadoption
 
 
-The disadoption feature included in **netdiffuseR** version 1.24.0 opened a new way of studying network diffusion processes ([Lehmann 2017 2024](DOI: 10.1007/s13162-017-0093-8), [Alipour 2024](https://doi.org/10.1093/pnasnexus/pgae428).
+The disadoption feature included in **netdiffuseR** version 1.24.0 opened a new way of studying network diffusion processes ([Lehmann 2017 2024](DOI: 10.1007/s13162-017-0093-8), [Alipour 2024](https://doi.org/10.1093/pnasnexus/pgae428)).
 
 The `rdiffnet` function includes the `disadopt` parameter to add a `disadoption` function, that:
 
@@ -250,7 +250,7 @@ disadoption_function <- function(expo, cumadopt, time) {
 }
 ```
 
-creates a disadoption function that simulates a **fashion that dies** incrementally **over time**. You can try this for one or more fads. ([solution file](files/declining_fashion.r))
+creates a disadoption function that simulates a **fashion that dies** incrementally **over time**. You can try this for one or more fads. ([solution file](files/sim-declining_fashion.r))
 
 # Appendix
 

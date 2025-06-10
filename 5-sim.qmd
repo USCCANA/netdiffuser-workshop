@@ -138,7 +138,8 @@ legend(
     - Central seed nodes.
     - Marginal seed nodes.
     - One of your own making.
-    (<a href="files/sim-solutions-1.r" target="_blank">solution script</a> and <a href="files/sim-solutions-1.pdf" target="_blank">solution plot</a>)
+    
+(<a href="files/sim-solutions-1.r" target="_blank">solution script</a> and <a href="files/sim-solutions-1.pdf" target="_blank">solution plot</a>)
     
 2.  Given the following types of networks: Small-world, Scale-free, Bernoulli,
     what set of $n$ initiators maximizes diffusion?
