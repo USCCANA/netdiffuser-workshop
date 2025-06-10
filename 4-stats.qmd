@@ -3,6 +3,7 @@ title: "Statistical inference"
 author: 
   - Thomas W. Valente
   - George G. Vega Yon
+  - Aníbal L. Olivera Morales
 date: "2025-06-24"
 date-modified: "2025-06-24"
 ---
@@ -28,11 +29,11 @@ knitr::opts_chunk$set(comment = "#")
     #| label: moran-kfamily
     #| warning: false
     #| message: false
-    # Constructing diffusion network from village #2
-    kfamily_2 <- subset(kfamily, village == 2)
+    # Constructing diffusion network from village #21
+    kfamily_21 <- subset(kfamily, village == 21)
     
-    kfamily_diffnet_2 <- survey_to_diffnet(
-      dat      = kfamily_2,
+    kfamily_diffnet_21 <- survey_to_diffnet(
+      dat      = kfamily_21,
       idvar    = "id",
       netvars  = c(
         "net11", "net12", "net13", "net14", "net15", 
@@ -60,13 +61,13 @@ knitr::opts_chunk$set(comment = "#")
     #| message: false
     
     # For each time point we compute the geodesic distances matrix
-    W <- approx_geodesic(kfamily_diffnet_2$graph[[1]])
+    W <- approx_geodesic(kfamily_diffnet_21$graph[[1]])
     
     # We get the element-wise inverse
     W@x <- 1/W@x
     
     # And then compute moran
-    moran(kfamily_diffnet_2$cumadopt[,1], W)
+    moran(kfamily_diffnet_21$cumadopt[,1], W)
     ```
     
 ### Using `summary()`
@@ -77,7 +78,7 @@ knitr::opts_chunk$set(comment = "#")
     #| label: moran-summary
     #| warning: false
     #| message: false
-    summary(kfamily_diffnet_2)
+    summary(kfamily_diffnet_21)
     ```
 
 
@@ -100,18 +101,23 @@ knitr::opts_chunk$set(comment = "#")
 
 ## Lagged exposure models
 
-*   In this type of models we usually have the following
+*   These models typically include the following structure:
 
     $$
-    y_t = f(W_{t-1}, y_{t-1}, X_i) + \varepsilon
+    y_t = f(G_{t-1}, y_{t-1}, X_i) + \varepsilon,
     $$
     
-    Furthermore, in the case of adoption we have
+    Where the variable of interest $y_t$ depends on:
+    -  The previous state $y_{t-1}$
+    -  The time-lagged adjacency matrix $G_{t-1}$
+    -  Covariates $X_i$
+      
+    For adoption scenarios, the model becomes:
     
     $$
     y_{it} = \left\{
     \begin{array}{ll}
-    1 & \mbox{if}\quad \rho\sum_{j\neq i}\frac{W_{ijt-1}y_{it-1}}{\sum_{j\neq i}W_{ijt-1}} + X_{it}\beta > 0\\
+    1 & \mbox{if}\quad \rho\sum_{j\neq i}\frac{G_{ijt-1}y_{it-1}}{\sum_{j\neq i}G_{ijt-1}} + X_{it}\beta > 0\\
     0 & \mbox{otherwise}
     \end{array}
     \right.
@@ -119,32 +125,25 @@ knitr::opts_chunk$set(comment = "#")
     
 *   In __netdiffuseR__ is as easy as doing the following:
     
-    ```{r dataforreg}
-    # fakedata
-    set.seed(121)
+    ```{r data-for-reg}
     
-    W   <- rgraph_ws(1e3, 8, .2)
-    X   <- cbind(var1 = rnorm(1e3))
-    toa <- sample(c(NA,1:5), 1e3, TRUE)
+    # Adding 'cohesion' exposure 
+    kfamily_diffnet_21[["exposure"]] <- exposure(kfamily_diffnet_21)
     
-    dn  <- new_diffnet(W, toa=toa, vertex.static.attrs = X)
+    # Adding 'structructure equivalence' exposure
+    kfamily_diffnet_21[["exposure_se"]] <-  exposure(kfamily_diffnet_21,
+                                                    alt.graph="se", 
+                                                    groupvar="village",
+                                                    valued=TRUE)
     
-    # Computing exposure and adoption for regression
-    dn[["cohesive_expo"]] <- cbind(NA, exposure(dn)[,-nslices(dn)])
-    dn[["adopt"]]         <- dn$cumadopt
+    # Adding 'adoption'
+    kfamily_diffnet_21[["adoption"]] <- kfamily_diffnet_21$cumadopt
     
-    # Running the model with `diffreg`
-    ans <- diffreg(dn ~ exposure + var1 + factor(per), type = "probit")
-    summary(ans)
-
+    # pregs -> total pregnancie
+    # media12 -> Poster exposure to FP
+    model_1 <- diffreg(kfamily_diffnet_21 ~ exposure + exposure_se + media12 + sons + pregs + factor(per), type = "probit")
     
-    # Generating the data and running the model
-    dat <- as.data.frame(dn)
-    ans <- glm(adopt ~ cohesive_expo + var1 + factor(per),
-               data = dat,
-               family = binomial(link="probit"),
-               subset = is.na(toa) | (per <= toa))
-    summary(ans)
+    summary(model_1)
     ```
     
     This is equivalent to use `glm` with `dn` as data frame.
@@ -205,8 +204,37 @@ save(X, W, file="files/stats.rda")
 
 # Appendix 
 
-## Structural dependence and permutation tests
+## Lagged exposure models (sintetic)
 
+```{r dataforreg}
+# fakedata
+set.seed(121)
+
+W   <- rgraph_ws(1e3, 8, .2)
+X   <- cbind(var1 = rnorm(1e3))
+toa <- sample(c(NA,1:5), 1e3, TRUE)
+
+dn  <- new_diffnet(W, toa=toa, vertex.static.attrs = X)
+
+# Computing exposure and adoption for regression
+dn[["cohesive_expo"]] <- cbind(NA, exposure(dn)[,-nslices(dn)])
+dn[["adopt"]]         <- dn$cumadopt
+
+# Running the model with `diffreg`
+ans <- diffreg(dn ~ exposure + var1 + factor(per), type = "probit")
+summary(ans)
+
+
+# Generating the data and running the model
+dat <- as.data.frame(dn)
+ans <- glm(adopt ~ cohesive_expo + var1 + factor(per),
+           data = dat,
+           family = binomial(link="probit"),
+           subset = is.na(toa) | (per <= toa))
+summary(ans)
+```
+
+## Structural dependence and permutation tests
 
 - A novel statistical method (work-in-progress) that allows conducting inference.
 - Included in the package, tests whether a particular network statistic actually depends on network structure
