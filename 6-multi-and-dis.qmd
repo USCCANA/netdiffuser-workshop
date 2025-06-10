@@ -250,7 +250,7 @@ disadoption_function <- function(expo, cumadopt, time) {
 }
 ```
 
-creates a disadoption function that simulates a **fashion that dies** incrementally **over time**. You can try this for one or more fads. ([solution file](files/declining_fashion.R))
+creates a disadoption function that simulates a **fashion that dies** incrementally **over time**. You can try this for one or more fads. ([solution file](files/declining_fashion.r))
 
 # Appendix
 
