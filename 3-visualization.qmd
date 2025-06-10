@@ -21,20 +21,20 @@ You can see the [Reference Manual](https://cran.r-project.org/web/packages/netdi
 
 ### Creating a diffusion network with survey_to_diffnet()
 
-We can select a specific village and visualize its diffusion dynamics. As we did in the previous section, we will use the `kfamily` dataset, which contains data on Korean Family Planning, and we will focus on village 21:
+We can select a specific village and visualize its diffusion dynamics. As we did in the previous section, we will use the `kfamily` dataset, which contains data on Korean Family Planning, and we will focus on village #2:
 
 ```{r}
-#| label: kfamily-village-21
+#| label: kfamily-village-2
 #| warning: false
 #| message: false
 data(kfamily)
 
-# Subset the kfamily dataset for village 21
-kfamily_21 <- subset(kfamily, village == 21)
+# Subset the kfamily dataset for village 2
+kfamily_2 <- subset(kfamily, village == 2)
 
 # Convert the subsetted data to a diffnet object
-kfamily_diffnet_21 <- survey_to_diffnet(
-  dat      = kfamily_21,
+kfamily_diffnet_2 <- survey_to_diffnet(
+  dat      = kfamily_2,
   idvar    = "id",
   netvars  = c(
     # Neighbors talk to about FP
@@ -51,31 +51,31 @@ kfamily_diffnet_21 <- survey_to_diffnet(
 We can visualize adopters and cumulative adopters:
 
 ```{r}
-#| label: kfamily-village-21-plot_adopters
+#| label: kfamily-village-2-plot_adopters
 #| warning: false
 #| message: false
 
-plot_adopters(kfamily_diffnet_21)
+plot_adopters(kfamily_diffnet_2)
 ```
 
 or draw a graph where the x-axis coordinates are given by time of adoption, and the y-axis by the threshold level:
 
 ```{r}
-#| label: kfamily-village-21-plot_threshold
+#| label: kfamily-village-2-plot_threshold
 #| warning: false
 #| message: false
 
-plot_threshold(kfamily_diffnet_21)
+plot_threshold(kfamily_diffnet_2)
 ```
 
 or create a colored network plot showing the diffusion status of the graph through time (one network plot for each time period):
 
 ```{r}
-#| label: kfamily-village-21-plot_diffnet
+#| label: kfamily-village-2-plot_diffnet
 #| warning: false
 #| message: false
 
-plot_diffnet(kfamily_diffnet_21)
+plot_diffnet(kfamily_diffnet_2)
 ```
 
 # Problems

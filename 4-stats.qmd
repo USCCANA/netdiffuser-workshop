@@ -34,14 +34,29 @@ knitr::opts_chunk$set(comment = "#")
     using graph powers, computes the shortest path up to `n` steps. What happens under the hood is:
     
     ```{r}
+    
+    # Constructing diffusion network from village #2
+    kfamily_2 <- subset(kfamily, village == 2)
+
+    kfamily_diffnet_2 <- survey_to_diffnet(
+      dat      = kfamily_2,
+      idvar    = "id",
+      netvars  = c(
+        "net11", "net12", "net13", "net14", "net15", 
+        "net21", "net22", "net23", "net24", "net25",
+        "net31", "net32", "net33", "net34", "net35"), 
+      toavar   = "toa",
+      groupvar = "village"
+    )
+    
     # For each time point we compute the geodesic distances matrix
-    W <- approx_geodesic(medInnovationsDiffNet$graph[[1]])
+    W <- approx_geodesic(kfamily_diffnet_2$graph[[1]])
     
     # We get the element-wise inverse
     W@x <- 1/W@x
     
     # And then compute moran
-    moran(medInnovationsDiffNet$cumadopt[,1], W)
+    moran(kfamily_diffnet_2$cumadopt[,1], W)
     ```
     
 *   The `summary.diffnet` method already runs Moran's for you.
