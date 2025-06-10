@@ -15,8 +15,11 @@ knitr::opts_chunk$set(comment = "#")
 
 # Visualization methods
 
+__netdiffuseR__ offers several methods to visualize network diffusion dynamics. Here we will focus on three of them: `plot_adopters()`, `plot_threshold()`, and `plot_diffnet()`.
 
-**Using diffnet from survey_to_diffnet()**
+You can see the [Reference Manual](https://cran.r-project.org/web/packages/netdiffuseR/netdiffuseR.pdf) on CRAN, or the Appendix from this lecture, to see the full list of methods available in the package.
+
+### Creating a diffusion network with survey_to_diffnet()
 
 We can select a specific village and visualize its diffusion dynamics. As we did in the previous section, we will use the `kfamily` dataset, which contains data on Korean Family Planning, and we will focus on village 21:
 
@@ -45,6 +48,8 @@ kfamily_diffnet_21 <- survey_to_diffnet(
 )
 ```
 
+We can visualize adopters and cumulative adopters:
+
 ```{r}
 #| label: kfamily-village-21-plot_adopters
 #| warning: false
@@ -53,6 +58,8 @@ kfamily_diffnet_21 <- survey_to_diffnet(
 plot_adopters(kfamily_diffnet_21)
 ```
 
+or draw a graph where the x-axis coordinates are given by time of adoption, and the y-axis by the threshold level:
+
 ```{r}
 #| label: kfamily-village-21-plot_threshold
 #| warning: false
@@ -60,6 +67,8 @@ plot_adopters(kfamily_diffnet_21)
 
 plot_threshold(kfamily_diffnet_21)
 ```
+
+or create a colored network plot showing the diffusion status of the graph through time (one network plot for each time period):
 
 ```{r}
 #| label: kfamily-village-21-plot_diffnet
@@ -100,6 +109,8 @@ save(diffnet, file = "files/intro.rda")
 
 # Appendix
 
+### Creating a diffusion network with `rdiffnet()`
+
 Another example using the `rdiffnet` function to generate random diffusion networks. This example creates a small-world network with 400 nodes and 6 time steps, where the connections are rewired based on a threshold distance of 1/4. The `seed.graph` is set to "small-world" and the `seed.nodes` to "central", which means that the initial nodes are chosen from the center of the network.
 
 
@@ -121,7 +132,12 @@ Diffusion networks can visualized using many methods included in the package. He
 
 ```{r}
 #| label: plot-methods
+
+plot(diffnet_1)
 plot_diffnet(diffnet_1)
+plot_diffnet2(diffnet_1)
 plot_adopters(diffnet_1)
 plot_threshold(diffnet_1)
+plot_infectsuscep(diffnet_1, K=2)
+plot_hazard(diffnet_1)
 ```
