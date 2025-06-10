@@ -1,6 +1,8 @@
 ---
 title: "Statistical inference"
-author: "Thomas W. Valente and George G. Vega Yon"
+author: 
+  - Thomas W. Valente
+  - George G. Vega Yon
 date: "2025-06-24"
 date-modified: "2025-06-24"
 ---

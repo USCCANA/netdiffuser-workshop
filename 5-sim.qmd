@@ -2,7 +2,7 @@
 title: "Simulation of diffusion networks: rdiffnet"
 author:
   - George G. Vega Yon
-  - Aníbal Olivera M.
+  - Aníbal L. Olivera Morales
 date: "2025-06-24"
 date-modified: "2025-06-24"
 ---

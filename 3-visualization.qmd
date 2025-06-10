@@ -1,6 +1,8 @@
 ---
 title: "Visualization"
-author: "George G. Vega Yon"
+author: 
+  - George G. Vega Yon
+  - Aníbal L. Olivera Morales
 date: "2025-06-24"
 date-modified: "2025-06-24"
 ---
@@ -13,7 +15,8 @@ knitr::opts_chunk$set(comment = "#")
 
 # Visualization methods
 
-## diffnet from survey_to_diffnet()
+
+**Using diffnet from survey_to_diffnet()**
 
 We can select a specific village and visualize its diffusion dynamics. As we did in the previous section, we will use the `kfamily` dataset, which contains data on Korean Family Planning, and we will focus on village 21:
 
@@ -40,13 +43,30 @@ kfamily_diffnet_21 <- survey_to_diffnet(
   toavar   = "toa",
   groupvar = "village"
 )
+```
+
+```{r}
+#| label: kfamily-village-21-plot_adopters
+#| warning: false
+#| message: false
 
 plot_adopters(kfamily_diffnet_21)
+```
+
+```{r}
+#| label: kfamily-village-21-plot_threshold
+#| warning: false
+#| message: false
 
 plot_threshold(kfamily_diffnet_21)
+```
+
+```{r}
+#| label: kfamily-village-21-plot_diffnet
+#| warning: false
+#| message: false
 
 plot_diffnet(kfamily_diffnet_21)
-
 ```
 
 # Problems

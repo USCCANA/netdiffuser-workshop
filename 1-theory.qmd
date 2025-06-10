@@ -1,6 +1,7 @@
 ---
 title: "Introduction"
-author: "Thomas W. Valente"
+author:
+  - Thomas W. Valente
 date: "2025-06-24"
 date-modified: "2025-06-24"
 editor: 
