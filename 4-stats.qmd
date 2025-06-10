@@ -300,7 +300,10 @@ hist(test)
 
 -   Now we shuffle toas, so that is random
     
-```{r random-toa, cache=TRUE}
+```{r}
+#| label: random-toa
+#| warning: false
+#| message: false
 # Resetting TOAs (now will be completely random)
 diffnet.toa(net) <- sample(diffnet.toa(net), nnodes(net), TRUE)
 
@@ -316,6 +319,9 @@ test <- struct_test(
 test
 ```
     
-```{r, echo=FALSE}
+```{r}
+#| label: random-toa-hist
+#| warning: false
+#| message: false
 hist(test)
 ```
