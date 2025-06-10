@@ -21,8 +21,29 @@ knitr::opts_chunk$set(comment = "#")
 
 *   We can use Moran's I as a first look to whether there is something happening:
     let that be influence or homophily.
+    
+*   Let's see how to compute Moran's I in __netdiffuseR__ from a `diffnet` object: 
+    
+    ```{r}
+    #| label: moran-kfamily
+    #| warning: false
+    #| message: false
+    # Constructing diffusion network from village #2
+    kfamily_2 <- subset(kfamily, village == 2)
+    
+    kfamily_diffnet_2 <- survey_to_diffnet(
+      dat      = kfamily_2,
+      idvar    = "id",
+      netvars  = c(
+        "net11", "net12", "net13", "net14", "net15", 
+        "net21", "net22", "net23", "net24", "net25",
+        "net31", "net32", "net33", "net34", "net35"), 
+      toavar   = "toa",
+      groupvar = "village"
+    )
+    ```
 
-## Using geodesics
+### Using geodesics
 
 *   One approach is to use the geodesic (shortes path length) matrix to account for indirect
     influence.
@@ -34,20 +55,9 @@ knitr::opts_chunk$set(comment = "#")
     using graph powers, computes the shortest path up to `n` steps. What happens under the hood is:
     
     ```{r}
-    
-    # Constructing diffusion network from village #2
-    kfamily_2 <- subset(kfamily, village == 2)
-
-    kfamily_diffnet_2 <- survey_to_diffnet(
-      dat      = kfamily_2,
-      idvar    = "id",
-      netvars  = c(
-        "net11", "net12", "net13", "net14", "net15", 
-        "net21", "net22", "net23", "net24", "net25",
-        "net31", "net32", "net33", "net34", "net35"), 
-      toavar   = "toa",
-      groupvar = "village"
-    )
+    #| label: approx_geodesic
+    #| warning: false
+    #| message: false
     
     # For each time point we compute the geodesic distances matrix
     W <- approx_geodesic(kfamily_diffnet_2$graph[[1]])
@@ -59,20 +69,15 @@ knitr::opts_chunk$set(comment = "#")
     moran(kfamily_diffnet_2$cumadopt[,1], W)
     ```
     
+### Using `summary()`
+    
 *   The `summary.diffnet` method already runs Moran's for you.
 
     ```{r}
-    set.seed(12315)
-    diffnet_1 <- rdiffnet(
-      n = 400, t = 6,
-      rgraph.args    = list(k=6, p=.3),
-      seed.graph     = "small-world",
-      seed.nodes     = "central",
-      rewire         = FALSE,
-      threshold.dist = 1/4
-      )
-    
-    summary(diffnet_1)
+    #| label: moran-summary
+    #| warning: false
+    #| message: false
+    summary(kfamily_diffnet_2)
     ```
 
 
