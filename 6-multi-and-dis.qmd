@@ -31,7 +31,7 @@ or pass diffnet objects as input, already containing the seed graph and time poi
 #| label: simulation-multiadoption-process-3
 
 data(kfamily)
-kfamily_21 <- subset(kfamily, village %in% c(21))
+kfamily_21 <- subset(kfamily, village == 21)
 
 kfamily_diffnet_21 <- survey_to_diffnet(
   dat      = kfamily_21,
