@@ -125,8 +125,10 @@ knitr::opts_chunk$set(comment = "#")
     
 *   In __netdiffuseR__ is as easy as doing the following:
     
-    ```{r data-for-reg}
-    
+    ```{r}
+    #| label: diffreg-kfamily
+    #| warning: false
+    #| message: false
     # Adding 'cohesion' exposure 
     kfamily_diffnet_21[["exposure"]] <- exposure(kfamily_diffnet_21)
     
@@ -146,7 +148,10 @@ knitr::opts_chunk$set(comment = "#")
     summary(model_1)
     ```
     
-    This is equivalent to use `glm` with `dn` as data frame.
+    This is equivalent to use `glm` with `kfamily_diffnet_21` as data frame.
+    
+*   See the Appendix for an example of how to generate a synthetic dataset
+    and run a regression model with it.
     
 # Problems
 
@@ -204,9 +209,13 @@ save(X, W, file="files/stats.rda")
 
 # Appendix 
 
-## Lagged exposure models (sintetic)
+## Lagged exposure models (synthetic)
 
-```{r dataforreg}
+```{r}
+#| label: diffreg-synthetic
+#| warning: false
+#| message: false
+
 # fakedata
 set.seed(121)
 
@@ -223,8 +232,14 @@ dn[["adopt"]]         <- dn$cumadopt
 # Running the model with `diffreg`
 ans <- diffreg(dn ~ exposure + var1 + factor(per), type = "probit")
 summary(ans)
+```
 
+To do the same with `glm`, we need to do more work:
 
+```{r}
+#| label: glm-synthetic
+#| warning: false
+#| message: false
 # Generating the data and running the model
 dat <- as.data.frame(dn)
 ans <- glm(adopt ~ cohesive_expo + var1 + factor(per),
@@ -253,10 +268,13 @@ summary(ans)
 
 ### Example Not random TOA
 
--     To use this test, __netdiffuseR__ has the `struct_test` function.
--     Basically it simulates networks with the same density and computes a particular statistic every time, generating an EDF (Empirical Distribution Function) under the Null hyphothesis (p-values).
+-   To use this test, __netdiffuseR__ has the `struct_test` function.
+-   Basically it simulates networks with the same density and computes a particular statistic every time, generating an EDF (Empirical Distribution Function) under the Null hyphothesis (p-values).
     
-```{r Struct non-random-toa, cache=TRUE}
+```{r}
+#| label: non-random-toa
+#| warning: false
+#| message: false
 # Simulating network
 set.seed(1123)
 net <- rdiffnet(n=500, t=10, seed.graph = "small-world")
@@ -273,7 +291,10 @@ test <- struct_test(
 test
 ```
 
-```{r, echo=FALSE}
+```{r}
+#| label: non-random-toa-hist
+#| warning: false
+#| message: false
 hist(test)
 ```
 
