@@ -172,85 +172,28 @@ adopted <-  cbind(
 table(adopted[, 1], adopted[, 2])
 ```
 
-### Example 2
 
-The following code shows how to build a disadoption function that randomly selects 10% of the adopters at time `t - 1`:
+## Exercises
 
-```{r}
-#| label: disadoption-example-2-fun
-
-random_dis <- function(expo, cumadopt, time) {
+1. Using the template for a disadoption function, 
   
-  # Number of behaviors
-  num_of_behaviors <- dim(cumadopt)[3]
+```{r, message=FALSE, warning=FALSE}
+#| label: template-disadoption-exercise-1
   
-  # Making room for the disadopted nodes: list(integer(), integer())
-  list_disadopt <- replicate(num_of_behaviors, integer())
-  
-  # We iterate through the behaviors
-  for (q in 1:num_of_behaviors) {
+  disadoption_function <- function(expo, cumadopt, time) {
     
-    # Identifying the adopters at time t-1
-    adopters_old <- which(cumadopt[, time - 1, q] == 1)
-    
-    if (length(adopters_old) != 0) {
-      
-      # selecting 10% of adopters to disadopt
-      list_disadopt[[q]] <- sample(
-        adopters_old,
-        round(0.10 * length(adopters_old)
-        )
-      )
-    }
+    # 1) set number of behaviors
+    # 2) iteration through the behaviors
+    # 3) identify adopters at time t - 1
+    # 4) select 10% of adopters to disadopt
+    # 5) if there are no disadopters, return(list(integer(), integer()))
     
   }
-  return(list_disadopt)
-}
 ```
-
-To **simulate** a diffusion process **with disadoption**, we can use the `rdiffnet` function as follows:
-
-```{r, message=FALSE, warning=FALSE}
-#| label: disadoption-example-2
-
-set.seed(123)
-
-diffnet_5  <- rdiffnet(
-  seed.graph   = kfamily_diffnet_21,
-  seed.p.adopt = list(0.1,0.15),
-)
-
-diffnet_5
-
-set.seed(123)
-
-diffnet_6  <- rdiffnet(
-  seed.graph   = kfamily_diffnet_21,
-  seed.p.adopt = list(0.1,0.15),
-  disadopt     = random_dis
-)
-
-diffnet_6
-```
-
-
-## Exercise
-
-Using the template for a disadoption function, 
-
-```{r}
-#| label: template-disadoption-exercise
-#| eval: false
-
-disadoption_function <- function(expo, cumadopt, time) {
   
-  # Some fancy calculations..
-  
-  return(list(integer(), integer()))
-}
-```
+  create a disadoption function that randomly selects **10% of the adopters** at time `t - 1`. ([solution file](files/sim-solutions-pt2-1.R))
 
-creates a disadoption function that simulates a **fashion that dies** incrementally **over time**. You can try this for one or more fads. ([solution file](files/sim-declining_fashion.r))
+3. Using the template for a disadoption function, create a disadoption function that simulates a **fashion that dies** incrementally **over time**. You can try this for one or more fads. ([solution file](files/sim-solutions-pt2-2.r))
 
 # Appendix
 
