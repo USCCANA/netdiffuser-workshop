@@ -1,17 +1,11 @@
 ---
-title: "netdiffuseR workshop"
-author:
-  - George G. Vega Yon
-  - Aníbal L. Olivera M.
-  - Thomas W. Valente 
 ---
 
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(comment = "#")
 ```
 
-
-Workshop materials can be downloaded from <https://github.com/USCCANA/netdiffuser-workshop>.
+**Welcome to the netdiffuseR @ Sunbelt 2024 workshop!** This workshop will introduce you to the [netdiffuseR package](https://github.com/USCCANA/netdiffuseR){target="_blank"}, which we have been developing since 2015.  Workshop materials can be downloaded from <https://github.com/USCCANA/netdiffuser-workshop>. <img src="https://raw.githubusercontent.com/USCCANA/netdiffuseR/refs/heads/master/man/figures/netdiffuser-logo.png" style="max-width:300px;width:50%;" align="right">
 
 Sections:
 
@@ -22,7 +16,7 @@ Sections:
 5. [Simulations pt.1](5-sim.qmd)
 6. [Simulations pt.2](6-multi-and-dis.qmd)
 
-In [Miscellaneous](0-getstarted.qmd) section, you can find 
+In [Misc](0-getstarted.qmd) section, you can find 
 
 1. a *Quick n’ Dirty Introduction to R*, 
 2. a brief introduction to netdiffuseR package, and
