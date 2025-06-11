@@ -1,6 +1,10 @@
 *_cache/
 *_files/
 .Rproj.user
+.Rhistory
+.DS_Store
+*/.DS_Store
+**/.DS_Store
 
 /.quarto/
 docs/

@@ -1,0 +1,143 @@
+---
+title: "Visualization"
+author: 
+  - George G. Vega Yon
+  - Aníbal L. Olivera Morales
+date: "2025-06-24"
+date-modified: "2025-06-24"
+---
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+library(netdiffuseR)
+knitr::opts_chunk$set(comment = "#")
+```
+
+
+# Visualization methods
+
+__netdiffuseR__ offers several methods to visualize network diffusion dynamics. Here we will focus on three of them: `plot_adopters()`, `plot_threshold()`, and `plot_diffnet()`.
+
+You can see the [Reference Manual](https://cran.r-project.org/web/packages/netdiffuseR/netdiffuseR.pdf) on CRAN, or the Appendix from this lecture, to see the full list of methods available in the package.
+
+### Creating a diffusion network with survey_to_diffnet()
+
+We can select a specific village and visualize its diffusion dynamics. As we did in the previous section, we will use the `kfamily` dataset, which contains data on Korean Family Planning, and we will focus on village #21:
+
+```{r}
+#| label: kfamily-village-21
+#| warning: false
+#| message: false
+data(kfamily)
+
+# Subset the kfamily dataset for village 21
+kfamily_21 <- subset(kfamily, village == 21)
+
+# Convert the subsetted data to a diffnet object
+kfamily_diffnet_21 <- survey_to_diffnet(
+  dat      = kfamily_21,
+  idvar    = "id",
+  netvars  = c(
+    # Neighbors talk to about FP
+    "net11", "net12", "net13", "net14", "net15", 
+    # Closest neighbor most frequently met
+    "net21", "net22", "net23", "net24", "net25", 
+    # Advice on FP sought from 
+    "net31", "net32", "net33", "net34", "net35"), 
+  toavar   = "toa",
+  groupvar = "village"
+)
+```
+
+We can visualize adopters and cumulative adopters:
+
+```{r}
+#| label: kfamily-village-21-plot_adopters
+#| warning: false
+#| message: false
+
+plot_adopters(kfamily_diffnet_21)
+```
+
+or draw a graph where the x-axis coordinates are given by time of adoption, and the y-axis by the threshold level:
+
+```{r}
+#| label: kfamily-village-21-plot_threshold
+#| warning: false
+#| message: false
+
+plot_threshold(kfamily_diffnet_21)
+```
+
+or create a colored network plot showing the diffusion status of the graph through time (one network plot for each time period):
+
+```{r}
+#| label: kfamily-village-21-plot_diffnet
+#| warning: false
+#| message: false
+
+plot_diffnet(kfamily_diffnet_21)
+```
+
+# Problems
+
+1.  Using the diffnet object in [`intro.rda`](files/intro.rda), use the function `plot_threshold` specifying shapes and colors according to the variables ItrustMyFriends and Age. Do you see any pattern? (<a href="files/intro-solutions.r" target="_blank">solution script</a> and <a href="files/intro-solutions.png" target="_blank">solution plot</a>)
+
+```{r datasim, echo=FALSE, eval=TRUE}
+set.seed(1252)
+dat <- data.frame(
+  ItrustMyFriends = sample(c(0,1), 200, TRUE),
+  Age = 10 + rpois(200, 4)
+  )
+net <- rgraph_er(200, p = .05)
+# net <- diag_expand(list(net, net))
+# net[cbind(1:20, 101:120)] <- 1 
+
+# Generating the process
+diffnet <- rdiffnet(
+  threshold.dist = 4 - dat$ItrustMyFriends*3,
+  seed.graph = net,
+  t=6,
+  seed.nodes = c(9:25),
+  exposure.args = list(normalized=FALSE),
+  rewire = FALSE)
+
+diffnet[["ItrustMyFriends"]] <- dat$ItrustMyFriends
+diffnet[["Age"]] <- dat$Age
+
+save(diffnet, file = "files/intro.rda")
+```
+
+# Appendix
+
+### Creating a diffusion network with `rdiffnet()`
+
+Another example using the `rdiffnet` function to generate random diffusion networks. This example creates a small-world network with 400 nodes and 6 time steps, where the connections are rewired based on a threshold distance of 1/4. The `seed.graph` is set to "small-world" and the `seed.nodes` to "central", which means that the initial nodes are chosen from the center of the network.
+
+
+```{r}
+#| label: rdiffnet-example
+set.seed(12315)
+diffnet_1 <- rdiffnet(
+  n = 400, t = 6,
+  rgraph.args    = list(k=6, p=.3),
+  seed.graph     = "small-world",
+  seed.nodes     = "central",
+  rewire         = FALSE,
+  threshold.dist = 1/4
+  )
+diffnet_1
+```
+
+Diffusion networks can visualized using many methods included in the package. Here are some of them:
+
+```{r}
+#| label: plot-methods
+
+plot(diffnet_1)
+plot_diffnet(diffnet_1)
+plot_diffnet2(diffnet_1)
+plot_adopters(diffnet_1)
+plot_threshold(diffnet_1)
+plot_infectsuscep(diffnet_1, K=2)
+plot_hazard(diffnet_1)
+```

@@ -3,32 +3,36 @@ project:
   output-dir: 'docs'
 
 website:
-  title: "netdiffuseR: A workshop"
-  # body-footer: <text style="text-align:center">ForeSITE</text>
+  title: "netdiffuseR @ Sunbelt 2024"
   repo-url: https://github.com/USCCANA/netdiffuser-workshop
-  repo-actions: [edit, source]
+  repo-actions: [edit, source]  
   navbar:
     left:
     - text: Home
       href: index.qmd
     - text: Lectures
       menu:
-      - text: Getting Started
-        href: 0-getstarted.qmd
       - text: Diffusion Theory
         href: 1-theory.qmd
-      - text: The netdiffuseR package
-        href: 2-netdiffuser.qmd
-      - text: Simulations
-        href: 3-sim.qmd
-      - text: New features
-        href: 4-newfeatures.qmd
       - text: Reading data
-        href: 5-read.qmd
-      - text: Statistical inference
-        href: 6-stats.qmd
-    - text: Classic Diffnet Analyses
-      href: classic.qmd
+        href: 2-read.qmd
+      - text: Visualization
+        href: 3-visualization.qmd
+      - text: Statistical Analysis
+        href: 4-stats.qmd
+      - text: Simulations pt.1
+        href: 5-sim.qmd
+      - text: Simulations pt.2
+        href: 6-multi-and-dis.qmd
+    right:
+    - text: Misc
+      menu:
+      - text: Getting started with R
+        href: 0-getstarted.qmd
+      - text: The netdiffuseR package
+        href: 0-netdiffuser.qmd
+      - text: Classic Diffnet Analyses
+        href: 0-classic.qmd
 
 format:
   html:

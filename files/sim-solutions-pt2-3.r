@@ -61,10 +61,10 @@ set.seed(1231)
 n <- 200
 t <- 10
 
-diffnet_7 <- rdiffnet(
+diffnet_declining <- rdiffnet(
   n, t,
   seed.p.adopt = list(0.1, 0.15),
   disadopt = declining_fashion
 )
 
-diffnet_7
+diffnet_declining
