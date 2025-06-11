@@ -205,7 +205,7 @@ To study a multi-adoption process, you can pass a **`list`** as the **`seed.p.ad
 #| label: simulation-multiadoption-process-1
 #| warning: false
 #| message: false
-set.seed(1231)
+set.seed(123)
 
 n <- 200
 t <- 10

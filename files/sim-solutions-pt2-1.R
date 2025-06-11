@@ -32,21 +32,53 @@ random_dis <- function(expo, cumadopt, time) {
 # To **simulate** a diffusion process **with disadoption**, we can use the 
 # `rdiffnet` function as follows:
 
+library(netdiffuseR)
+
+# Using the Watts-Strogatz model to create a seed graph
+
+n <- 200
+k <- 8
+t <- 10
+graph <- rgraph_ws(n, k, p=.3)  # Watts-Strogatz model
+
 set.seed(123)
 
-diffnet_5  <- rdiffnet(
+diffnet_ws <- rdiffnet(
+  seed.graph   = graph,
+  t            = t,
+  seed.p.adopt = list(0.1, 0.15)
+)
+diffnet_ws
+
+set.seed(123)
+
+diffnet_ws_random_dis <- rdiffnet(
+  seed.graph   = graph,
+  t            = t,
+  seed.p.adopt = list(0.1, 0.15),
+  disadopt     = random_dis
+)
+diffnet_ws_random_dis
+
+# Using the k-family model to create a seed graph
+
+kfamily_diffnet_21 <- kfamilyDiffNet[kfamilyDiffNet$vertex.static.attrs$village == 21,]
+
+set.seed(123)
+
+diffnet_kfam  <- rdiffnet(
   seed.graph   = kfamily_diffnet_21,
   seed.p.adopt = list(0.1,0.15),
 )
 
-diffnet_5
+diffnet_kfam
 
 set.seed(123)
 
-diffnet_6  <- rdiffnet(
+diffnet_kfam_random_dis  <- rdiffnet(
   seed.graph   = kfamily_diffnet_21,
   seed.p.adopt = list(0.1,0.15),
   disadopt     = random_dis
 )
 
-diffnet_6
+diffnet_kfam_random_dis
