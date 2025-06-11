@@ -24,28 +24,14 @@ jobs:
             netdiffuseR_*
           key: ${{ runner.os }}-netdiffuseR-pkg
 
-      - name: Download netdiffuseR
-        if: steps.cache-r-packages.outputs.cache-hit != 'true'
-        uses: actions/checkout@v4
-        with:
-          repository: USCCANA/netdiffuseR
-          path: netdiffuseR
-
       - name: Install dependencies
         run: |
-          install2.r igraph networkDynamic statnet Rcpp MatchIt \
+          install2.r igraph networkDynamic statnet Rcpp MatchIt remotes \
             SparseM viridisLite RcppArmadillo rmarkdown knitr microbenchmark
 
       - name: Install netdiffuseR
-        if: steps.cache-r-packages.outputs.cache-hit != 'true'
         run: |
-          R CMD INSTALL --build netdiffuseR
-          rm -rf netdiffuseR
-    
-      - name: Restoring cached version of netdiffuseR
-        if: steps.cache-r-packages.outputs.cache-hit == 'true'
-        run: |
-          R CMD INSTALL netdiffuseR_*
+          installGithub.r USCCANA/netdiffuseR@gvegayon-preparing-release-connections
 
       - name: Install Quarto
         run: |
