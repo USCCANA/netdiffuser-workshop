@@ -163,7 +163,7 @@ for (i in 1:nsim) {
       rdiffnet(
         seed.graph = net,
         t = 10,
-        threshold.dist = sample(1:2, 500L, TRUE),
+        threshold.dist = sample(1:2, 1000L, TRUE),
         seed.nodes = "random",
         seed.p.adopt = .10,
         exposure.args = list(outgoing = FALSE, normalized = FALSE),
@@ -188,7 +188,7 @@ for (i in 1:nsim) {
       rdiffnet(
         seed.graph = net,
         t = 10,
-        threshold.dist = sample(2:3, 500L, TRUE),
+        threshold.dist = sample(2:3, 1000L, TRUE),
         seed.nodes = "random",
         seed.p.adopt = .10,
         exposure.args = list(outgoing = FALSE, normalized = FALSE),
