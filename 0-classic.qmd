@@ -1,6 +1,7 @@
 ---
 title: "Classic Diffnet Analyses"
-author: "Thomas W. Valente"
+author:
+  - Thomas W. Valente
 ---
 
 ```r

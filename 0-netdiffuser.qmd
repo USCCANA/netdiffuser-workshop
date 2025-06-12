@@ -1,6 +1,8 @@
 ---
 title: "Introduction to the package"
-author: "George G. Vega Yon and Aníbal Olivera M."
+author: 
+  - George G. Vega Yon
+  - Aníbal L. Olivera Morales
 date: "2025-06-24"
 date-modified: "2025-06-24"
 ---
