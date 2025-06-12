@@ -3,6 +3,7 @@ title: "Reading Data"
 author:
   - Thomas W. Valente
   - George G. Vega Yon
+  - Aníbal Olivera M.
 date: "2025-06-24"
 date-modified: "2025-06-24"
 ---
@@ -72,10 +73,12 @@ Let's have a look to `kfamily`:
 #| message: false
 
 data(kfamily)
+
+# The data contains adoption information of 25 villages:
 unique(kfamily$village)
 
-# toa = 11 means 'no adoption'
-hist(kfamily$toa)
+# across 10 time steps (toa = 11 means 'no adoption')
+sort(unique(kfamily$toa))
 ```
 
 We can construct a `diffnet` object from from those survey data:
@@ -134,7 +137,7 @@ se <- exposure(kfamily_diffnet,
 head(round(se, 2))
 ```
 
-Finally...
+The `diffnet` object also contains attributes of the vertices, which can be retrieved using `diffnet.attrs()`:
 
 ```{r}
 #| label: kfamily-diffnet-attrs
@@ -143,7 +146,12 @@ Finally...
 
 # Retrieving attributes as data.frame
 kfamily_diffnet.df <- diffnet.attrs(kfamily_diffnet, as.df = TRUE)
-ncol(kfamily_diffnet.df)
+
+# Subset to relevant variables
+kfamily_relevant_vars <- kfamily_diffnet.df[, c("per", "toa", "village")]
+
+# Select 10 random rows
+kfamily_relevant_vars[sample(nrow(kfamily_relevant_vars), 10), ]
 ```
 
 
