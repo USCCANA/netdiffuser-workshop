@@ -1,6 +1,8 @@
 ---
 author: 
   - George G. Vega Yon
+date: "2025-06-24"
+date-modified: "2025-06-24"
 ---
 
 # Getting R

@@ -3,7 +3,7 @@ title: "Statistical inference"
 author: 
   - Thomas W. Valente
   - George G. Vega Yon
-  - Aníbal L. Olivera Morales
+  - Aníbal Olivera M.
 date: "2025-06-24"
 date-modified: "2025-06-24"
 ---

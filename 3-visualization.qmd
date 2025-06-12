@@ -2,7 +2,7 @@
 title: "Visualization"
 author: 
   - George G. Vega Yon
-  - Aníbal L. Olivera Morales
+  - Aníbal Olivera M.
 date: "2025-06-24"
 date-modified: "2025-06-24"
 ---
