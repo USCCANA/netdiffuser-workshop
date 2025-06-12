@@ -151,7 +151,10 @@ legend(
 
 The following is example code that can be used to run multiple simulations like it is done using the `rdiffnet_multiple` function. We do not recommend this approach but it may be useful for some users:
 
-```{r sim-sim, cache = TRUE, collapse = TRUE}
+```{r}
+#| label: sim-sim
+#| warning: false
+#| message: false
 # Now, simulating a bunch of diffusion processes
 nsim <- 500L
 ans_1and2 <- vector("list", nsim)
