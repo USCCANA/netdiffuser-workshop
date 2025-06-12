@@ -1,7 +1,7 @@
 # netdiffuseR workshop
 
 Here you will find the materials for the netdiffuseR workshop.
-This workshop will introduce you to the [netdiffuseR package](https://github.com/USCCANA/netdiffuseR){target="_blank"}.
+This workshop will introduce you to the [netdiffuseR package](https://github.com/USCCANA/netdiffuseR).
 The whole website was built using `quarto`, and the website itself can be found at https://usccana.github.io/netdiffuser-workshop. 
 
 Datasets are to be found at [docs], and the source code as the `qmd` files in this repository.
