@@ -40,7 +40,10 @@ data("fakesurveyDyn")
 fakesurveyDyn
 ```
 
-```{r 2-static-dynsurvey-cont1}
+```{r}
+#| label: 2-static-dynsurvey-cont1
+#| warning: false
+#| message: false
 diffnet_dynsurvey <- survey_to_diffnet(
   dat      = fakesurveyDyn,
   idvar    = "id",
@@ -63,7 +66,11 @@ plot_diffnet(diffnet_dynsurvey)
 
 Let's have a look to `kfamily`:
 
-```{r kfamily-look}
+```{r}
+#| label: kfamily-survey
+#| warning: false
+#| message: false
+
 data(kfamily)
 unique(kfamily$village)
 
@@ -73,7 +80,11 @@ hist(kfamily$toa)
 
 We can construct a `diffnet` object from from those survey data:
 
-```{r kfamily-survey-to-diffnet, warnings=FALSE, messages=FALSE}
+```{r}
+#| label: kfamily-survey-to-diffnet
+#| warning: false
+#| message: false
+
 kfamily_diffnet <- survey_to_diffnet(
   dat      = kfamily,
   idvar    = "id",
@@ -93,7 +104,11 @@ summary(kfamily_diffnet)
 ```
 
 We can calculate direct exposure (cohesion) to an innovation using `exposure()`,
-```{r kfamily-cohesion, warnings=FALSE, messages=FALSE}
+```{r}
+#| label: kfamily-exposure
+#| warning: false
+#| message: false
+
 # Computing exposure
 coh <- exposure(kfamily_diffnet)
 
@@ -103,7 +118,11 @@ head(round(coh, 2))
 
 and also indirect influence (structural equivalence):
 
-```{r kfamily-se, warnings=FALSE, messages=FALSE}
+```{r}
+#| label: kfamily-se
+#| warning: false
+#| message: false
+
 # Computing structural equivalence
 se <- exposure(kfamily_diffnet, 
               alt.graph="se",     # select 'structural equivalence'
@@ -117,9 +136,14 @@ head(round(se, 2))
 
 Finally...
 
-```{r kfamily-attr, warnings=FALSE, messages=FALSE}
+```{r}
+#| label: kfamily-diffnet-attrs
+#| warning: false
+#| message: false
+
 # Retrieving attributes as data.frame
 kfamily_diffnet.df <- diffnet.attrs(kfamily_diffnet, as.df = TRUE)
+ncol(kfamily_diffnet.df)
 ```
 
 
