@@ -153,8 +153,6 @@ The following is example code that can be used to run multiple simulations like 
 
 ```{r}
 #| label: sim-sim
-#| warning: false
-#| message: false
 # Now, simulating a bunch of diffusion processes
 nsim <- 500L
 ans_1and2 <- vector("list", nsim)
@@ -165,7 +163,6 @@ for (i in 1:nsim) {
     cumulative_adopt_count(
       rdiffnet(
         seed.graph = net,
-        t = 10,
         threshold.dist = sample(1:2, 1000L, TRUE),
         seed.nodes = "random",
         seed.p.adopt = .10,
@@ -190,7 +187,6 @@ for (i in 1:nsim) {
     cumulative_adopt_count(
       rdiffnet(
         seed.graph = net,
-        t = 10,
         threshold.dist = sample(2:3, 1000L, TRUE),
         seed.nodes = "random",
         seed.p.adopt = .10,
