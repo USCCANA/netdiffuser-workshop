@@ -5,7 +5,7 @@
 knitr::opts_chunk$set(comment = "#")
 ```
 
-**Welcome to the netdiffuseR @ Sunbelt 2025 workshop!** This workshop will introduce you to the [netdiffuseR package](https://github.com/USCCANA/netdiffuseR){target="_blank"}, which we have been developing since 2015.  Workshop materials can be downloaded from <https://github.com/USCCANA/netdiffuser-workshop>. <img src="https://raw.githubusercontent.com/USCCANA/netdiffuseR/refs/heads/master/man/figures/netdiffuser-logo.png" style="max-width:300px;width:50%;" align="right">
+**Welcome to the netdiffuseR @ Sunbelt 2025 workshop!** This workshop will introduce you to the [netdiffuseR package](https://github.com/USCCANA/netdiffuseR), which we have been developing since 2015.  Workshop materials can be downloaded from <https://github.com/USCCANA/netdiffuser-workshop>. <img src="https://raw.githubusercontent.com/USCCANA/netdiffuseR/refs/heads/master/man/figures/netdiffuser-logo.png" style="max-width:300px;width:50%;" align="right">
 
 Sections:
 
