@@ -34,7 +34,7 @@ jobs:
 
       - name: Install netdiffuseR
         run: |
-          installGithub.r USCCANA/netdiffuseR@gvegayon-preparing-release-connections
+          installGithub.r USCCANA/netdiffuseR
 
       - name: Install Quarto
         run: |
