@@ -8,8 +8,11 @@ Datasets are to be found at [docs], and the source code as the `qmd` files in th
 
 The netdiffuseR project repository can be found at https://github.com/USCCANA/netdiffuseR.
 
-For previous versions take a look at
+For current version of the workshop, you can click on the link below:
+- [Sunbelt 2025 Workshop](https://usccana.github.io/netdiffuser-workshop/)
 
-- USC 2024 <https://github.com/USCCANA/netdiffuser-workshop/tree/USC2024>
-- Sunbelt 2019 <https://github.com/usccana/netdiffuser-sunbelt2018/tree/sunbelt2019>
-- Sunbelt 2018 <https://github.com/usccana/netdiffuser-sunbelt2018/tree/sunbelt2018>
+For previous versions take a look at:
+
+- [USC 2024 Workshop](https://github.com/USCCANA/netdiffuser-workshop/tree/USC2024)
+- [Sunbelt 2019 Workshop](https://github.com/usccana/netdiffuser-sunbelt2018/tree/sunbelt2019)
+- [Sunbelt 2018 Workshop](https://github.com/usccana/netdiffuser-sunbelt2018/tree/sunbelt2018)
