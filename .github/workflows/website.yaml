@@ -14,27 +14,33 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: rocker/r2u:latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/cache@v4
-        name: Cache R packages
-        id: cache-r-packages
+      - uses: r-lib/actions/setup-r@v2
         with:
-          path: |
-            netdiffuseR_*
-          key: ${{ runner.os }}-netdiffuseR-pkg
+          use-public-rspm: true
 
-      - name: Install dependencies
-        run: |
-          install2.r igraph networkDynamic statnet Rcpp MatchIt remotes \
-            SparseM viridisLite RcppArmadillo rmarkdown knitr microbenchmark
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::igraph
+            any::networkDynamic
+            any::statnet
+            any::Rcpp
+            any::MatchIt
+            any::remotes
+            any::SparseM
+            any::viridisLite
+            any::RcppArmadillo
+            any::rmarkdown
+            any::knitr
+            any::microbenchmark
 
       - name: Install netdiffuseR
         run: |
-          installGithub.r USCCANA/netdiffuseR
+          Rscript -e 'remotes::install_github("USCCANA/netdiffuseR")'
 
       - name: Install Quarto
         uses: quarto-dev/quarto-actions/setup@v2
