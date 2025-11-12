@@ -15,7 +15,7 @@ knitr::opts_chunk$set(comment = "#")
 
 # Multiadoption and Disadoption
 
-Starting with version 1.24.0, **netdiffuseR** supports simulating multi- and dis-adoption diffusion processes.
+Starting with version 1.23.0, **netdiffuseR** supports simulating multi- and dis-adoption diffusion processes.
 
 So, we can study for example **competitive** diffusion between multiple innovations or behaviors, who needs:
 
@@ -82,7 +82,7 @@ par(op)
 # Disadoption
 
 
-The disadoption feature included in **netdiffuseR** version 1.24.0 opened a new way of studying network diffusion processes ([Lehmann 2017 2024](DOI: 10.1007/s13162-017-0093-8), [Alipour 2024](https://doi.org/10.1093/pnasnexus/pgae428)).
+The disadoption feature included in **netdiffuseR** version 1.23.0 opened a new way of studying network diffusion processes ([Lehmann 2017](https://doi.org/10.1007/s13162-017-0093-8), [Alipour 2024](https://doi.org/10.1093/pnasnexus/pgae428)).
 
 The `rdiffnet` function includes the `disadopt` parameter to add a `disadoption` function, that:
 
