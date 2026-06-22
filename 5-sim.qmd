@@ -41,8 +41,8 @@ Here is a review of the concepts we will be using:
 We will simulate a diffusion network with the following parameters, using the `rdiffnet`
 function included in the package::
 
-1.  Will have 1,000 vertices,
-2.  Will span 20 time periods,
+1.  Will have 500 vertices,
+2.  Will span 10 time periods,
 3.  The initial adopters (seeds) will be selected random,
 4.  Seeds will be a 10\% of the network,
 5.  The graph (network) will be small-world,
@@ -54,9 +54,9 @@ function included in the package::
 set.seed(1213)
 
 # Generating a random diffusion network
-net <- rdiffnet(
-  n              = 1e3,                         # 1.
-  t              = 20,                          # 2.
+diffnet_behavior <- rdiffnet(
+  n              = 500,                         # 1.
+  t              = 10,                          # 2.
   seed.nodes     = "random",                    # 3.
   seed.p.adopt   = .1,                          # 4.
   seed.graph     = "small-world",               # 5.
@@ -92,7 +92,12 @@ net <- rdiffnet(
             
         b.  next $i$
     
-# Rumor spreading vs Disease
+# Simple vs threshold diffusion
+
+Here we compare a **simple (disease-like) diffusion**, where a single adopting
+neighbor is enough to adopt (threshold $= 1$), against the **threshold
+diffusion** we simulated above in `diffnet_behavior` (thresholds uniformly
+distributed in $[0.3, 0.7]$).
 
 ```{r sim-rumor}
 library(netdiffuseR)
@@ -100,9 +105,9 @@ library(netdiffuseR)
 set.seed(09)
 diffnet_disease <- rdiffnet(
   n = 5e2,
-  t = 5, 
+  t = 10,
   seed.graph = "small-world",
-  rgraph.args = list(k = 4, p = .3),
+  rgraph.args = list(k = 3, p = .3),
   seed.nodes = "random",
   seed.p.adopt = .05,
   rewire = TRUE,
@@ -111,20 +116,11 @@ diffnet_disease <- rdiffnet(
   name = "Disease spreading"
   )
 
-diffnet_rumor <- rdiffnet(
-  seed.graph = diffnet_disease$graph,
-  seed.nodes = which(diffnet_disease$toa == 1),
-  rewire = FALSE,
-  threshold.dist = function(i) rbeta(1, 3, 10),
-  name = "Rumor spreading",
-  behavior = "Some rumor"
-)
-
-plot_adopters(diffnet_rumor, what = "cumadopt", include.legend = FALSE)
+plot_adopters(diffnet_behavior, what = "cumadopt", include.legend = FALSE)
 plot_adopters(diffnet_disease, bg="lightblue", add=TRUE, what = "cumadopt")
 legend(
   "topleft",
-  legend = c("Disease", "Rumor"),
+  legend = c("Disease", "Behavior"),
   col = c("lightblue", "tomato"),
   bty = "n", pch=19
   )
@@ -162,8 +158,8 @@ for (i in 1:nsim) {
   ans_1and2[[i]] <- 
     cumulative_adopt_count(
       rdiffnet(
-        seed.graph = net,
-        threshold.dist = sample(1:2, 1000L, TRUE),
+        seed.graph = diffnet_behavior,
+        threshold.dist = sample(1:2, 500L, TRUE),
         seed.nodes = "random",
         seed.p.adopt = .10,
         exposure.args = list(outgoing = FALSE, normalized = FALSE),
@@ -186,8 +182,8 @@ for (i in 1:nsim) {
   ans_2and3[[i]] <- 
     cumulative_adopt_count(
       rdiffnet(
-        seed.graph = net,
-        threshold.dist = sample(2:3, 1000L, TRUE),
+        seed.graph = diffnet_behavior,
+        threshold.dist = sample(2:3, 500L, TRUE),
         seed.nodes = "random",
         seed.p.adopt = .10,
         exposure.args = list(outgoing = FALSE, normalized = FALSE),
