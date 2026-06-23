@@ -40,10 +40,10 @@ Here is a review of the concepts we will be using:
 
 We can simulate a diffusion using the `rdiffnet` function included in the package. The simulation algorithm is as follows:
     
-  1.  Pick the graph you give in the input, or a complex baseline graph is created if required,
-  2.  The set of $t$ networks is created (if required),
-  3.  Set of initial adopters and threshold distribution (one $\tau_i$ per node) are established,
-  4.  Simulation starts at $t=2$, assigning adopters based on exposures and thresholds:
+1.  Pick the graph you give in the input, or a complex baseline graph is created if required,
+2.  The set of $t$ networks is created (if required),
+3.  Set of initial adopters and threshold distribution (one $\tau_i$ per node) are established,
+4.  Simulation starts at $t=2$, assigning adopters based on exposures and thresholds:
     a.  For each $i \in N$, if its exposure at $t-1$ is greater than its threshold, then adopts. Otherwise continue without change.
     b.  next $i$
 

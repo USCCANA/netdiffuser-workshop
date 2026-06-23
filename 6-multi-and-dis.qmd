@@ -15,23 +15,12 @@ knitr::opts_chunk$set(comment = "#")
 
 # Multiadoption and Disadoption
 
-Starting with version 1.23.0, **netdiffuseR** supports simulating multi- and dis-adoption diffusion processes.
+**netdiffuseR** supports simulating multi- and dis-adoption diffusion processes.
 
-So, we can study for example **competitive** diffusion between multiple innovations or behaviors, who needs:
-
--   Multi-diffusion models, and
-
--   Disadoption of the previous innovation or behavior.
-
-## Multiadoption Simulations
-
-To study a multi-adoption process, you can pass a **`list`** as the **`seed.p.adopt`** parameter.
-
-Here is a simple example with two behaviors, passing a diffnet objects as input, already containing the seed graph and time points:
+Next, let's use an empirical network:
 
 ```{r, message=FALSE, warning=FALSE}
-#| label: simulation-multiadoption-process-3
-
+#| label: simulation-multiadoption-kfamily
 data(kfamily)
 kfamily_21 <- subset(kfamily, village == 21)
 
@@ -46,11 +35,21 @@ kfamily_diffnet_21 <- survey_to_diffnet(
   groupvar = "village"
 )
 
-set.seed(1231)
+plot_diffnet(kfamily_diffnet_21, slices = c(1, 9))
+```
 
+## Multiadoption simulations
+
+To study a multi-adoption process, you can pass a **`list`** as the **`seed.p.adopt`** parameter.
+
+Here is a simple example with two behaviors, passing a diffnet object as input, which already contains the seed graph and time points:
+
+```{r, message=FALSE, warning=FALSE}
+#| label: simulation-multiadoption-process-3
+set.seed(1231)
 diffnet_1 <- rdiffnet(
   seed.graph     = kfamily_diffnet_21,
-  seed.p.adopt   = list(0.15, 0.1),
+  seed.p.adopt   = list(0.15, 0.1),                            # <-- two behaviors
   threshold.dist = runif(nvertices(kfamily_diffnet_21), .3,.5)
 )
 
@@ -63,7 +62,7 @@ diffnet_1
 We can use the `split_behaviors` function to split a diffnet object into a list of diffnet objects.
 
 ::: {.callout-tip}
-In the current implementation of `rdiffnet`, the multi-adoption module simulates behaviors independently. That is, the code above would be equivalent to simulating the same behavior twice. More complicated models in which behaviors are interdependent are supported via the `disadopt` parameter.
+Until now, the multi-adoption module simulates behaviors independently, so the code above is equivalent to simulating the same behavior twice. Models with interdependent behaviors are supported via the `disadopt` parameter.
 :::
 
 Then, we can use the `plot_adopters` (or any single-adoption function) to visualize the diffusion process for each behavior:
@@ -81,16 +80,17 @@ par(op)
 
 # Disadoption
 
+The `rdiffnet` function includes the `disadopt` parameter to add a disadoption *function*, that:
 
-The disadoption feature included in **netdiffuseR** version 1.23.0 opened a new way of studying network diffusion processes ([Lehmann 2017](https://doi.org/10.1007/s13162-017-0093-8), [Alipour 2024](https://doi.org/10.1093/pnasnexus/pgae428)).
+1.  Receives three arguments: `expo`, `cumadopt`, and `time`.
 
-The `rdiffnet` function includes the `disadopt` parameter to add a `disadoption` function, that:
+    a.  `expo` is the exposure *array* with three dimensions: (\# of nodes, \# of time points, \# of behaviors).
+    b.  `cumadopt` is the cumulative adoption *array*, with the **same dimensions** as `expo`. So, if `cumadopt[i, t, q] = 1`, then `i` has adopted behavior `q` at time `t`.
+    c.  `time` is the current time point in the simulation.
 
-1. Must be a function that receives three arguments: `expo`, `cumadopt`, and `time`.
+2.  Must return a list with one element per behavior: the $q$-th element is a vector with the nodes that disadopt behavior $q$.
 
-2. Must return a list with two elements: the first element is a vector with the nodes that will disadopt, and the second element is a vector with the nodes that will adopt.
-
-3. If there are no nodes to disadopt or adopt, the function must return an empty vector (`integer()`).
+3.  If no node disadopts a given behavior, return an empty vector `integer()` for that element.
 
 ```{r}
 #| label: template-disadoption
@@ -99,20 +99,11 @@ disadoption_function <- function(expo, cumadopt, time) {
   
   # Some calculations..
   
-  return(list(integer(), integer()))
+  return(list( disadopters_1, disadopters_2, integer() ))
 }
 ```
 
 ### Example of disadoption parameter
-
-To clarify the inputs:
-
-- `expo` is the exposure *array* with three dimensions: (number of nodes, number of time points, number of behaviors).
-- `cumadopt` is the cumulative adoption *array*, with the **same dimensions** as `expo`. 
-<!-- The value of `cumadopt[i, t, q]` is 1 if node `i` has adopted behavior `q` at time `t`. -->
-- `time` is the current time point in the simulation.
-
-**Example 1**
 
 We can build a disadoption function that restricts nodes from adopting more than one behavior at a time:
 
@@ -125,21 +116,21 @@ The following code shows how to build such a function:
 ```{r}
 #| label: disadoption-example-1-fun
 
-one_only <- function(expo, cumadopt, time) {
+second_only <- function(expo, cumadopt, time) {
 
  # Identifying double adopters
- ids <- which(apply(cumadopt[, time,], 1, sum) == 2)
+ ids <- which(rowSums(cumadopt[, time, ]) == 2)
 
- # If there are no adopters, returns an empty list
+ # If there are no double adopters, return an empty list
  if (length(ids) == 0)
    return(list(integer(), integer()))
 
- # Otherwise, make them pick one (in this case, we prefer the second)
+ # Otherwise, make them disadopt the first behavior
  return(list(ids, integer()))
 }
 ```
 
-Let's simulate a diffusion process with the disadoption function `one_only`:
+Let's simulate a diffusion process with the disadoption function `second_only`:
 
 ```{r, message=FALSE, warning=FALSE}
 #| label: disadoption-example-1
@@ -150,7 +141,7 @@ diffnet_2 <- rdiffnet(
   seed.graph     = kfamily_diffnet_21,
   seed.p.adopt   = list(0.15, 0.10),
   threshold.dist = runif(nvertices(kfamily_diffnet_21), .3,.5),
-  disadopt       = one_only
+  disadopt       = second_only                                 # <-- the disadoption function
 )
 
 diffnets_2 <- split_behaviors(diffnet_2)
@@ -160,24 +151,6 @@ plot_adopters(diffnets_2[[1]], main = "Behavior 1")
 plot_adopters(diffnets_2[[2]], main = "Behavior 2")
 par(op)
 ```
-
-We will use the `toa_mat` function which extract the **cumulative adoption matrix** from the model. We look the last time point:
-
-```{r}
-#| label: disadoption-example-1-checking-if-works
-
-toas <- toa_mat(diffnet_2)
-
-# Putting the two behaviors together
-adopted <-  cbind(
- toas[[1]]$cumadopt[, 10],
- toas[[2]]$cumadopt[, 10]
-)
-
-# Tabulating side by side
-table(adopted[, 1], adopted[, 2])
-```
-
 
 ## Exercises
 
@@ -189,7 +162,7 @@ table(adopted[, 1], adopted[, 2])
   disadoption_function <- function(expo, cumadopt, time) {
     
     # 1) set number of behaviors
-    # 2) iteration through the behaviors
+    # 2) iterate through the behaviors
     # 3) identify adopters at time t - 1
     # 4) select 10% of adopters to disadopt
     # 5) if there are no disadopters, return(list(integer(), integer()))
@@ -232,7 +205,7 @@ diffnet_3
 
 ```
 
-The  "Num of behaviors" entry now shows `2`, the "Behavior" entry also shows two behaviors, `"Random contagion \_1, Random contagion\_2"`, and finally, the "Prevalence" entry also shows two numbers: `0.29, 0.97`. 
+The "Num of behaviors" entry now shows `2`, the "Behavior" entry also shows two behaviors, `"Random contagion \_1, Random contagion\_2"`, and finally, the "Prevalence" entry also shows two numbers: `0.29, 0.97`. 
 
 We can specify different parameters for each behavior:
 

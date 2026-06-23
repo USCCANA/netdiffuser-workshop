@@ -28,7 +28,6 @@ diffnet_disease_k5 <- rdiffnet(
   name           = "Disease spreading"
 )
 
-# Adoption curves: the disease saturates faster, the behavior gets slower with density
 plot_adopters(diffnet_behavior_k5, what = "cumadopt", include.legend = FALSE,
               main = "Disease-like vs Behavioral-like diffusions (k = 5)")
 plot_adopters(diffnet_disease_k5, bg = "lightblue", add = TRUE, what = "cumadopt")
