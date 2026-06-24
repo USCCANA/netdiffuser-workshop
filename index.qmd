@@ -10,11 +10,10 @@ knitr::opts_chunk$set(comment = "#")
 Sections:
 
 1. [Diffusion Theory](1-theory.qmd)
-2. [Reading data](2-read.qmd)
-3. [Visualization](3-visualization.qmd)
-4. [Statistical inference](4-stats.qmd)
-5. [Simulations pt.1](5-sim.qmd)
-6. [Simulations pt.2](6-multi-and-dis.qmd)
+2. [Visualization](3-visualization.qmd)
+3. [Statistical inference](4-stats.qmd)
+4. [Simulations pt.1](5-sim.qmd)
+5. [Simulations pt.2](6-multi-and-dis.qmd)
 
 In [Misc](0-getstarted.qmd) section, you can find 
 

@@ -14,8 +14,6 @@ website:
       menu:
       - text: Diffusion Theory
         href: 1-theory.qmd
-      - text: Reading data
-        href: 2-read.qmd
       - text: Visualization
         href: 3-visualization.qmd
       - text: Statistical Analysis
@@ -33,6 +31,8 @@ website:
         href: 0-netdiffuser.qmd
       - text: Classic Diffnet Analyses
         href: 0-classic.qmd
+      - text: Reading data
+        href: 2-read.qmd
 
 format:
   html:
