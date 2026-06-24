@@ -9,3 +9,4 @@
 /.quarto/
 docs/
 _freeze/
+**/*.quarto_ipynb

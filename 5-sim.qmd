@@ -40,7 +40,7 @@ Here is a review of the concepts we will be using:
 
 We can simulate a diffusion using the `rdiffnet` function included in the package. The simulation algorithm is as follows:
     
-1.  Pick the graph you give in the input, or a complex baseline graph is created if required,
+1.  Pick the graph you give in the input, or a complex baseline graph is created if required ($N$ nodes),
 2.  The set of $t$ networks is created (if required),
 3.  Set of initial adopters and threshold distribution (one $\tau_i$ per node) are established,
 4.  Simulation starts at $t=2$, assigning adopters based on exposures and thresholds:
@@ -52,8 +52,8 @@ Let's construct a first diffusion network with
 1.  500 nodes,
 2.  Spanning 10 time periods,
 3.  The seeds (initial adopters) will be selected randomly,
-4.  Seeds will be a 10\% of the network,
-5.  The graph (network) will be small-world,
+4.  Seeds will be a 5\% of the network,
+5.  The graph will be small-world,
 6.  With a probability of rewire $p=0.2$,
 7.  Threshold levels will be uniformly distributed between [0.3, 0.7\]
 
@@ -71,6 +71,8 @@ diffnet_behavior <- rdiffnet(
   rgraph.args    = list(p=.2),                  # 6.
   threshold.dist = function(x) runif(1, .3, .7) # 7.
   )
+
+diffnet_behavior
 ```
 
     

@@ -84,8 +84,8 @@ The `rdiffnet` function includes the `disadopt` parameter to add a disadoption *
 
 1.  Receives three arguments: `expo`, `cumadopt`, and `time`.
 
-    a.  `expo` is the exposure *array* with three dimensions: (\# of nodes, \# of time points, \# of behaviors).
-    b.  `cumadopt` is the cumulative adoption *array*, with the **same dimensions** as `expo`. So, if `cumadopt[i, t, q] = 1`, then `i` has adopted behavior `q` at time `t`.
+    a.  `expo` is the exposure *array* with three dimensions: \# of nodes $\times$ \# of time points $\times$ \# of behaviors.
+    b.  `cumadopt` is the cumulative adoption *array*, with the **same dimensions** as `expo`. So, if `cumadopt[i, t, q] = 1`, then `i` is an adopter of behavior `q` at time `t`.
     c.  `time` is the current time point in the simulation.
 
 2.  Must return a list with one element per behavior: the $q$-th element is a vector with the nodes that disadopt behavior $q$.
@@ -141,7 +141,7 @@ diffnet_2 <- rdiffnet(
   seed.graph     = kfamily_diffnet_21,
   seed.p.adopt   = list(0.15, 0.10),
   threshold.dist = runif(nvertices(kfamily_diffnet_21), .3,.5),
-  disadopt       = second_only                                 # <-- the disadoption function
+  disadopt       = second_only                                 # <-- disadop function
 )
 
 diffnets_2 <- split_behaviors(diffnet_2)
@@ -170,7 +170,7 @@ par(op)
   }
 ```
   
-  create a disadoption function that randomly selects **10% of the adopters** at time `t - 1`. ([solution file](files/sim-solutions-pt2-1.R))
+  create a disadoption function that randomly selects **10% of the adopters** at time `t - 1` for $q$ behaviors. ([solution file](files/sim-solutions-pt2-1.R))
   
 2. Create a disadoption function that makes younger individuals disadopt sooner. You can use the `kfamily` dataset. ([solution file](files/sim-solutions-pt2-2.R))
 
